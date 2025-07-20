@@ -1,4 +1,4 @@
-package com.ataglance.walletglance.navigation.data.remote.model
+package com.glanci.navigation.shared.dto
 
 import kotlinx.serialization.Serializable
 

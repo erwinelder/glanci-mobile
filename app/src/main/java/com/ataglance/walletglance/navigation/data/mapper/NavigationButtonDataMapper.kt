@@ -2,7 +2,7 @@ package com.ataglance.walletglance.navigation.data.mapper
 
 import com.ataglance.walletglance.navigation.data.local.model.NavigationButtonEntity
 import com.ataglance.walletglance.navigation.data.model.NavigationButtonDataModel
-import com.ataglance.walletglance.navigation.data.remote.model.NavigationButtonDto
+import com.glanci.navigation.shared.dto.NavigationButtonDto
 
 
 fun NavigationButtonDataModel.toEntity(timestamp: Long, deleted: Boolean): NavigationButtonEntity {

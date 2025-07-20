@@ -1,23 +1,25 @@
-package com.ataglance.walletglance.navigation.data.remote.source
+package com.glanci.navigation.shared.service
 
 import com.glanci.navigation.shared.dto.NavigationButtonDto
+import kotlinx.rpc.annotations.Rpc
 
-interface NavigationButtonRemoteDataSource {
+@Rpc
+interface NavigationButtonService {
 
     suspend fun getUpdateTime(token: String): Long?
 
-    suspend fun synchronizeNavigationButtons(
+    suspend fun saveNavigationButtons(
         buttons: List<NavigationButtonDto>,
         timestamp: Long,
         token: String
-    ): Boolean
+    )
 
     suspend fun getNavigationButtonsAfterTimestamp(
         timestamp: Long,
         token: String
     ): List<NavigationButtonDto>?
 
-    suspend fun synchronizeNavigationButtonsAndGetAfterTimestamp(
+    suspend fun saveNavigationButtonsAndGetAfterTimestamp(
         buttons: List<NavigationButtonDto>,
         timestamp: Long,
         localTimestamp: Long,

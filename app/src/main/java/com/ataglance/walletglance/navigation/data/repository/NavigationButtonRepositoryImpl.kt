@@ -8,7 +8,7 @@ import com.ataglance.walletglance.navigation.data.mapper.toDataModel
 import com.ataglance.walletglance.navigation.data.mapper.toDto
 import com.ataglance.walletglance.navigation.data.mapper.toEntity
 import com.ataglance.walletglance.navigation.data.model.NavigationButtonDataModel
-import com.ataglance.walletglance.navigation.data.remote.model.NavigationButtonDto
+import com.glanci.navigation.shared.dto.NavigationButtonDto
 import com.ataglance.walletglance.navigation.data.remote.source.NavigationButtonRemoteDataSource
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
@@ -21,24 +21,24 @@ class NavigationButtonRepositoryImpl(
 ) : NavigationButtonRepository {
 
     private suspend fun synchronizeNavigationButtons() {
-        syncHelper.synchronizeData(
+        syncHelper.synchronizeDataToken(
             tableName = TableName.NavigationButton,
             localTimestampGetter = { localSource.getUpdateTime() },
-            remoteTimestampGetter = { userId -> remoteSource.getUpdateTime(userId = userId) },
+            remoteTimestampGetter = { token -> remoteSource.getUpdateTime(token = token) },
             localDataGetter = { timestamp ->
                 localSource.getNavigationButtonsAfterTimestamp(timestamp = timestamp)
             },
-            remoteDataGetter = { timestamp, userId ->
-                remoteSource.getNavigationButtonsAfterTimestamp(timestamp = timestamp, userId = userId)
+            remoteDataGetter = { timestamp, token ->
+                remoteSource.getNavigationButtonsAfterTimestamp(timestamp = timestamp, token = token)
             },
             localHardCommand = { entitiesToDelete, entitiesToUpsert, timestamp ->
                 localSource.deleteAndUpsertNavigationButtons(
                     toDelete = entitiesToDelete, toUpsert = entitiesToUpsert, timestamp = timestamp
                 )
             },
-            remoteSynchronizer = { data, timestamp, userId ->
+            remoteSynchronizer = { data, timestamp, token ->
                 remoteSource.synchronizeNavigationButtons(
-                    buttons = data, timestamp = timestamp, userId = userId
+                    buttons = data, timestamp = timestamp, token = token
                 )
             },
             entityDeletedPredicate = { it.deleted },
@@ -49,28 +49,29 @@ class NavigationButtonRepositoryImpl(
 
 
     override suspend fun upsertNavigationButtons(buttons: List<NavigationButtonDataModel>) {
-        syncHelper.upsertData(
+        syncHelper.upsertDataToken(
+            tableName = TableName.NavigationButton,
             data = buttons,
             localTimestampGetter = { localSource.getUpdateTime() },
-            remoteTimestampGetter = { userId -> remoteSource.getUpdateTime(userId = userId) },
+            remoteTimestampGetter = { token -> remoteSource.getUpdateTime(token = token) },
             localSoftCommand = { entities, timestamp ->
                 localSource.upsertNavigationButtons(buttons = entities, timestamp = timestamp)
                 entities
             },
-            remoteSoftCommand = { dtos, timestamp, userId ->
+            remoteSoftCommand = { dtos, timestamp, token ->
                 remoteSource.synchronizeNavigationButtons(
-                    buttons = dtos, timestamp = timestamp, userId = userId
+                    buttons = dtos, timestamp = timestamp, token = token
                 )
             },
             localDataAfterTimestampGetter = { timestamp ->
                 localSource.getNavigationButtonsAfterTimestamp(timestamp = timestamp)
             },
-            remoteSoftCommandAndDataAfterTimestampGetter = { dtos, timestamp, userId, localTimestamp ->
+            remoteSoftCommandAndDataAfterTimestampGetter = { dtos, timestamp, localTimestamp, token ->
                 remoteSource.synchronizeNavigationButtonsAndGetAfterTimestamp(
                     buttons = dtos,
                     timestamp = timestamp,
-                    userId = userId,
-                    localTimestamp = localTimestamp
+                    localTimestamp = localTimestamp,
+                    token = token
                 )
             },
             dataModelToEntityMapper = NavigationButtonDataModel::toEntity,
