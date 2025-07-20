@@ -1,6 +1,6 @@
 package com.ataglance.walletglance.budget.data.remote.source
 
-import com.ataglance.walletglance.budget.data.remote.model.BudgetOnWidgetDto
+import com.glanci.budget.shared.dto.BudgetOnWidgetDto
 
 interface BudgetOnWidgetRemoteDataSource {
 
@@ -12,15 +12,15 @@ interface BudgetOnWidgetRemoteDataSource {
         token: String
     ): Boolean
 
+    suspend fun getBudgetsOnWidgetAfterTimestamp(
+        timestamp: Long,
+        token: String
+    ): List<BudgetOnWidgetDto>?
+
     suspend fun synchronizeBudgetsOnWidgetAndGetAfterTimestamp(
         budgets: List<BudgetOnWidgetDto>,
         timestamp: Long,
         localTimestamp: Long,
-        token: String
-    ): List<BudgetOnWidgetDto>?
-
-    suspend fun getBudgetsOnWidgetAfterTimestamp(
-        timestamp: Long,
         token: String
     ): List<BudgetOnWidgetDto>?
 

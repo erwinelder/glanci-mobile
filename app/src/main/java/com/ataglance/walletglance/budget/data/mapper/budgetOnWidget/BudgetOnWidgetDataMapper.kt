@@ -2,7 +2,7 @@ package com.ataglance.walletglance.budget.data.mapper.budgetOnWidget
 
 import com.ataglance.walletglance.budget.data.local.model.BudgetOnWidgetEntity
 import com.ataglance.walletglance.budget.data.model.BudgetOnWidgetDataModel
-import com.ataglance.walletglance.budget.data.remote.model.BudgetOnWidgetDto
+import com.glanci.budget.shared.dto.BudgetOnWidgetDto
 
 
 fun BudgetOnWidgetDataModel.toEntity(timestamp: Long, deleted: Boolean): BudgetOnWidgetEntity {

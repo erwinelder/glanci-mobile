@@ -6,7 +6,7 @@ import com.ataglance.walletglance.budget.data.mapper.budgetOnWidget.toDataModel
 import com.ataglance.walletglance.budget.data.mapper.budgetOnWidget.toDto
 import com.ataglance.walletglance.budget.data.mapper.budgetOnWidget.toEntity
 import com.ataglance.walletglance.budget.data.model.BudgetOnWidgetDataModel
-import com.ataglance.walletglance.budget.data.remote.model.BudgetOnWidgetDto
+import com.glanci.budget.shared.dto.BudgetOnWidgetDto
 import com.ataglance.walletglance.budget.data.remote.source.BudgetOnWidgetRemoteDataSource
 import com.ataglance.walletglance.core.data.model.DataSyncHelper
 import com.ataglance.walletglance.core.data.model.TableName
