@@ -1,8 +1,8 @@
 package com.ataglance.walletglance.category.data.remote.source
 
 import android.util.Log
-import com.ataglance.walletglance.category.data.remote.model.CategoryCommandDto
-import com.ataglance.walletglance.category.data.remote.model.CategoryQueryDto
+import com.glanci.category.shared.dto.CategoryQueryDto
+import com.glanci.category.shared.dto.CategoryCommandDto
 import com.glanci.category.shared.service.CategoryService
 import kotlinx.rpc.krpc.ktor.client.KtorRpcClient
 import kotlinx.rpc.withService

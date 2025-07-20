@@ -1,7 +1,7 @@
 package com.glanci.category.shared.service
 
-import com.ataglance.walletglance.category.data.remote.model.CategoryCommandDto
-import com.ataglance.walletglance.category.data.remote.model.CategoryQueryDto
+import com.glanci.category.shared.dto.CategoryCommandDto
+import com.glanci.category.shared.dto.CategoryQueryDto
 import kotlinx.rpc.annotations.Rpc
 
 @Rpc

@@ -1,39 +1,90 @@
 package com.ataglance.walletglance.budget.data.remote.source
 
-import com.ataglance.walletglance.budget.data.remote.model.BudgetDtoWithAssociations
+import android.util.Log
+import com.glanci.budget.shared.dto.BudgetWithAssociationsDto
+import com.glanci.budget.shared.service.BudgetService
+import kotlinx.rpc.krpc.ktor.client.KtorRpcClient
+import kotlinx.rpc.withService
 
-class BudgetRemoteDataSourceImpl() : BudgetRemoteDataSource {
+class BudgetRemoteDataSourceImpl(
+    private val service: BudgetService
+) : BudgetRemoteDataSource {
 
-    override suspend fun getUpdateTime(userId: Int): Long? {
-        // TODO("Not yet implemented")
-        return null
+    constructor(client: KtorRpcClient) : this(service = client.withService<BudgetService>())
+
+
+    override suspend fun getUpdateTime(token: String): Long? {
+        return runCatching {
+            service.getUpdateTime(token = token)
+        }.getOrNull().also { timestamp ->
+            if (timestamp != null) {
+                Log.d("BudgetRemoteDataSourceImpl", "getUpdateTime:" +
+                        "received update time $timestamp")
+            } else {
+                Log.w("BudgetRemoteDataSourceImpl", "getUpdateTime:" +
+                        "no update time received")
+            }
+        }
     }
 
     override suspend fun synchronizeBudgetsWithAssociations(
-        budgets: List<BudgetDtoWithAssociations>,
+        budgets: List<BudgetWithAssociationsDto>,
         timestamp: Long,
-        userId: Int
+        token: String
     ): Boolean {
-        // TODO("Not yet implemented")
-        return false
-    }
-
-    override suspend fun synchronizeBudgetsWithAssociationsAndGetAfterTimestamp(
-        budgets: List<BudgetDtoWithAssociations>,
-        timestamp: Long,
-        userId: Int,
-        localTimestamp: Long
-    ): List<BudgetDtoWithAssociations>? {
-        // TODO("Not yet implemented")
-        return null
+        return runCatching {
+            service.saveBudgetsWithAssociations(
+                budgets = budgets,
+                timestamp = timestamp,
+                token = token
+            )
+        }.isSuccess.also { success ->
+            if (success) {
+                Log.d("BudgetRemoteDataSourceImpl", "synchronizeBudgetsWithAssociations: " +
+                        "synchronized ${budgets.size} budgets at timestamp $timestamp")
+            } else {
+                Log.e("BudgetRemoteDataSourceImpl", "synchronizeBudgetsWithAssociations: " +
+                        "failed to synchronize ${budgets.size} budgets at timestamp $timestamp")
+            }
+        }
     }
 
     override suspend fun getBudgetsWithAssociationsAfterTimestamp(
         timestamp: Long,
-        userId: Int
-    ): List<BudgetDtoWithAssociations>? {
-        // TODO("Not yet implemented")
-        return null
+        token: String
+    ): List<BudgetWithAssociationsDto>? {
+        return runCatching {
+            service.getBudgetsWithAssociationsAfterTimestamp(timestamp = timestamp, token = token)
+        }.getOrNull().also { budgets ->
+            budgets?.forEach {
+                Log.d("BudgetRemoteDataSourceImpl", "getBudgetsWithAssociationsAfterTimestamp:" +
+                        "received budget: id = ${it.budget.id}")
+            }
+        }
+    }
+
+    override suspend fun synchronizeBudgetsWithAssociationsAndGetAfterTimestamp(
+        budgets: List<BudgetWithAssociationsDto>,
+        timestamp: Long,
+        localTimestamp: Long,
+        token: String
+    ): List<BudgetWithAssociationsDto>? {
+        return runCatching {
+            service.saveBudgetsWithAssociationsAndGetAfterTimestamp(
+                budgets = budgets,
+                timestamp = timestamp,
+                localTimestamp = localTimestamp,
+                token = token
+            )
+        }.getOrNull().also { budgets ->
+            Log.d("BudgetRemoteDataSourceImpl", "synchronizeBudgetsWithAssociationsAndGetAfterTimestamp:" +
+                    "synchronized ${budgets?.size ?: 0} budgets at timestamp $timestamp" +
+                    " with local timestamp $localTimestamp")
+            budgets?.forEach {
+                Log.d("BudgetRemoteDataSourceImpl", "synchronizeBudgetsWithAssociationsAndGetAfterTimestamp:" +
+                        "received budget: id = ${it.budget.id}")
+            }
+        }
     }
 
 }

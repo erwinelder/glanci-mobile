@@ -16,7 +16,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import com.ataglance.walletglance.R
 import com.ataglance.walletglance.account.domain.model.Account
-import com.ataglance.walletglance.budget.data.model.BudgetDataModelWithAssociations
+import com.ataglance.walletglance.budget.data.model.BudgetWithAssociationsDataModel
 import com.ataglance.walletglance.budget.domain.model.Budget
 import com.ataglance.walletglance.budget.domain.model.BudgetsByType
 import com.ataglance.walletglance.budget.domain.utils.groupByType
@@ -110,7 +110,7 @@ fun BudgetsScreenPreview(
     groupedCategoriesByType: GroupedCategoriesByType = DefaultCategoriesPackage(
         LocalContext.current
     ).getDefaultCategories(),
-    budgetDataModelsWithAssociations: List<BudgetDataModelWithAssociations>? = null,
+    budgetDataModelsWithAssociations: List<BudgetWithAssociationsDataModel>? = null,
     accounts: List<Account> = listOf(
         Account(id = 1, orderNum = 1, isActive = true),
         Account(id = 2, orderNum = 2, isActive = false)

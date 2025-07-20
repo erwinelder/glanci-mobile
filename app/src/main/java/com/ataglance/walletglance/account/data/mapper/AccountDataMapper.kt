@@ -2,8 +2,8 @@ package com.ataglance.walletglance.account.data.mapper
 
 import com.ataglance.walletglance.account.data.local.model.AccountEntity
 import com.ataglance.walletglance.account.data.model.AccountDataModel
-import com.ataglance.walletglance.account.data.remote.model.AccountCommandDto
-import com.ataglance.walletglance.account.data.remote.model.AccountQueryDto
+import com.glanci.account.shared.dto.AccountCommandDto
+import com.glanci.account.shared.dto.AccountQueryDto
 
 
 fun AccountDataModel.toEntity(timestamp: Long, deleted: Boolean): AccountEntity {

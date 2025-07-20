@@ -1,23 +1,21 @@
-package com.ataglance.walletglance.budget.data.remote.source
+package com.glanci.budget.shared.service
 
 import com.glanci.budget.shared.dto.BudgetWithAssociationsDto
+import kotlinx.rpc.annotations.Rpc
 
-interface BudgetRemoteDataSource {
+@Rpc
+interface BudgetService {
 
     suspend fun getUpdateTime(token: String): Long?
 
-    suspend fun synchronizeBudgetsWithAssociations(
-        budgets: List<BudgetWithAssociationsDto>,
-        timestamp: Long,
-        token: String
-    ): Boolean
+    suspend fun saveBudgetsWithAssociations(budgets: List<BudgetWithAssociationsDto>, timestamp: Long, token: String)
 
     suspend fun getBudgetsWithAssociationsAfterTimestamp(
         timestamp: Long,
         token: String
     ): List<BudgetWithAssociationsDto>?
 
-    suspend fun synchronizeBudgetsWithAssociationsAndGetAfterTimestamp(
+    suspend fun saveBudgetsWithAssociationsAndGetAfterTimestamp(
         budgets: List<BudgetWithAssociationsDto>,
         timestamp: Long,
         localTimestamp: Long,

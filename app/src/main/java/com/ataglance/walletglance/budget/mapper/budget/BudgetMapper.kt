@@ -4,7 +4,7 @@ import com.ataglance.walletglance.account.domain.model.Account
 import com.ataglance.walletglance.account.domain.utils.filterByBudgetAccounts
 import com.ataglance.walletglance.budget.data.model.BudgetAccountAssociationDataModel
 import com.ataglance.walletglance.budget.data.model.BudgetDataModel
-import com.ataglance.walletglance.budget.data.model.BudgetDataModelWithAssociations
+import com.ataglance.walletglance.budget.data.model.BudgetWithAssociationsDataModel
 import com.ataglance.walletglance.budget.domain.model.Budget
 import com.ataglance.walletglance.budget.domain.model.BudgetsByType
 import com.ataglance.walletglance.budget.presentation.model.BudgetDraft
@@ -29,8 +29,8 @@ fun Budget.toDataModel(): BudgetDataModel {
     )
 }
 
-fun Budget.toDataModelWithAssociations(): BudgetDataModelWithAssociations {
-    return BudgetDataModelWithAssociations(
+fun Budget.toDataModelWithAssociations(): BudgetWithAssociationsDataModel {
+    return BudgetWithAssociationsDataModel(
         budget = toDataModel(),
         associations = linkedAccountIds.map { accountId ->
             BudgetAccountAssociationDataModel(budgetId = id, accountId = accountId)
@@ -38,7 +38,7 @@ fun Budget.toDataModelWithAssociations(): BudgetDataModelWithAssociations {
     )
 }
 
-fun BudgetDataModelWithAssociations.toDomainModel(
+fun BudgetWithAssociationsDataModel.toDomainModel(
     groupedCategoriesList: List<GroupedCategories>,
     accounts: List<Account>
 ): Budget? {

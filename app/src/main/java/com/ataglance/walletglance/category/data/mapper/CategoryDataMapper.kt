@@ -2,8 +2,8 @@ package com.ataglance.walletglance.category.data.mapper
 
 import com.ataglance.walletglance.category.data.local.model.CategoryEntity
 import com.ataglance.walletglance.category.data.model.CategoryDataModel
-import com.ataglance.walletglance.category.data.remote.model.CategoryCommandDto
-import com.ataglance.walletglance.category.data.remote.model.CategoryQueryDto
+import com.glanci.category.shared.dto.CategoryCommandDto
+import com.glanci.category.shared.dto.CategoryQueryDto
 
 
 fun CategoryDataModel.toEntity(timestamp: Long, deleted: Boolean): CategoryEntity {

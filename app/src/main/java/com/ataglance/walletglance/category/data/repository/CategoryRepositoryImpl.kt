@@ -6,7 +6,7 @@ import com.ataglance.walletglance.category.data.mapper.toCommandDto
 import com.ataglance.walletglance.category.data.mapper.toDataModel
 import com.ataglance.walletglance.category.data.mapper.toEntity
 import com.ataglance.walletglance.category.data.model.CategoryDataModel
-import com.ataglance.walletglance.category.data.remote.model.CategoryQueryDto
+import com.glanci.category.shared.dto.CategoryQueryDto
 import com.ataglance.walletglance.category.data.remote.source.CategoryRemoteDataSource
 import com.ataglance.walletglance.core.data.model.DataSyncHelper
 import com.ataglance.walletglance.core.data.model.TableName

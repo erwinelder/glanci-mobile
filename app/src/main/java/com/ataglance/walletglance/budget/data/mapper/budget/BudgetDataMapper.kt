@@ -5,16 +5,16 @@ import com.ataglance.walletglance.budget.data.local.model.BudgetEntity
 import com.ataglance.walletglance.budget.data.local.model.BudgetEntityWithAssociations
 import com.ataglance.walletglance.budget.data.model.BudgetAccountAssociationDataModel
 import com.ataglance.walletglance.budget.data.model.BudgetDataModel
-import com.ataglance.walletglance.budget.data.model.BudgetDataModelWithAssociations
-import com.ataglance.walletglance.budget.data.remote.model.BudgetAccountAssociationDto
-import com.ataglance.walletglance.budget.data.remote.model.BudgetDto
-import com.ataglance.walletglance.budget.data.remote.model.BudgetDtoWithAssociations
+import com.ataglance.walletglance.budget.data.model.BudgetWithAssociationsDataModel
+import com.glanci.budget.shared.dto.BudgetAccountAssociationDto
+import com.glanci.budget.shared.dto.BudgetDto
+import com.glanci.budget.shared.dto.BudgetWithAssociationsDto
 
 
 fun BudgetDataModel.withAssociations(
     associations: List<BudgetAccountAssociationDataModel> = emptyList()
-): BudgetDataModelWithAssociations {
-    return BudgetDataModelWithAssociations(
+): BudgetWithAssociationsDataModel {
+    return BudgetWithAssociationsDataModel(
         budget = this,
         associations = associations
     )
@@ -37,7 +37,7 @@ fun BudgetAccountAssociationDataModel.toEntity(): BudgetAccountAssociationEntity
     return BudgetAccountAssociationEntity(budgetId = budgetId, accountId = accountId)
 }
 
-fun BudgetDataModelWithAssociations.toEntityWithAssociations(
+fun BudgetWithAssociationsDataModel.toEntityWithAssociations(
     timestamp: Long,
     deleted: Boolean
 ): BudgetEntityWithAssociations {
@@ -62,8 +62,8 @@ fun BudgetAccountAssociationEntity.toDataModel(): BudgetAccountAssociationDataMo
     return BudgetAccountAssociationDataModel(budgetId = budgetId, accountId = accountId)
 }
 
-fun BudgetEntityWithAssociations.toDataModelWithAssociations(): BudgetDataModelWithAssociations {
-    return BudgetDataModelWithAssociations(
+fun BudgetEntityWithAssociations.toDataModelWithAssociations(): BudgetWithAssociationsDataModel {
+    return BudgetWithAssociationsDataModel(
         budget = budget.toDataModel(),
         associations = associations.map { it.toDataModel() }
     )
@@ -86,11 +86,11 @@ fun BudgetAccountAssociationDataModel.toDto(): BudgetAccountAssociationDto {
     return BudgetAccountAssociationDto(budgetId = budgetId, accountId = accountId)
 }
 
-fun BudgetDataModelWithAssociations.toDtoWithAssociations(
+fun BudgetWithAssociationsDataModel.toDtoWithAssociations(
     timestamp: Long,
     deleted: Boolean
-): BudgetDtoWithAssociations {
-    return BudgetDtoWithAssociations(
+): BudgetWithAssociationsDto {
+    return BudgetWithAssociationsDto(
         budget = budget.toDto(timestamp = timestamp, deleted = deleted),
         associations = associations.map { it.toDto() }
     )
@@ -113,8 +113,8 @@ fun BudgetAccountAssociationEntity.toDto(): BudgetAccountAssociationDto {
     return BudgetAccountAssociationDto(budgetId = budgetId, accountId = accountId)
 }
 
-fun BudgetEntityWithAssociations.toDtoWithAssociations(): BudgetDtoWithAssociations {
-    return BudgetDtoWithAssociations(
+fun BudgetEntityWithAssociations.toDtoWithAssociations(): BudgetWithAssociationsDto {
+    return BudgetWithAssociationsDto(
         budget = budget.toDto(),
         associations = associations.map { it.toDto() }
     )
@@ -137,7 +137,7 @@ fun BudgetAccountAssociationDto.toEntity(): BudgetAccountAssociationEntity {
     return BudgetAccountAssociationEntity(budgetId = budgetId, accountId = accountId)
 }
 
-fun BudgetDtoWithAssociations.toEntityWithAssociations(): BudgetEntityWithAssociations {
+fun BudgetWithAssociationsDto.toEntityWithAssociations(): BudgetEntityWithAssociations {
     return BudgetEntityWithAssociations(
         budget = budget.toEntity(),
         associations = associations.map { it.toEntity() }

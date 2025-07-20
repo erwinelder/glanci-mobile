@@ -33,7 +33,7 @@ import com.ataglance.walletglance.R
 import com.ataglance.walletglance.account.domain.model.Account
 import com.ataglance.walletglance.account.domain.model.color.AccountColors
 import com.ataglance.walletglance.account.presentation.component.AccountNameWithCurrencyComposable
-import com.ataglance.walletglance.budget.data.model.BudgetDataModelWithAssociations
+import com.ataglance.walletglance.budget.data.model.BudgetWithAssociationsDataModel
 import com.ataglance.walletglance.budget.mapper.budget.toDomainModel
 import com.ataglance.walletglance.budget.mapper.budget.toDraft
 import com.ataglance.walletglance.budget.presentation.model.BudgetDraft
@@ -288,8 +288,8 @@ fun EditBudgetScreenPreview(
         Account(id = 2, color = AccountColors.Blue),
         Account(id = 3, color = AccountColors.Default, currency = "CZK"),
     ),
-    budgetDataModelWithAssociations: BudgetDataModelWithAssociations? = null,
-    budgetUiState: BudgetDraft = budgetDataModelWithAssociations
+    budgetWithAssociationsDataModel: BudgetWithAssociationsDataModel? = null,
+    budgetUiState: BudgetDraft = budgetWithAssociationsDataModel
         ?.toDomainModel(
             groupedCategoriesList = groupedCategoriesByType.expense,
             accounts = accountList

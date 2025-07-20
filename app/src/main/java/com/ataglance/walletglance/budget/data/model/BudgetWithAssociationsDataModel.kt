@@ -1,6 +1,6 @@
 package com.ataglance.walletglance.budget.data.model
 
-data class BudgetDataModelWithAssociations(
+data class BudgetWithAssociationsDataModel(
     val budget: BudgetDataModel,
     val associations: List<BudgetAccountAssociationDataModel>
 ) {

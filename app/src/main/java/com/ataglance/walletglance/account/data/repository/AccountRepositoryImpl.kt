@@ -6,7 +6,7 @@ import com.ataglance.walletglance.account.data.mapper.toCommandDto
 import com.ataglance.walletglance.account.data.mapper.toDataModel
 import com.ataglance.walletglance.account.data.mapper.toEntity
 import com.ataglance.walletglance.account.data.model.AccountDataModel
-import com.ataglance.walletglance.account.data.remote.model.AccountQueryDto
+import com.glanci.account.shared.dto.AccountQueryDto
 import com.ataglance.walletglance.account.data.remote.source.AccountRemoteDataSource
 import com.ataglance.walletglance.core.data.model.DataSyncHelper
 import com.ataglance.walletglance.core.data.model.TableName

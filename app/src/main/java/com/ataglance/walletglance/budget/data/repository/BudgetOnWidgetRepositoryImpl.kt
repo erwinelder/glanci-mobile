@@ -21,24 +21,24 @@ class BudgetOnWidgetRepositoryImpl(
 ) : BudgetOnWidgetRepository {
 
     private suspend fun synchronizeBudgetsOnWidget() {
-        syncHelper.synchronizeData(
+        syncHelper.synchronizeDataToken(
             tableName = TableName.BudgetOnWidget,
             localTimestampGetter = { localSource.getUpdateTime() },
-            remoteTimestampGetter = { userId -> remoteSource.getUpdateTime(userId = userId) },
+            remoteTimestampGetter = { token -> remoteSource.getUpdateTime(token = token) },
             localDataGetter = { timestamp ->
                 localSource.getBudgetsOnWidgetAfterTimestamp(timestamp = timestamp)
             },
-            remoteDataGetter = { timestamp, userId ->
-                remoteSource.getBudgetsOnWidgetAfterTimestamp(timestamp = timestamp, userId = userId)
+            remoteDataGetter = { timestamp, token ->
+                remoteSource.getBudgetsOnWidgetAfterTimestamp(timestamp = timestamp, token = token)
             },
             localHardCommand = { entitiesToDelete, entitiesToUpsert, timestamp ->
                 localSource.deleteAndUpsertBudgetsOnWidget(
                     toDelete = entitiesToDelete, toUpsert = entitiesToUpsert, timestamp = timestamp
                 )
             },
-            remoteSynchronizer = { data, timestamp, userId ->
+            remoteSynchronizer = { data, timestamp, token ->
                 remoteSource.synchronizeBudgetsOnWidget(
-                    budgets = data, timestamp = timestamp, userId = userId
+                    budgets = data, timestamp = timestamp, token = token
                 )
             },
             entityDeletedPredicate = { it.deleted },
@@ -51,11 +51,12 @@ class BudgetOnWidgetRepositoryImpl(
         toDelete: List<BudgetOnWidgetDataModel>,
         toUpsert: List<BudgetOnWidgetDataModel>
     ) {
-        syncHelper.deleteAndUpsertData(
+        syncHelper.deleteAndUpsertDataToken(
+            tableName = TableName.BudgetOnWidget,
             toDelete = toDelete,
             toUpsert = toUpsert,
             localTimestampGetter = { localSource.getUpdateTime() },
-            remoteTimestampGetter = { userId -> remoteSource.getUpdateTime(userId = userId) },
+            remoteTimestampGetter = { token -> remoteSource.getUpdateTime(token = token) },
             localSoftCommand = { entities, timestamp ->
                 localSource.upsertBudgetsOnWidget(budgets = entities, timestamp = timestamp)
                 entities
@@ -68,20 +69,20 @@ class BudgetOnWidgetRepositoryImpl(
             localDeleteCommand = { entities ->
                 localSource.deleteBudgetsOnWidget(budgets = entities)
             },
-            remoteSoftCommand = { dtos, timestamp, userId ->
+            remoteSoftCommand = { dtos, timestamp, token ->
                 remoteSource.synchronizeBudgetsOnWidget(
-                    budgets = dtos, timestamp = timestamp, userId = userId
+                    budgets = dtos, timestamp = timestamp, token = token
                 )
             },
             localDataAfterTimestampGetter = { timestamp ->
                 localSource.getBudgetsOnWidgetAfterTimestamp(timestamp = timestamp)
             },
-            remoteSoftCommandAndDataAfterTimestampGetter = { dtos, timestamp, userId, localTimestamp ->
+            remoteSoftCommandAndDataAfterTimestampGetter = { dtos, timestamp, localTimestamp, token ->
                 remoteSource.synchronizeBudgetsOnWidgetAndGetAfterTimestamp(
                     budgets = dtos,
                     timestamp = timestamp,
-                    userId = userId,
-                    localTimestamp = localTimestamp
+                    localTimestamp = localTimestamp,
+                    token = token
                 )
             },
             entityDeletedPredicate = { it.deleted },

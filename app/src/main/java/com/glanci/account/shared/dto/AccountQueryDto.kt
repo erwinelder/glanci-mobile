@@ -1,9 +1,10 @@
-package com.ataglance.walletglance.account.data.remote.model
+package com.glanci.account.shared.dto
 
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class AccountCommandDto(
+data class AccountQueryDto(
+    val userId: Int,
     val id: Int,
     val orderNum: Int,
     val name: String,

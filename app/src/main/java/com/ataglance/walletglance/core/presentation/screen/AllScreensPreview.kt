@@ -25,7 +25,7 @@ import com.ataglance.walletglance.auth.presentation.screen.PasswordUpdateScreenP
 import com.ataglance.walletglance.auth.presentation.screen.EmailUpdateVerifyScreenPreview
 import com.ataglance.walletglance.budget.data.model.BudgetAccountAssociationDataModel
 import com.ataglance.walletglance.budget.data.model.BudgetDataModel
-import com.ataglance.walletglance.budget.data.model.BudgetDataModelWithAssociations
+import com.ataglance.walletglance.budget.data.model.BudgetWithAssociationsDataModel
 import com.ataglance.walletglance.budget.domain.utils.fillUsedAmountsByTransactions
 import com.ataglance.walletglance.budget.mapper.budget.toDomainModel
 import com.ataglance.walletglance.budget.presentation.component.widget.ChosenBudgetsWidgetPreview
@@ -363,7 +363,7 @@ private val categoryCollectionsWithIdsByType = CategoryCollectionsWithIdsByType(
     ),
 )
 private val budgetDataModelsWithAssociations = listOf(
-    BudgetDataModelWithAssociations(
+    BudgetWithAssociationsDataModel(
         budget = BudgetDataModel(
             id = 1,
             amountLimit = 5000.0,
@@ -376,7 +376,7 @@ private val budgetDataModelsWithAssociations = listOf(
             BudgetAccountAssociationDataModel(budgetId = 1, accountId = 4)
         )
     ),
-    BudgetDataModelWithAssociations(
+    BudgetWithAssociationsDataModel(
         budget = BudgetDataModel(
             id = 2,
             amountLimit = 1000.0,
@@ -388,7 +388,7 @@ private val budgetDataModelsWithAssociations = listOf(
             BudgetAccountAssociationDataModel(budgetId = 2, accountId = 2)
         )
     ),
-    BudgetDataModelWithAssociations(
+    BudgetWithAssociationsDataModel(
         budget = BudgetDataModel(
             id = 3,
             amountLimit = 1000.0,
@@ -400,7 +400,7 @@ private val budgetDataModelsWithAssociations = listOf(
             BudgetAccountAssociationDataModel(budgetId = 3, accountId = 1)
         )
     ),
-    BudgetDataModelWithAssociations(
+    BudgetWithAssociationsDataModel(
         budget = BudgetDataModel(
             id = 4,
             amountLimit = 1500.0,
@@ -762,7 +762,7 @@ private fun EditBudgetScreenPreview_() {
     EditBudgetScreenPreview(
         appTheme = appTheme,
         accountList = accountsAndActiveOne.accounts,
-        budgetDataModelWithAssociations = budgetDataModelsWithAssociations.first()
+        budgetWithAssociationsDataModel = budgetDataModelsWithAssociations.first()
     )
 }
 

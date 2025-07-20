@@ -1,7 +1,7 @@
 package com.glanci.account.shared.service
 
-import com.ataglance.walletglance.account.data.remote.model.AccountCommandDto
-import com.ataglance.walletglance.account.data.remote.model.AccountQueryDto
+import com.glanci.account.shared.dto.AccountCommandDto
+import com.glanci.account.shared.dto.AccountQueryDto
 import kotlinx.rpc.annotations.Rpc
 
 @Rpc

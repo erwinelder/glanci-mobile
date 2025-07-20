@@ -1,7 +1,7 @@
 package com.ataglance.walletglance.category.data.remote.source
 
-import com.ataglance.walletglance.category.data.remote.model.CategoryCommandDto
-import com.ataglance.walletglance.category.data.remote.model.CategoryQueryDto
+import com.glanci.category.shared.dto.CategoryCommandDto
+import com.glanci.category.shared.dto.CategoryQueryDto
 
 interface CategoryRemoteDataSource {
 

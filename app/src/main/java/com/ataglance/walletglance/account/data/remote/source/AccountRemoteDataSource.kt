@@ -1,7 +1,7 @@
 package com.ataglance.walletglance.account.data.remote.source
 
-import com.ataglance.walletglance.account.data.remote.model.AccountCommandDto
-import com.ataglance.walletglance.account.data.remote.model.AccountQueryDto
+import com.glanci.account.shared.dto.AccountCommandDto
+import com.glanci.account.shared.dto.AccountQueryDto
 
 interface AccountRemoteDataSource {
 

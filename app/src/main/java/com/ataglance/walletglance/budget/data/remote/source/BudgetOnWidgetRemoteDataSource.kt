@@ -4,24 +4,24 @@ import com.ataglance.walletglance.budget.data.remote.model.BudgetOnWidgetDto
 
 interface BudgetOnWidgetRemoteDataSource {
 
-    suspend fun getUpdateTime(userId: Int): Long?
+    suspend fun getUpdateTime(token: String): Long?
 
     suspend fun synchronizeBudgetsOnWidget(
         budgets: List<BudgetOnWidgetDto>,
         timestamp: Long,
-        userId: Int
+        token: String
     ): Boolean
 
     suspend fun synchronizeBudgetsOnWidgetAndGetAfterTimestamp(
         budgets: List<BudgetOnWidgetDto>,
         timestamp: Long,
-        userId: Int,
-        localTimestamp: Long
+        localTimestamp: Long,
+        token: String
     ): List<BudgetOnWidgetDto>?
 
     suspend fun getBudgetsOnWidgetAfterTimestamp(
         timestamp: Long,
-        userId: Int
+        token: String
     ): List<BudgetOnWidgetDto>?
 
 }
