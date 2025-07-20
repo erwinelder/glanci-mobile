@@ -9,7 +9,7 @@ import com.ataglance.walletglance.categoryCollection.data.mapper.toEntityWithAss
 import com.ataglance.walletglance.categoryCollection.data.mapper.withAssociations
 import com.ataglance.walletglance.categoryCollection.data.model.CategoryCollectionDataModel
 import com.ataglance.walletglance.categoryCollection.data.model.CategoryCollectionDataModelWithAssociations
-import com.ataglance.walletglance.categoryCollection.data.remote.model.CategoryCollectionDtoWithAssociations
+import com.glanci.categoryCollection.shared.dto.CategoryCollectionWithAssociationsDto
 import com.ataglance.walletglance.categoryCollection.data.remote.source.CategoryCollectionRemoteDataSource
 import com.ataglance.walletglance.core.data.model.DataSyncHelper
 import com.ataglance.walletglance.core.data.model.TableName
@@ -24,16 +24,16 @@ class CategoryCollectionRepositoryImpl(
 ) : CategoryCollectionRepository {
 
     private suspend fun synchronizeCollections() {
-        syncHelper.synchronizeData(
+        syncHelper.synchronizeDataToken(
             tableName = TableName.CategoryCollection,
             localTimestampGetter = { localSource.getUpdateTime() },
-            remoteTimestampGetter = { userId -> remoteSource.getUpdateTime(userId = userId) },
+            remoteTimestampGetter = { token -> remoteSource.getUpdateTime(token = token) },
             localDataGetter = { timestamp ->
                 localSource.getCollectionsWithAssociationsAfterTimestamp(timestamp = timestamp)
             },
-            remoteDataGetter = { timestamp, userId ->
+            remoteDataGetter = { timestamp, token ->
                 remoteSource.getCollectionsWithAssociationsAfterTimestamp(
-                    timestamp = timestamp, userId = userId
+                    timestamp = timestamp, token = token
                 )
             },
             localHardCommand = { entitiesToDelete, entitiesToUpsert, timestamp ->
@@ -41,14 +41,14 @@ class CategoryCollectionRepositoryImpl(
                     toDelete = entitiesToDelete, toUpsert = entitiesToUpsert, timestamp = timestamp
                 )
             },
-            remoteSynchronizer = { data, timestamp, userId ->
+            remoteSynchronizer = { data, timestamp, token ->
                 remoteSource.synchronizeCollectionsWithAssociations(
-                    collections = data, timestamp = timestamp, userId = userId
+                    collections = data, timestamp = timestamp, token = token
                 )
             },
             entityDeletedPredicate = { it.deleted },
             entityToCommandDtoMapper = CategoryCollectionEntityWithAssociations::toDtoWithAssociations,
-            queryDtoToEntityMapper = CategoryCollectionDtoWithAssociations::toEntityWithAssociations,
+            queryDtoToEntityMapper = CategoryCollectionWithAssociationsDto::toEntityWithAssociations,
         )
     }
 
@@ -60,11 +60,12 @@ class CategoryCollectionRepositoryImpl(
         toDelete: List<CategoryCollectionDataModel>,
         toUpsert: List<CategoryCollectionDataModelWithAssociations>
     ) {
-        syncHelper.deleteAndUpsertData(
+        syncHelper.deleteAndUpsertDataToken(
+            tableName = TableName.CategoryCollection,
             toDelete = toDelete.map { it.withAssociations() },
             toUpsert = toUpsert,
             localTimestampGetter = { localSource.getUpdateTime() },
-            remoteTimestampGetter = { userId -> remoteSource.getUpdateTime(userId = userId) },
+            remoteTimestampGetter = { token -> remoteSource.getUpdateTime(token = token) },
             localSoftCommand = { entities, timestamp ->
                 localSource.upsertCollectionsWithAssociations(
                     collectionsWithAssociations = entities, timestamp = timestamp
@@ -79,27 +80,27 @@ class CategoryCollectionRepositoryImpl(
             localDeleteCommand = { entities ->
                 localSource.deleteCollectionsWithAssociations(collectionsWithAssociations = entities)
             },
-            remoteSoftCommand = { dtos, timestamp, userId ->
+            remoteSoftCommand = { dtos, timestamp, token ->
                 remoteSource.synchronizeCollectionsWithAssociations(
-                    collections = dtos, timestamp = timestamp, userId = userId
+                    collections = dtos, timestamp = timestamp, token = token
                 )
             },
             localDataAfterTimestampGetter = { timestamp ->
                 localSource.getCollectionsWithAssociationsAfterTimestamp(timestamp = timestamp)
             },
-            remoteSoftCommandAndDataAfterTimestampGetter = { dtos, timestamp, userId, localTimestamp ->
+            remoteSoftCommandAndDataAfterTimestampGetter = { dtos, timestamp, localTimestamp, token ->
                 remoteSource.synchronizeCollectionsWithAssociationsAndGetAfterTimestamp(
                     collections = dtos,
                     timestamp = timestamp,
-                    userId = userId,
-                    localTimestamp = localTimestamp
+                    localTimestamp = localTimestamp,
+                    token = token
                 )
             },
             entityDeletedPredicate = { it.deleted },
             dataModelToEntityMapper = CategoryCollectionDataModelWithAssociations::toEntityWithAssociations,
             dataModelToCommandDtoMapper = CategoryCollectionDataModelWithAssociations::toDtoWithAssociations,
             entityToCommandDtoMapper = CategoryCollectionEntityWithAssociations::toDtoWithAssociations,
-            queryDtoToEntityMapper = CategoryCollectionDtoWithAssociations::toEntityWithAssociations
+            queryDtoToEntityMapper = CategoryCollectionWithAssociationsDto::toEntityWithAssociations
         )
     }
 

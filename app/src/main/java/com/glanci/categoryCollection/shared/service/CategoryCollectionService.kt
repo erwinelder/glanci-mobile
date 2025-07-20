@@ -1,23 +1,25 @@
-package com.ataglance.walletglance.categoryCollection.data.remote.source
+package com.glanci.categoryCollection.shared.service
 
 import com.glanci.categoryCollection.shared.dto.CategoryCollectionWithAssociationsDto
+import kotlinx.rpc.annotations.Rpc
 
-interface CategoryCollectionRemoteDataSource {
+@Rpc
+interface CategoryCollectionService {
 
     suspend fun getUpdateTime(token: String): Long?
 
-    suspend fun synchronizeCollectionsWithAssociations(
+    suspend fun saveCategoryCollectionsWithAssociations(
         collections: List<CategoryCollectionWithAssociationsDto>,
         timestamp: Long,
         token: String
-    ): Boolean
+    )
 
-    suspend fun getCollectionsWithAssociationsAfterTimestamp(
+    suspend fun getCategoryCollectionsWithAssociationsAfterTimestamp(
         timestamp: Long,
         token: String
     ): List<CategoryCollectionWithAssociationsDto>?
 
-    suspend fun synchronizeCollectionsWithAssociationsAndGetAfterTimestamp(
+    suspend fun saveCategoryCollectionsWithAssociationsAndGetAfterTimestamp(
         collections: List<CategoryCollectionWithAssociationsDto>,
         timestamp: Long,
         localTimestamp: Long,

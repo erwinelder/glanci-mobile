@@ -6,9 +6,9 @@ import com.ataglance.walletglance.categoryCollection.data.local.model.CategoryCo
 import com.ataglance.walletglance.categoryCollection.data.model.CategoryCollectionCategoryAssociationDataModel
 import com.ataglance.walletglance.categoryCollection.data.model.CategoryCollectionDataModel
 import com.ataglance.walletglance.categoryCollection.data.model.CategoryCollectionDataModelWithAssociations
-import com.ataglance.walletglance.categoryCollection.data.remote.model.CategoryCollectionCategoryAssociationDto
-import com.ataglance.walletglance.categoryCollection.data.remote.model.CategoryCollectionDto
-import com.ataglance.walletglance.categoryCollection.data.remote.model.CategoryCollectionDtoWithAssociations
+import com.glanci.categoryCollection.shared.dto.CategoryCollectionCategoryAssociationDto
+import com.glanci.categoryCollection.shared.dto.CategoryCollectionDto
+import com.glanci.categoryCollection.shared.dto.CategoryCollectionWithAssociationsDto
 
 
 fun CategoryCollectionDataModel.withAssociations(
@@ -38,7 +38,7 @@ fun CategoryCollectionDataModel.toEntity(
 fun CategoryCollectionCategoryAssociationDataModel.toEntity(
 ): CategoryCollectionCategoryAssociationEntity {
     return CategoryCollectionCategoryAssociationEntity(
-        collectionId = categoryCollectionId,
+        collectionId = collectionId,
         categoryId = categoryId
     )
 }
@@ -66,7 +66,7 @@ fun CategoryCollectionEntity.toDataModel(): CategoryCollectionDataModel {
 fun CategoryCollectionCategoryAssociationEntity.toDataModel(
 ): CategoryCollectionCategoryAssociationDataModel {
     return CategoryCollectionCategoryAssociationDataModel(
-        categoryCollectionId = collectionId,
+        collectionId = collectionId,
         categoryId = categoryId
     )
 }
@@ -94,7 +94,7 @@ fun CategoryCollectionDataModel.toDto(timestamp: Long, deleted: Boolean): Catego
 fun CategoryCollectionCategoryAssociationDataModel.toDto(
 ): CategoryCollectionCategoryAssociationDto {
     return CategoryCollectionCategoryAssociationDto(
-        categoryCollectionId = categoryCollectionId,
+        collectionId = collectionId,
         categoryId = categoryId
     )
 }
@@ -102,8 +102,8 @@ fun CategoryCollectionCategoryAssociationDataModel.toDto(
 fun CategoryCollectionDataModelWithAssociations.toDtoWithAssociations(
     timestamp: Long,
     deleted: Boolean
-): CategoryCollectionDtoWithAssociations {
-    return CategoryCollectionDtoWithAssociations(
+): CategoryCollectionWithAssociationsDto {
+    return CategoryCollectionWithAssociationsDto(
         collection = collection.toDto(timestamp = timestamp, deleted = deleted),
         associations = associations.map { it.toDto() }
     )
@@ -124,14 +124,14 @@ fun CategoryCollectionEntity.toDto(): CategoryCollectionDto {
 fun CategoryCollectionCategoryAssociationEntity.toDto(
 ): CategoryCollectionCategoryAssociationDto {
     return CategoryCollectionCategoryAssociationDto(
-        categoryCollectionId = collectionId,
+        collectionId = collectionId,
         categoryId = categoryId
     )
 }
 
 fun CategoryCollectionEntityWithAssociations.toDtoWithAssociations(
-): CategoryCollectionDtoWithAssociations {
-    return CategoryCollectionDtoWithAssociations(
+): CategoryCollectionWithAssociationsDto {
+    return CategoryCollectionWithAssociationsDto(
         collection = collection.toDto(),
         associations = associations.map { it.toDto() }
     )
@@ -152,12 +152,12 @@ fun CategoryCollectionDto.toEntity(): CategoryCollectionEntity {
 fun CategoryCollectionCategoryAssociationDto.toEntity(
 ): CategoryCollectionCategoryAssociationEntity {
     return CategoryCollectionCategoryAssociationEntity(
-        collectionId = categoryCollectionId,
+        collectionId = collectionId,
         categoryId = categoryId
     )
 }
 
-fun CategoryCollectionDtoWithAssociations.toEntityWithAssociations(
+fun CategoryCollectionWithAssociationsDto.toEntityWithAssociations(
 ): CategoryCollectionEntityWithAssociations {
     return CategoryCollectionEntityWithAssociations(
         collection = collection.toEntity(),

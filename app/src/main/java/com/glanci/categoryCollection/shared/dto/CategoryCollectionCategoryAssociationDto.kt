@@ -1,9 +1,9 @@
-package com.ataglance.walletglance.categoryCollection.data.remote.model
+package com.glanci.categoryCollection.shared.dto
 
 import kotlinx.serialization.Serializable
 
 @Serializable
 data class CategoryCollectionCategoryAssociationDto(
-    val categoryCollectionId: Int,
+    val collectionId: Int,
     val categoryId: Int
 )

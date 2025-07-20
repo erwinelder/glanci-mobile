@@ -27,7 +27,7 @@ fun CategoryCollectionWithIds.toDataModelWithAssociations(
         collection = toDataModel(),
         associations = categoryIds.map { categoryId ->
             CategoryCollectionCategoryAssociationDataModel(
-                categoryCollectionId = id, categoryId = categoryId
+                collectionId = id, categoryId = categoryId
             )
         }
     )
