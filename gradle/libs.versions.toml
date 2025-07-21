@@ -113,7 +113,7 @@ ktor-serialization-kotlinx-json = { group = "io.ktor", name = "ktor-serializatio
 krpc-core = { module = "org.jetbrains.kotlinx:kotlinx-rpc-core", version.ref = "krpc-version" }
 krpc-client = { module = "org.jetbrains.kotlinx:kotlinx-rpc-krpc-client", version.ref = "krpc-version" }
 krpc-ktor-client = { module = "org.jetbrains.kotlinx:kotlinx-rpc-krpc-ktor-client", version.ref = "krpc-version" }
-krpc-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-rpc-krpc-serialization-json", version.ref = "krpc-version" }
+krpc-serialization-protobuf = { module = "org.jetbrains.kotlinx:kotlinx-rpc-krpc-serialization-protobuf", version.ref = "krpc-version" }
 # Firebase
 firebase-bom = { group = "com.google.firebase", name = "firebase-bom", version.ref = "firebase" }
 firebase-firestore-ktx = { group = "com.google.firebase", name = "firebase-firestore-ktx" }

@@ -70,33 +70,6 @@ fun BudgetEntityWithAssociations.toDataModelWithAssociations(): BudgetWithAssoci
 }
 
 
-fun BudgetDataModel.toDto(timestamp: Long, deleted: Boolean): BudgetDto {
-    return BudgetDto(
-        id = id,
-        amountLimit = amountLimit,
-        categoryId = categoryId,
-        name = name,
-        repeatingPeriod = repeatingPeriod,
-        timestamp = timestamp,
-        deleted = deleted
-    )
-}
-
-fun BudgetAccountAssociationDataModel.toDto(): BudgetAccountAssociationDto {
-    return BudgetAccountAssociationDto(budgetId = budgetId, accountId = accountId)
-}
-
-fun BudgetWithAssociationsDataModel.toDtoWithAssociations(
-    timestamp: Long,
-    deleted: Boolean
-): BudgetWithAssociationsDto {
-    return BudgetWithAssociationsDto(
-        budget = budget.toDto(timestamp = timestamp, deleted = deleted),
-        associations = associations.map { it.toDto() }
-    )
-}
-
-
 fun BudgetEntity.toDto(): BudgetDto {
     return BudgetDto(
         id = id,

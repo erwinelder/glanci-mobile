@@ -9,10 +9,10 @@ import com.ataglance.walletglance.budget.data.mapper.budget.toEntityWithAssociat
 import com.ataglance.walletglance.budget.data.mapper.budget.withAssociations
 import com.ataglance.walletglance.budget.data.model.BudgetDataModel
 import com.ataglance.walletglance.budget.data.model.BudgetWithAssociationsDataModel
-import com.glanci.budget.shared.dto.BudgetWithAssociationsDto
 import com.ataglance.walletglance.budget.data.remote.source.BudgetRemoteDataSource
 import com.ataglance.walletglance.core.data.model.DataSyncHelper
 import com.ataglance.walletglance.core.data.model.TableName
+import com.glanci.budget.shared.dto.BudgetWithAssociationsDto
 
 class BudgetRepositoryImpl(
     private val localSource: BudgetLocalDataSource,
@@ -91,7 +91,6 @@ class BudgetRepositoryImpl(
             },
             entityDeletedPredicate = { it.deleted },
             dataModelToEntityMapper = BudgetWithAssociationsDataModel::toEntityWithAssociations,
-            dataModelToCommandDtoMapper = BudgetWithAssociationsDataModel::toDtoWithAssociations,
             entityToCommandDtoMapper = BudgetEntityWithAssociations::toDtoWithAssociations,
             queryDtoToEntityMapper = BudgetWithAssociationsDto::toEntityWithAssociations
         )

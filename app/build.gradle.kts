@@ -145,7 +145,7 @@ dependencies {
     implementation(libs.krpc.core)
     implementation(libs.krpc.client)
     implementation(libs.krpc.ktor.client)
-    implementation(libs.krpc.serialization.json)
+    implementation(libs.krpc.serialization.protobuf)
     // Firebase
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.analytics)

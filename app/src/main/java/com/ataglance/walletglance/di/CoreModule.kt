@@ -21,11 +21,13 @@ import kotlinx.rpc.krpc.ktor.client.KtorRpcClient
 import kotlinx.rpc.krpc.ktor.client.installKrpc
 import kotlinx.rpc.krpc.ktor.client.rpc
 import kotlinx.rpc.krpc.ktor.client.rpcConfig
-import kotlinx.rpc.krpc.serialization.json.json
+import kotlinx.rpc.krpc.serialization.protobuf.protobuf
+import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.json.Json
 import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
 
+@OptIn(ExperimentalSerializationApi::class)
 val coreModule = module {
 
     /* ---------- Other ---------- */
@@ -65,7 +67,7 @@ val coreModule = module {
 
             rpcConfig {
                 serialization {
-                    json()
+                    protobuf()
                 }
             }
         }

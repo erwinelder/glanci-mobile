@@ -9,10 +9,10 @@ import com.ataglance.walletglance.categoryCollection.data.mapper.toEntityWithAss
 import com.ataglance.walletglance.categoryCollection.data.mapper.withAssociations
 import com.ataglance.walletglance.categoryCollection.data.model.CategoryCollectionDataModel
 import com.ataglance.walletglance.categoryCollection.data.model.CategoryCollectionWithAssociationsDataModel
-import com.glanci.categoryCollection.shared.dto.CategoryCollectionWithAssociationsDto
 import com.ataglance.walletglance.categoryCollection.data.remote.source.CategoryCollectionRemoteDataSource
 import com.ataglance.walletglance.core.data.model.DataSyncHelper
 import com.ataglance.walletglance.core.data.model.TableName
+import com.glanci.categoryCollection.shared.dto.CategoryCollectionWithAssociationsDto
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onStart
@@ -98,7 +98,6 @@ class CategoryCollectionRepositoryImpl(
             },
             entityDeletedPredicate = { it.deleted },
             dataModelToEntityMapper = CategoryCollectionWithAssociationsDataModel::toEntityWithAssociations,
-            dataModelToCommandDtoMapper = CategoryCollectionWithAssociationsDataModel::toDtoWithAssociations,
             entityToCommandDtoMapper = CategoryCollectionEntityWithAssociations::toDtoWithAssociations,
             queryDtoToEntityMapper = CategoryCollectionWithAssociationsDto::toEntityWithAssociations
         )

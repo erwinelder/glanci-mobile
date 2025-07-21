@@ -80,36 +80,6 @@ fun CategoryCollectionEntityWithAssociations.toDataModelWithAssociations(
 }
 
 
-fun CategoryCollectionDataModel.toDto(timestamp: Long, deleted: Boolean): CategoryCollectionDto {
-    return CategoryCollectionDto(
-        id = id,
-        orderNum = orderNum,
-        type = type,
-        name = name,
-        timestamp = timestamp,
-        deleted = deleted
-    )
-}
-
-fun CategoryCollectionCategoryAssociationDataModel.toDto(
-): CategoryCollectionCategoryAssociationDto {
-    return CategoryCollectionCategoryAssociationDto(
-        collectionId = collectionId,
-        categoryId = categoryId
-    )
-}
-
-fun CategoryCollectionWithAssociationsDataModel.toDtoWithAssociations(
-    timestamp: Long,
-    deleted: Boolean
-): CategoryCollectionWithAssociationsDto {
-    return CategoryCollectionWithAssociationsDto(
-        collection = collection.toDto(timestamp = timestamp, deleted = deleted),
-        associations = associations.map { it.toDto() }
-    )
-}
-
-
 fun CategoryCollectionEntity.toDto(): CategoryCollectionDto {
     return CategoryCollectionDto(
         id = id,

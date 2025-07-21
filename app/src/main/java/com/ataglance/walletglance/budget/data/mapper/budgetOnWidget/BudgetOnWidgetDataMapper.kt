@@ -19,14 +19,6 @@ fun BudgetOnWidgetEntity.toDataModel(): BudgetOnWidgetDataModel {
     )
 }
 
-fun BudgetOnWidgetDataModel.toDto(timestamp: Long, deleted: Boolean): BudgetOnWidgetDto {
-    return BudgetOnWidgetDto(
-        budgetId = budgetId,
-        timestamp = timestamp,
-        deleted = deleted
-    )
-}
-
 fun BudgetOnWidgetEntity.toDto(): BudgetOnWidgetDto {
     return BudgetOnWidgetDto(
         budgetId = budgetId,

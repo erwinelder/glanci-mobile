@@ -6,10 +6,10 @@ import com.ataglance.walletglance.budget.data.mapper.budgetOnWidget.toDataModel
 import com.ataglance.walletglance.budget.data.mapper.budgetOnWidget.toDto
 import com.ataglance.walletglance.budget.data.mapper.budgetOnWidget.toEntity
 import com.ataglance.walletglance.budget.data.model.BudgetOnWidgetDataModel
-import com.glanci.budget.shared.dto.BudgetOnWidgetDto
 import com.ataglance.walletglance.budget.data.remote.source.BudgetOnWidgetRemoteDataSource
 import com.ataglance.walletglance.core.data.model.DataSyncHelper
 import com.ataglance.walletglance.core.data.model.TableName
+import com.glanci.budget.shared.dto.BudgetOnWidgetDto
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onStart
@@ -87,7 +87,6 @@ class BudgetOnWidgetRepositoryImpl(
             },
             entityDeletedPredicate = { it.deleted },
             dataModelToEntityMapper = BudgetOnWidgetDataModel::toEntity,
-            dataModelToCommandDtoMapper = BudgetOnWidgetDataModel::toDto,
             entityToCommandDtoMapper = BudgetOnWidgetEntity::toDto,
             queryDtoToEntityMapper = BudgetOnWidgetDto::toEntity
         )
