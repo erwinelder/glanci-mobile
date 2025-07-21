@@ -1,21 +1,19 @@
-package com.ataglance.walletglance.transfer.data.remote.source
+package com.glanci.transfer.shared.service
 
 import com.glanci.transfer.shared.dto.TransferCommandDto
 import com.glanci.transfer.shared.dto.TransferQueryDto
+import kotlinx.rpc.annotations.Rpc
 
-interface TransferRemoteDataSource {
+@Rpc
+interface TransferService {
 
     suspend fun getUpdateTime(token: String): Long?
 
-    suspend fun synchronizeTransfers(
-        transfers: List<TransferCommandDto>,
-        timestamp: Long,
-        token: String
-    ): Boolean
+    suspend fun saveTransfers(transfers: List<TransferCommandDto>, timestamp: Long, token: String)
 
     suspend fun getTransfersAfterTimestamp(timestamp: Long, token: String): List<TransferQueryDto>?
 
-    suspend fun synchronizeTransfersAndGetAfterTimestamp(
+    suspend fun saveTransfersAndGetAfterTimestamp(
         transfers: List<TransferCommandDto>,
         timestamp: Long,
         localTimestamp: Long,

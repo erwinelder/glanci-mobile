@@ -30,6 +30,11 @@ class UserContext(
         return getAuthTokenFromSecureStorageUseCase.execute()
     }
 
+    fun isEligibleForDataSync(): Boolean {
+        return isSignedIn() && subscription != AppSubscription.Base
+    }
+
+
     fun saveUser(user: User) {
         this.userId = user.id
         this.email = user.email
@@ -62,15 +67,6 @@ class UserContext(
     @Deprecated("")
     fun getUserIdOld(): String? {
         return null
-    }
-
-
-    fun isEligibleForDataSync(): Boolean {
-        return isSignedIn() && subscription != AppSubscription.Base
-    }
-
-    fun getUserIdIfEligibleForDataSync(): Int? {
-        return if (isEligibleForDataSync()) userId else null
     }
 
 }

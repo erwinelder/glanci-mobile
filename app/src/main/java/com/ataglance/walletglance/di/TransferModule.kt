@@ -22,6 +22,7 @@ import com.ataglance.walletglance.transfer.domain.usecase.SaveTransferUseCase
 import com.ataglance.walletglance.transfer.domain.usecase.SaveTransferUseCaseImpl
 import com.ataglance.walletglance.transfer.presentation.viewmodel.TransferCreationViewModel
 import org.koin.core.module.dsl.viewModel
+import org.koin.core.parameter.parametersOf
 import org.koin.dsl.module
 
 val transferModule = module {
@@ -33,7 +34,11 @@ val transferModule = module {
     }
 
     single<TransferRemoteDataSource> {
-        TransferRemoteDataSourceImpl()
+        TransferRemoteDataSourceImpl(
+            client = get {
+                parametersOf("transfer")
+            }
+        )
     }
 
     /* ---------- Repositories ---------- */

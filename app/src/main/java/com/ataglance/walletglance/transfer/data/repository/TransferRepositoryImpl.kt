@@ -9,7 +9,7 @@ import com.ataglance.walletglance.transfer.data.mapper.toCommandDto
 import com.ataglance.walletglance.transfer.data.mapper.toDataModel
 import com.ataglance.walletglance.transfer.data.mapper.toEntity
 import com.ataglance.walletglance.transfer.data.model.TransferDataModel
-import com.ataglance.walletglance.transfer.data.remote.model.TransferQueryDto
+import com.glanci.transfer.shared.dto.TransferQueryDto
 import com.ataglance.walletglance.transfer.data.remote.source.TransferRemoteDataSource
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
@@ -22,24 +22,24 @@ class TransferRepositoryImpl(
 ) : TransferRepository {
 
     private suspend fun synchronizeTransfers() {
-        syncHelper.synchronizeData(
+        syncHelper.synchronizeDataToken(
             tableName = TableName.Transfer,
             localTimestampGetter = { localSource.getUpdateTime() },
-            remoteTimestampGetter = { userId -> remoteSource.getUpdateTime(userId = userId) },
+            remoteTimestampGetter = { token -> remoteSource.getUpdateTime(token = token) },
             localDataGetter = { timestamp ->
                 localSource.getTransfersAfterTimestamp(timestamp = timestamp)
             },
-            remoteDataGetter = { timestamp, userId ->
-                remoteSource.getTransfersAfterTimestamp(timestamp = timestamp, userId = userId)
+            remoteDataGetter = { timestamp, token ->
+                remoteSource.getTransfersAfterTimestamp(timestamp = timestamp, token = token)
             },
             localHardCommand = { entitiesToDelete, entitiesToUpsert, timestamp ->
                 localSource.deleteAndSaveTransfers(
                     toDelete = entitiesToDelete, toUpsert = entitiesToUpsert, timestamp = timestamp
                 )
             },
-            remoteSynchronizer = { data, timestamp, userId ->
+            remoteSynchronizer = { data, timestamp, token ->
                 remoteSource.synchronizeTransfers(
-                    transfers = data, timestamp = timestamp, userId = userId
+                    transfers = data, timestamp = timestamp, token = token
                 )
             },
             entityDeletedPredicate = { it.deleted },
@@ -49,43 +49,44 @@ class TransferRepositoryImpl(
     }
 
     override suspend fun upsertTransfer(transfer: TransferDataModel) {
-        syncHelper.upsertData(
+        syncHelper.upsertDataToken(
+            tableName = TableName.Transfer,
             data = transfer.asList(),
             localTimestampGetter = { localSource.getUpdateTime() },
-            remoteTimestampGetter = { userId -> remoteSource.getUpdateTime(userId = userId) },
+            remoteTimestampGetter = { token -> remoteSource.getUpdateTime(token = token) },
             localSoftCommand = { entities, timestamp ->
                 localSource.saveTransfers(
                     transfers = entities, timestamp = timestamp
                 )
             },
-            remoteSoftCommand = { dtos, timestamp, userId ->
+            remoteSoftCommand = { dtos, timestamp, token ->
                 remoteSource.synchronizeTransfers(
-                    transfers = dtos, timestamp = timestamp, userId = userId
+                    transfers = dtos, timestamp = timestamp, token = token
                 )
             },
             localDataAfterTimestampGetter = { timestamp ->
                 localSource.getTransfersAfterTimestamp(timestamp = timestamp)
             },
-            remoteSoftCommandAndDataAfterTimestampGetter = { dtos, timestamp, userId, localTimestamp ->
+            remoteSoftCommandAndDataAfterTimestampGetter = { dtos, timestamp, localTimestamp, token ->
                 remoteSource.synchronizeTransfersAndGetAfterTimestamp(
                     transfers = dtos,
                     timestamp = timestamp,
-                    userId = userId,
-                    localTimestamp = localTimestamp
+                    localTimestamp = localTimestamp,
+                    token = token
                 )
             },
             dataModelToEntityMapper = TransferDataModel::toEntity,
-            dataModelToCommandDtoMapper = TransferDataModel::toCommandDto,
             entityToCommandDtoMapper = TransferEntity::toCommandDto,
             queryDtoToEntityMapper = TransferQueryDto::toEntity
         )
     }
 
     override suspend fun deleteTransfer(transfer: TransferDataModel) {
-        syncHelper.deleteData(
+        syncHelper.deleteDataToken(
+            tableName = TableName.Transfer,
             data = transfer.asList(),
             localTimestampGetter = { localSource.getUpdateTime() },
-            remoteTimestampGetter = { userId -> remoteSource.getUpdateTime(userId = userId) },
+            remoteTimestampGetter = { token -> remoteSource.getUpdateTime(token = token) },
             localSoftCommand = { entities, timestamp ->
                 localSource.saveTransfers(
                     transfers = entities, timestamp = timestamp
@@ -99,20 +100,20 @@ class TransferRepositoryImpl(
             localDeleteCommand = { entities, timestamp ->
                 localSource.deleteTransfers(transfers = entities, timestamp = timestamp)
             },
-            remoteSoftCommand = { dtos, timestamp, userId ->
+            remoteSoftCommand = { dtos, timestamp, token ->
                 remoteSource.synchronizeTransfers(
-                    transfers = dtos, timestamp = timestamp, userId = userId
+                    transfers = dtos, timestamp = timestamp, token = token
                 )
             },
             localDataAfterTimestampGetter = { timestamp ->
                 localSource.getTransfersAfterTimestamp(timestamp = timestamp)
             },
-            remoteSoftCommandAndDataAfterTimestampGetter = { dtos, timestamp, userId, localTimestamp ->
+            remoteSoftCommandAndDataAfterTimestampGetter = { dtos, timestamp, localTimestamp, token ->
                 remoteSource.synchronizeTransfersAndGetAfterTimestamp(
                     transfers = dtos,
                     timestamp = timestamp,
-                    userId = userId,
-                    localTimestamp = localTimestamp
+                    localTimestamp = localTimestamp,
+                    token = token
                 )
             },
             entityDeletedPredicate = { it.deleted },

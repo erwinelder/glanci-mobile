@@ -2,8 +2,8 @@ package com.ataglance.walletglance.transfer.data.mapper
 
 import com.ataglance.walletglance.transfer.data.local.model.TransferEntity
 import com.ataglance.walletglance.transfer.data.model.TransferDataModel
-import com.ataglance.walletglance.transfer.data.remote.model.TransferCommandDto
-import com.ataglance.walletglance.transfer.data.remote.model.TransferQueryDto
+import com.glanci.transfer.shared.dto.TransferCommandDto
+import com.glanci.transfer.shared.dto.TransferQueryDto
 
 
 fun TransferDataModel.toEntity(timestamp: Long, deleted: Boolean): TransferEntity {
