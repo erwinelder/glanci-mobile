@@ -2,7 +2,7 @@ package com.ataglance.walletglance.personalization.data.mapper
 
 import com.ataglance.walletglance.personalization.data.local.model.WidgetEntity
 import com.ataglance.walletglance.personalization.data.model.WidgetDataModel
-import com.ataglance.walletglance.personalization.data.remote.model.WidgetDto
+import com.glanci.personalization.shared.dto.WidgetDto
 
 
 fun WidgetDataModel.toEntity(timestamp: Long, deleted: Boolean): WidgetEntity {

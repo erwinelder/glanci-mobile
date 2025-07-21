@@ -12,6 +12,7 @@ import com.ataglance.walletglance.navigation.domain.usecase.SaveNavigationButton
 import com.ataglance.walletglance.navigation.domain.usecase.SaveNavigationButtonsUseCaseImpl
 import com.ataglance.walletglance.navigation.presentation.viewmodel.NavigationViewModel
 import org.koin.core.module.dsl.viewModel
+import org.koin.core.parameter.parametersOf
 import org.koin.dsl.module
 
 val navigationModule = module {
@@ -23,7 +24,11 @@ val navigationModule = module {
     }
 
     single<NavigationButtonRemoteDataSource> {
-        NavigationButtonRemoteDataSourceImpl()
+        NavigationButtonRemoteDataSourceImpl(
+            client = get {
+                parametersOf("navigation")
+            }
+        )
     }
 
     /* ---------- Repositories ---------- */

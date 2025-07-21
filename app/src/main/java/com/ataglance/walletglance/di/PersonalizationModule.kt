@@ -12,6 +12,7 @@ import com.ataglance.walletglance.personalization.domain.usecase.widgets.SaveWid
 import com.ataglance.walletglance.personalization.domain.usecase.widgets.SaveWidgetsUseCaseImpl
 import com.ataglance.walletglance.personalization.presentation.viewmodel.PersonalizationViewModel
 import org.koin.core.module.dsl.viewModel
+import org.koin.core.parameter.parametersOf
 import org.koin.dsl.module
 
 val personalizationModule = module {
@@ -23,7 +24,11 @@ val personalizationModule = module {
     }
 
     single<WidgetRemoteDataSource> {
-        WidgetRemoteDataSourceImpl()
+        WidgetRemoteDataSourceImpl(
+            client = get {
+                parametersOf("personalization")
+            }
+        )
     }
 
     /* ---------- Repositories ---------- */

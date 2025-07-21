@@ -43,7 +43,11 @@ val budgetModule = module {
     }
 
     single<BudgetRemoteDataSource> {
-        BudgetRemoteDataSourceImpl()
+        BudgetRemoteDataSourceImpl(
+            client = get {
+                parametersOf("budget")
+            }
+        )
     }
 
     single<BudgetOnWidgetLocalDataSource> {
@@ -51,7 +55,11 @@ val budgetModule = module {
     }
 
     single<BudgetOnWidgetRemoteDataSource> {
-        BudgetOnWidgetRemoteDataSourceImpl()
+        BudgetOnWidgetRemoteDataSourceImpl(
+            client = get {
+                parametersOf("budget")
+            }
+        )
     }
 
     /* ---------- Repositories ---------- */

@@ -13,6 +13,7 @@ import com.ataglance.walletglance.categoryCollection.domain.usecase.SaveCategory
 import com.ataglance.walletglance.categoryCollection.presentation.viewmodel.EditCategoryCollectionViewModel
 import com.ataglance.walletglance.categoryCollection.presentation.viewmodel.EditCategoryCollectionsViewModel
 import org.koin.core.module.dsl.viewModel
+import org.koin.core.parameter.parametersOf
 import org.koin.dsl.module
 
 val categoryCollectionModule = module {
@@ -24,7 +25,11 @@ val categoryCollectionModule = module {
     }
 
     single<CategoryCollectionRemoteDataSource> {
-        CategoryCollectionRemoteDataSourceImpl()
+        CategoryCollectionRemoteDataSourceImpl(
+            client = get {
+                parametersOf("categoryCollection")
+            }
+        )
     }
 
     /* ---------- Repositories ---------- */

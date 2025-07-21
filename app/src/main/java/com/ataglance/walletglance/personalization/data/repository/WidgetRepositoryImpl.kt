@@ -8,7 +8,7 @@ import com.ataglance.walletglance.personalization.data.mapper.toDataModel
 import com.ataglance.walletglance.personalization.data.mapper.toDto
 import com.ataglance.walletglance.personalization.data.mapper.toEntity
 import com.ataglance.walletglance.personalization.data.model.WidgetDataModel
-import com.ataglance.walletglance.personalization.data.remote.model.WidgetDto
+import com.glanci.personalization.shared.dto.WidgetDto
 import com.ataglance.walletglance.personalization.data.remote.source.WidgetRemoteDataSource
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
@@ -21,24 +21,24 @@ class WidgetRepositoryImpl(
 ) : WidgetRepository {
 
     private suspend fun synchronizeWidgets() {
-        syncHelper.synchronizeData(
+        syncHelper.synchronizeDataToken(
             tableName = TableName.Widget,
             localTimestampGetter = { localSource.getUpdateTime() },
-            remoteTimestampGetter = { userId -> remoteSource.getUpdateTime(userId = userId) },
+            remoteTimestampGetter = { token -> remoteSource.getUpdateTime(token = token) },
             localDataGetter = { timestamp ->
                 localSource.getWidgetsAfterTimestamp(timestamp = timestamp)
             },
-            remoteDataGetter = { timestamp, userId ->
-                remoteSource.getWidgetsAfterTimestamp(timestamp = timestamp, userId = userId)
+            remoteDataGetter = { timestamp, token ->
+                remoteSource.getWidgetsAfterTimestamp(timestamp = timestamp, token = token)
             },
             localHardCommand = { entitiesToDelete, entitiesToUpsert, timestamp ->
                 localSource.deleteAndUpsertWidgets(
                     toDelete = entitiesToDelete, toUpsert = entitiesToUpsert, timestamp = timestamp
                 )
             },
-            remoteSynchronizer = { data, timestamp, userId ->
+            remoteSynchronizer = { data, timestamp, token ->
                 remoteSource.synchronizeWidgets(
-                    widgets = data, timestamp = timestamp, userId = userId
+                    widgets = data, timestamp = timestamp, token = token
                 )
             },
             entityDeletedPredicate = { it.deleted },
@@ -49,28 +49,29 @@ class WidgetRepositoryImpl(
 
 
     override suspend fun upsertWidgets(widgets: List<WidgetDataModel>) {
-        syncHelper.upsertData(
+        syncHelper.upsertDataToken(
+            tableName = TableName.Widget,
             data = widgets,
             localTimestampGetter = { localSource.getUpdateTime() },
-            remoteTimestampGetter = { userId -> remoteSource.getUpdateTime(userId = userId) },
+            remoteTimestampGetter = { token -> remoteSource.getUpdateTime(token = token) },
             localSoftCommand = { entities, timestamp ->
                 localSource.upsertWidgets(widgets = entities, timestamp = timestamp)
                 entities
             },
-            remoteSoftCommand = { dtos, timestamp, userId ->
+            remoteSoftCommand = { dtos, timestamp, token ->
                 remoteSource.synchronizeWidgets(
-                    widgets = dtos, timestamp = timestamp, userId = userId
+                    widgets = dtos, timestamp = timestamp, token = token
                 )
             },
             localDataAfterTimestampGetter = { timestamp ->
                 localSource.getWidgetsAfterTimestamp(timestamp = timestamp)
             },
-            remoteSoftCommandAndDataAfterTimestampGetter = { dtos, timestamp, userId, localTimestamp ->
+            remoteSoftCommandAndDataAfterTimestampGetter = { dtos, timestamp, localTimestamp, token ->
                 remoteSource.synchronizeWidgetsAndGetAfterTimestamp(
                     widgets = dtos,
                     timestamp = timestamp,
-                    userId = userId,
-                    localTimestamp = localTimestamp
+                    localTimestamp = localTimestamp,
+                    token = token
                 )
             },
             dataModelToEntityMapper = WidgetDataModel::toEntity,
@@ -84,11 +85,12 @@ class WidgetRepositoryImpl(
         toDelete: List<WidgetDataModel>,
         toUpsert: List<WidgetDataModel>
     ) {
-        syncHelper.deleteAndUpsertData(
+        syncHelper.deleteAndUpsertDataToken(
+            tableName = TableName.Widget,
             toDelete = toDelete,
             toUpsert = toUpsert,
             localTimestampGetter = { localSource.getUpdateTime() },
-            remoteTimestampGetter = { userId -> remoteSource.getUpdateTime(userId = userId) },
+            remoteTimestampGetter = { token -> remoteSource.getUpdateTime(token = token) },
             localSoftCommand = { entities, timestamp ->
                 localSource.upsertWidgets(widgets = entities, timestamp = timestamp)
                 entities
@@ -101,20 +103,20 @@ class WidgetRepositoryImpl(
             localDeleteCommand = { entities ->
                 localSource.deleteWidgets(widgets = entities)
             },
-            remoteSoftCommand = { dtos, timestamp, userId ->
+            remoteSoftCommand = { dtos, timestamp, token ->
                 remoteSource.synchronizeWidgets(
-                    widgets = dtos, timestamp = timestamp, userId = userId
+                    widgets = dtos, timestamp = timestamp, token = token
                 )
             },
             localDataAfterTimestampGetter = { timestamp ->
                 localSource.getWidgetsAfterTimestamp(timestamp = timestamp)
             },
-            remoteSoftCommandAndDataAfterTimestampGetter = { dtos, timestamp, userId, localTimestamp ->
+            remoteSoftCommandAndDataAfterTimestampGetter = { dtos, timestamp, localTimestamp, token ->
                 remoteSource.synchronizeWidgetsAndGetAfterTimestamp(
                     widgets = dtos,
                     timestamp = timestamp,
-                    userId = userId,
-                    localTimestamp = localTimestamp
+                    localTimestamp = localTimestamp,
+                    token = token
                 )
             },
             entityDeletedPredicate = { it.deleted },

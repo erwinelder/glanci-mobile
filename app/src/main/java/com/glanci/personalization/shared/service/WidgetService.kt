@@ -1,20 +1,18 @@
-package com.ataglance.walletglance.personalization.data.remote.source
+package com.glanci.personalization.shared.service
 
 import com.glanci.personalization.shared.dto.WidgetDto
+import kotlinx.rpc.annotations.Rpc
 
-interface WidgetRemoteDataSource {
+@Rpc
+interface WidgetService {
 
     suspend fun getUpdateTime(token: String): Long?
 
-    suspend fun synchronizeWidgets(
-        widgets: List<WidgetDto>,
-        timestamp: Long,
-        token: String
-    ): Boolean
+    suspend fun saveWidgets(widgets: List<WidgetDto>, timestamp: Long, token: String)
 
     suspend fun getWidgetsAfterTimestamp(timestamp: Long, token: String): List<WidgetDto>?
 
-    suspend fun synchronizeWidgetsAndGetAfterTimestamp(
+    suspend fun saveWidgetsAndGetAfterTimestamp(
         widgets: List<WidgetDto>,
         timestamp: Long,
         localTimestamp: Long,
