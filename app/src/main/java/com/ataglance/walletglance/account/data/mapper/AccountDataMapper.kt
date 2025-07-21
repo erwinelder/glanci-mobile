@@ -36,22 +36,6 @@ fun AccountEntity.toDataModel(): AccountDataModel {
     )
 }
 
-fun AccountDataModel.toCommandDto(timestamp: Long, deleted: Boolean): AccountCommandDto {
-    return AccountCommandDto(
-        id = id,
-        orderNum = orderNum,
-        name = name,
-        currency = currency,
-        balance = balance,
-        color = color,
-        hide = hide,
-        hideBalance = hideBalance,
-        withoutBalance = withoutBalance,
-        timestamp = timestamp,
-        deleted = deleted
-    )
-}
-
 fun AccountEntity.toCommandDto(): AccountCommandDto {
     return AccountCommandDto(
         id = id,

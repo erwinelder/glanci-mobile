@@ -24,6 +24,7 @@ import com.ataglance.walletglance.record.domain.usecase.SaveRecordsUseCase
 import com.ataglance.walletglance.record.domain.usecase.SaveRecordsUseCaseImpl
 import com.ataglance.walletglance.record.presentation.viewmodel.RecordCreationViewModel
 import org.koin.core.module.dsl.viewModel
+import org.koin.core.parameter.parametersOf
 import org.koin.dsl.module
 
 val recordModule = module {
@@ -35,7 +36,11 @@ val recordModule = module {
     }
 
     single<RecordRemoteDataSource> {
-        RecordRemoteDataSourceImpl()
+        RecordRemoteDataSourceImpl(
+            client = get {
+                parametersOf("record")
+            }
+        )
     }
 
     /* ---------- Repositories ---------- */

@@ -1,6 +1,6 @@
 package com.ataglance.walletglance.record.data.model
 
-data class RecordDataModelWithItems(
+data class RecordWithItemsDataModel(
     val record: RecordDataModel,
     val items: List<RecordItemDataModel>
 ) {

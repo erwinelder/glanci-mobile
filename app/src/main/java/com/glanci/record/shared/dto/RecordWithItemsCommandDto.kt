@@ -1,9 +1,9 @@
-package com.ataglance.walletglance.record.data.remote.model
+package com.glanci.record.shared.dto
 
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class RecordCommandDtoWithItems(
+data class RecordWithItemsCommandDto(
     val record: RecordCommandDto,
     val items: List<RecordItemDto>
 ) {

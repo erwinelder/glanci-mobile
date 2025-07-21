@@ -1,7 +1,7 @@
 package com.ataglance.walletglance.categoryCollection.data.repository
 
 import com.ataglance.walletglance.categoryCollection.data.model.CategoryCollectionDataModel
-import com.ataglance.walletglance.categoryCollection.data.model.CategoryCollectionDataModelWithAssociations
+import com.ataglance.walletglance.categoryCollection.data.model.CategoryCollectionWithAssociationsDataModel
 import kotlinx.coroutines.flow.Flow
 
 interface CategoryCollectionRepository {
@@ -10,15 +10,15 @@ interface CategoryCollectionRepository {
 
     suspend fun deleteAndUpsertCollectionsWithAssociations(
         toDelete: List<CategoryCollectionDataModel>,
-        toUpsert: List<CategoryCollectionDataModelWithAssociations>
+        toUpsert: List<CategoryCollectionWithAssociationsDataModel>
     )
 
     suspend fun getAllCollections(): List<CategoryCollectionDataModel>
 
     fun getAllCollectionsWithAssociationsAsFlow(
-    ): Flow<List<CategoryCollectionDataModelWithAssociations>>
+    ): Flow<List<CategoryCollectionWithAssociationsDataModel>>
 
     suspend fun getAllCollectionsWithAssociations(
-    ): List<CategoryCollectionDataModelWithAssociations>
+    ): List<CategoryCollectionWithAssociationsDataModel>
 
 }

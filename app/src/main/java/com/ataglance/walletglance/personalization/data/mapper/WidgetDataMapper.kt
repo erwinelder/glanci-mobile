@@ -21,15 +21,6 @@ fun WidgetEntity.toDataModel(): WidgetDataModel {
     )
 }
 
-fun WidgetDataModel.toDto(timestamp: Long, deleted: Boolean): WidgetDto {
-    return WidgetDto(
-        name = name,
-        orderNum = orderNum,
-        timestamp = timestamp,
-        deleted = deleted
-    )
-}
-
 fun WidgetEntity.toDto(): WidgetDto {
     return WidgetDto(
         name = name,

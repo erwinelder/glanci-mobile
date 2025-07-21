@@ -1,35 +1,35 @@
 package com.ataglance.walletglance.record.data.repository
 
 import com.ataglance.walletglance.core.domain.date.TimestampRange
-import com.ataglance.walletglance.record.data.model.RecordDataModelWithItems
+import com.ataglance.walletglance.record.data.model.RecordWithItemsDataModel
 import kotlinx.coroutines.flow.Flow
 
 interface RecordRepository {
 
-    suspend fun upsertRecordWithItems(recordWithItems: RecordDataModelWithItems)
+    suspend fun upsertRecordWithItems(recordWithItems: RecordWithItemsDataModel)
 
-    suspend fun upsertRecordsWithItems(recordsWithItems: List<RecordDataModelWithItems>)
+    suspend fun upsertRecordsWithItems(recordsWithItems: List<RecordWithItemsDataModel>)
 
-    suspend fun deleteRecordWithItems(recordWithItems: RecordDataModelWithItems)
+    suspend fun deleteRecordWithItems(recordWithItems: RecordWithItemsDataModel)
 
     suspend fun deleteAndUpsertRecordWithItems(
-        recordWithItemsToDelete: RecordDataModelWithItems,
-        recordWithItemsToUpsert: RecordDataModelWithItems
+        recordWithItemsToDelete: RecordWithItemsDataModel,
+        recordWithItemsToUpsert: RecordWithItemsDataModel
     )
 
-    suspend fun getRecordWithItems(id: Long): RecordDataModelWithItems?
+    suspend fun getRecordWithItems(id: Long): RecordWithItemsDataModel?
 
     suspend fun getLastRecordWithItemsByTypeAndAccount(
         type: Char,
         accountId: Int
-    ): RecordDataModelWithItems?
+    ): RecordWithItemsDataModel?
 
     fun getRecordsWithItemsInDateRangeAsFlow(
         from: Long,
         to: Long
-    ): Flow<List<RecordDataModelWithItems>>
+    ): Flow<List<RecordWithItemsDataModel>>
 
-    suspend fun getRecordsWithItemsInDateRange(from: Long, to: Long): List<RecordDataModelWithItems>
+    suspend fun getRecordsWithItemsInDateRange(from: Long, to: Long): List<RecordWithItemsDataModel>
 
     suspend fun getTotalExpensesInDateRangeByAccountsAndCategory(
         dateRange: TimestampRange,

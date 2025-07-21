@@ -9,9 +9,9 @@ import com.ataglance.walletglance.record.data.local.source.RecordLocalDataSource
 import com.ataglance.walletglance.record.data.mapper.toCommandDtoWithItems
 import com.ataglance.walletglance.record.data.mapper.toDataModelWithItems
 import com.ataglance.walletglance.record.data.mapper.toEntityWithItems
-import com.ataglance.walletglance.record.data.model.RecordDataModelWithItems
-import com.ataglance.walletglance.record.data.remote.model.RecordQueryDtoWithItems
+import com.ataglance.walletglance.record.data.model.RecordWithItemsDataModel
 import com.ataglance.walletglance.record.data.remote.source.RecordRemoteDataSource
+import com.glanci.record.shared.dto.RecordWithItemsQueryDto
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onStart
@@ -23,16 +23,16 @@ class RecordRepositoryImpl(
 ) : RecordRepository {
 
     private suspend fun synchronizeRecords() {
-        syncHelper.synchronizeData(
+        syncHelper.synchronizeDataToken(
             tableName = TableName.Record,
             localTimestampGetter = { localSource.getUpdateTime() },
-            remoteTimestampGetter = { userId -> remoteSource.getUpdateTime(userId = userId) },
+            remoteTimestampGetter = { token -> remoteSource.getUpdateTime(token = token) },
             localDataGetter = { timestamp ->
                 localSource.getRecordsWithItemsAfterTimestamp(timestamp = timestamp)
             },
-            remoteDataGetter = { timestamp, userId ->
+            remoteDataGetter = { timestamp, token ->
                 remoteSource.getRecordsWithItemsAfterTimestamp(
-                    timestamp = timestamp, userId = userId
+                    timestamp = timestamp, token = token
                 )
             },
             localHardCommand = { entitiesToDelete, entitiesToUpsert, timestamp ->
@@ -40,59 +40,60 @@ class RecordRepositoryImpl(
                     toDelete = entitiesToDelete, toUpsert = entitiesToUpsert, timestamp = timestamp
                 )
             },
-            remoteSynchronizer = { data, timestamp, userId ->
+            remoteSynchronizer = { data, timestamp, token ->
                 remoteSource.synchronizeRecordsWithItems(
-                    recordsWithItems = data, timestamp = timestamp, userId = userId
+                    recordsWithItems = data, timestamp = timestamp, token = token
                 )
             },
             entityDeletedPredicate = { it.deleted },
             entityToCommandDtoMapper = RecordEntityWithItems::toCommandDtoWithItems,
-            queryDtoToEntityMapper = RecordQueryDtoWithItems::toEntityWithItems
+            queryDtoToEntityMapper = RecordWithItemsQueryDto::toEntityWithItems
         )
     }
 
-    override suspend fun upsertRecordWithItems(recordWithItems: RecordDataModelWithItems) {
+    override suspend fun upsertRecordWithItems(recordWithItems: RecordWithItemsDataModel) {
         upsertRecordsWithItems(recordsWithItems = recordWithItems.asList())
     }
 
-    override suspend fun upsertRecordsWithItems(recordsWithItems: List<RecordDataModelWithItems>) {
-        syncHelper.upsertData(
+    override suspend fun upsertRecordsWithItems(recordsWithItems: List<RecordWithItemsDataModel>) {
+        syncHelper.upsertDataToken(
+            tableName = TableName.Record,
             data = recordsWithItems,
             localTimestampGetter = { localSource.getUpdateTime() },
-            remoteTimestampGetter = { userId -> remoteSource.getUpdateTime(userId = userId) },
+            remoteTimestampGetter = { token -> remoteSource.getUpdateTime(token = token) },
             localSoftCommand = { entities, timestamp ->
                 localSource.saveRecordsWithItems(
                     recordsWithItems = entities, timestamp = timestamp
                 )
             },
-            remoteSoftCommand = { dtos, timestamp, userId ->
+            remoteSoftCommand = { dtos, timestamp, token ->
                 remoteSource.synchronizeRecordsWithItems(
-                    recordsWithItems = dtos, timestamp = timestamp, userId = userId
+                    recordsWithItems = dtos, timestamp = timestamp, token = token
                 )
             },
             localDataAfterTimestampGetter = { timestamp ->
                 localSource.getRecordsWithItemsAfterTimestamp(timestamp = timestamp)
             },
-            remoteSoftCommandAndDataAfterTimestampGetter = { dtos, timestamp, userId, localTimestamp ->
+            remoteSoftCommandAndDataAfterTimestampGetter = { dtos, timestamp, localTimestamp, token ->
                 remoteSource.synchronizeRecordsWithItemsAndGetAfterTimestamp(
                     recordsWithItems = dtos,
                     timestamp = timestamp,
-                    userId = userId,
-                    localTimestamp = localTimestamp
+                    localTimestamp = localTimestamp,
+                    token = token
                 )
             },
-            dataModelToEntityMapper = RecordDataModelWithItems::toEntityWithItems,
-            dataModelToCommandDtoMapper = RecordDataModelWithItems::toCommandDtoWithItems,
+            dataModelToEntityMapper = RecordWithItemsDataModel::toEntityWithItems,
             entityToCommandDtoMapper = RecordEntityWithItems::toCommandDtoWithItems,
-            queryDtoToEntityMapper = RecordQueryDtoWithItems::toEntityWithItems
+            queryDtoToEntityMapper = RecordWithItemsQueryDto::toEntityWithItems
         )
     }
 
-    override suspend fun deleteRecordWithItems(recordWithItems: RecordDataModelWithItems) {
-        syncHelper.deleteData(
+    override suspend fun deleteRecordWithItems(recordWithItems: RecordWithItemsDataModel) {
+        syncHelper.deleteDataToken(
+            tableName = TableName.Record,
             data = recordWithItems.asList(),
             localTimestampGetter = { localSource.getUpdateTime() },
-            remoteTimestampGetter = { userId -> remoteSource.getUpdateTime(userId = userId) },
+            remoteTimestampGetter = { token -> remoteSource.getUpdateTime(token = token) },
             localSoftCommand = { entities, timestamp ->
                 localSource.saveRecordsWithItems(
                     recordsWithItems = entities, timestamp = timestamp
@@ -108,39 +109,40 @@ class RecordRepositoryImpl(
                     recordsWithItems = entities, timestamp = timestamp
                 )
             },
-            remoteSoftCommand = { dtos, timestamp, userId ->
+            remoteSoftCommand = { dtos, timestamp, token ->
                 remoteSource.synchronizeRecordsWithItems(
-                    recordsWithItems = dtos, timestamp = timestamp, userId = userId
+                    recordsWithItems = dtos, timestamp = timestamp, token = token
                 )
             },
             localDataAfterTimestampGetter = { timestamp ->
                 localSource.getRecordsWithItemsAfterTimestamp(timestamp = timestamp)
             },
-            remoteSoftCommandAndDataAfterTimestampGetter = { dtos, timestamp, userId, localTimestamp ->
+            remoteSoftCommandAndDataAfterTimestampGetter = { dtos, timestamp, localTimestamp, token ->
                 remoteSource.synchronizeRecordsWithItemsAndGetAfterTimestamp(
                     recordsWithItems = dtos,
                     timestamp = timestamp,
-                    userId = userId,
-                    localTimestamp = localTimestamp
+                    localTimestamp = localTimestamp,
+                    token = token
                 )
             },
             entityDeletedPredicate = { it.deleted },
-            dataModelToEntityMapper = RecordDataModelWithItems::toEntityWithItems,
-            dataModelToCommandDtoMapper = RecordDataModelWithItems::toCommandDtoWithItems,
+            dataModelToEntityMapper = RecordWithItemsDataModel::toEntityWithItems,
+            dataModelToCommandDtoMapper = RecordWithItemsDataModel::toCommandDtoWithItems,
             entityToCommandDtoMapper = RecordEntityWithItems::toCommandDtoWithItems,
-            queryDtoToEntityMapper = RecordQueryDtoWithItems::toEntityWithItems
+            queryDtoToEntityMapper = RecordWithItemsQueryDto::toEntityWithItems
         )
     }
 
     override suspend fun deleteAndUpsertRecordWithItems(
-        recordWithItemsToDelete: RecordDataModelWithItems,
-        recordWithItemsToUpsert: RecordDataModelWithItems
+        recordWithItemsToDelete: RecordWithItemsDataModel,
+        recordWithItemsToUpsert: RecordWithItemsDataModel
     ) {
-        syncHelper.deleteAndUpsertData(
+        syncHelper.deleteAndUpsertDataToken(
+            tableName = TableName.Record,
             toDelete = recordWithItemsToDelete.asList(),
             toUpsert = recordWithItemsToUpsert.asList(),
             localTimestampGetter = { localSource.getUpdateTime() },
-            remoteTimestampGetter = { userId -> remoteSource.getUpdateTime(userId = userId) },
+            remoteTimestampGetter = { token -> remoteSource.getUpdateTime(token = token) },
             localSoftCommand = { entities, timestamp ->
                 localSource.saveRecordsWithItems(
                     recordsWithItems = entities, timestamp = timestamp
@@ -154,31 +156,30 @@ class RecordRepositoryImpl(
             localDeleteCommand = { entities ->
                 localSource.deleteRecordsWithItems(recordsWithItems = entities)
             },
-            remoteSoftCommand = { dtos, timestamp, userId ->
+            remoteSoftCommand = { dtos, timestamp, token ->
                 remoteSource.synchronizeRecordsWithItems(
-                    recordsWithItems = dtos, timestamp = timestamp, userId = userId
+                    recordsWithItems = dtos, timestamp = timestamp, token = token
                 )
             },
             localDataAfterTimestampGetter = { timestamp ->
                 localSource.getRecordsWithItemsAfterTimestamp(timestamp = timestamp)
             },
-            remoteSoftCommandAndDataAfterTimestampGetter = { dtos, timestamp, userId, localTimestamp ->
+            remoteSoftCommandAndDataAfterTimestampGetter = { dtos, timestamp, localTimestamp, token ->
                 remoteSource.synchronizeRecordsWithItemsAndGetAfterTimestamp(
                     recordsWithItems = dtos,
                     timestamp = timestamp,
-                    userId = userId,
-                    localTimestamp = localTimestamp
+                    localTimestamp = localTimestamp,
+                    token = token
                 )
             },
             entityDeletedPredicate = { it.deleted },
-            dataModelToEntityMapper = RecordDataModelWithItems::toEntityWithItems,
-            dataModelToCommandDtoMapper = RecordDataModelWithItems::toCommandDtoWithItems,
+            dataModelToEntityMapper = RecordWithItemsDataModel::toEntityWithItems,
             entityToCommandDtoMapper = RecordEntityWithItems::toCommandDtoWithItems,
-            queryDtoToEntityMapper = RecordQueryDtoWithItems::toEntityWithItems
+            queryDtoToEntityMapper = RecordWithItemsQueryDto::toEntityWithItems
         )
     }
 
-    override suspend fun getRecordWithItems(id: Long): RecordDataModelWithItems? {
+    override suspend fun getRecordWithItems(id: Long): RecordWithItemsDataModel? {
         synchronizeRecords()
         return localSource.getRecordWithItems(id = id)?.toDataModelWithItems()
     }
@@ -186,7 +187,7 @@ class RecordRepositoryImpl(
     override suspend fun getLastRecordWithItemsByTypeAndAccount(
         type: Char,
         accountId: Int
-    ): RecordDataModelWithItems? {
+    ): RecordWithItemsDataModel? {
         synchronizeRecords()
         return localSource
             .getLastRecordWithItemsByTypeAndAccount(type = type, accountId = accountId)
@@ -196,7 +197,7 @@ class RecordRepositoryImpl(
     override fun getRecordsWithItemsInDateRangeAsFlow(
         from: Long,
         to: Long
-    ): Flow<List<RecordDataModelWithItems>> {
+    ): Flow<List<RecordWithItemsDataModel>> {
         return localSource.getRecordsWithItemsInDateRangeAsFlow(from = from, to = to)
             .onStart { synchronizeRecords() }
             .map { recordsWithItems ->
@@ -207,7 +208,7 @@ class RecordRepositoryImpl(
     override suspend fun getRecordsWithItemsInDateRange(
         from: Long,
         to: Long
-    ): List<RecordDataModelWithItems> {
+    ): List<RecordWithItemsDataModel> {
         synchronizeRecords()
         return localSource.getRecordsWithItemsInDateRange(from = from, to = to)
             .map { it.toDataModelWithItems() }

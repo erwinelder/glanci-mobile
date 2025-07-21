@@ -5,7 +5,7 @@ import com.ataglance.walletglance.categoryCollection.data.local.model.CategoryCo
 import com.ataglance.walletglance.categoryCollection.data.local.model.CategoryCollectionEntityWithAssociations
 import com.ataglance.walletglance.categoryCollection.data.model.CategoryCollectionCategoryAssociationDataModel
 import com.ataglance.walletglance.categoryCollection.data.model.CategoryCollectionDataModel
-import com.ataglance.walletglance.categoryCollection.data.model.CategoryCollectionDataModelWithAssociations
+import com.ataglance.walletglance.categoryCollection.data.model.CategoryCollectionWithAssociationsDataModel
 import com.glanci.categoryCollection.shared.dto.CategoryCollectionCategoryAssociationDto
 import com.glanci.categoryCollection.shared.dto.CategoryCollectionDto
 import com.glanci.categoryCollection.shared.dto.CategoryCollectionWithAssociationsDto
@@ -13,8 +13,8 @@ import com.glanci.categoryCollection.shared.dto.CategoryCollectionWithAssociatio
 
 fun CategoryCollectionDataModel.withAssociations(
     associations: List<CategoryCollectionCategoryAssociationDataModel> = emptyList()
-): CategoryCollectionDataModelWithAssociations {
-    return CategoryCollectionDataModelWithAssociations(
+): CategoryCollectionWithAssociationsDataModel {
+    return CategoryCollectionWithAssociationsDataModel(
         collection = this,
         associations = associations
     )
@@ -43,7 +43,7 @@ fun CategoryCollectionCategoryAssociationDataModel.toEntity(
     )
 }
 
-fun CategoryCollectionDataModelWithAssociations.toEntityWithAssociations(
+fun CategoryCollectionWithAssociationsDataModel.toEntityWithAssociations(
     timestamp: Long,
     deleted: Boolean
 ): CategoryCollectionEntityWithAssociations {
@@ -72,8 +72,8 @@ fun CategoryCollectionCategoryAssociationEntity.toDataModel(
 }
 
 fun CategoryCollectionEntityWithAssociations.toDataModelWithAssociations(
-): CategoryCollectionDataModelWithAssociations {
-    return CategoryCollectionDataModelWithAssociations(
+): CategoryCollectionWithAssociationsDataModel {
+    return CategoryCollectionWithAssociationsDataModel(
         collection = collection.toDataModel(),
         associations = associations.map { it.toDataModel() }
     )
@@ -99,7 +99,7 @@ fun CategoryCollectionCategoryAssociationDataModel.toDto(
     )
 }
 
-fun CategoryCollectionDataModelWithAssociations.toDtoWithAssociations(
+fun CategoryCollectionWithAssociationsDataModel.toDtoWithAssociations(
     timestamp: Long,
     deleted: Boolean
 ): CategoryCollectionWithAssociationsDto {

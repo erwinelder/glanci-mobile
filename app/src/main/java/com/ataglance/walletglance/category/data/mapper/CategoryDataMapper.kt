@@ -32,20 +32,6 @@ fun CategoryEntity.toDataModel(): CategoryDataModel {
     )
 }
 
-fun CategoryDataModel.toCommandDto(timestamp: Long, deleted: Boolean): CategoryCommandDto {
-    return CategoryCommandDto(
-        id = id,
-        type = type,
-        orderNum = orderNum,
-        parentCategoryId = parentCategoryId,
-        name = name,
-        iconName = iconName,
-        colorName = colorName,
-        timestamp = timestamp,
-        deleted = deleted
-    )
-}
-
 fun CategoryEntity.toCommandDto(): CategoryCommandDto {
     return CategoryCommandDto(
         id = id,

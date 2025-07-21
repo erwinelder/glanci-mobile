@@ -6,10 +6,10 @@ import com.ataglance.walletglance.account.data.mapper.toCommandDto
 import com.ataglance.walletglance.account.data.mapper.toDataModel
 import com.ataglance.walletglance.account.data.mapper.toEntity
 import com.ataglance.walletglance.account.data.model.AccountDataModel
-import com.glanci.account.shared.dto.AccountQueryDto
 import com.ataglance.walletglance.account.data.remote.source.AccountRemoteDataSource
 import com.ataglance.walletglance.core.data.model.DataSyncHelper
 import com.ataglance.walletglance.core.data.model.TableName
+import com.glanci.account.shared.dto.AccountQueryDto
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onStart
@@ -73,7 +73,6 @@ class AccountRepositoryImpl(
                 )
             },
             dataModelToEntityMapper = AccountDataModel::toEntity,
-            dataModelToCommandDtoMapper = AccountDataModel::toCommandDto,
             entityToCommandDtoMapper = AccountEntity::toCommandDto,
             queryDtoToEntityMapper = AccountQueryDto::toEntity
         )
@@ -118,7 +117,6 @@ class AccountRepositoryImpl(
             },
             entityDeletedPredicate = { it.deleted },
             dataModelToEntityMapper = AccountDataModel::toEntity,
-            dataModelToCommandDtoMapper = AccountDataModel::toCommandDto,
             entityToCommandDtoMapper = AccountEntity::toCommandDto,
             queryDtoToEntityMapper = AccountQueryDto::toEntity
         )

@@ -1,28 +1,28 @@
 package com.ataglance.walletglance.record.data.remote.source
 
-import com.ataglance.walletglance.record.data.remote.model.RecordCommandDtoWithItems
-import com.ataglance.walletglance.record.data.remote.model.RecordQueryDtoWithItems
+import com.glanci.record.shared.dto.RecordWithItemsCommandDto
+import com.glanci.record.shared.dto.RecordWithItemsQueryDto
 
 interface RecordRemoteDataSource {
 
-    suspend fun getUpdateTime(userId: Int): Long?
+    suspend fun getUpdateTime(token: String): Long?
 
     suspend fun synchronizeRecordsWithItems(
-        recordsWithItems: List<RecordCommandDtoWithItems>,
+        recordsWithItems: List<RecordWithItemsCommandDto>,
         timestamp: Long,
-        userId: Int
+        token: String
     ): Boolean
-
-    suspend fun synchronizeRecordsWithItemsAndGetAfterTimestamp(
-        recordsWithItems: List<RecordCommandDtoWithItems>,
-        timestamp: Long,
-        userId: Int,
-        localTimestamp: Long
-    ): List<RecordQueryDtoWithItems>?
 
     suspend fun getRecordsWithItemsAfterTimestamp(
         timestamp: Long,
-        userId: Int
-    ): List<RecordQueryDtoWithItems>?
+        token: String
+    ): List<RecordWithItemsQueryDto>?
+
+    suspend fun synchronizeRecordsWithItemsAndGetAfterTimestamp(
+        recordsWithItems: List<RecordWithItemsCommandDto>,
+        timestamp: Long,
+        localTimestamp: Long,
+        token: String
+    ): List<RecordWithItemsQueryDto>?
 
 }

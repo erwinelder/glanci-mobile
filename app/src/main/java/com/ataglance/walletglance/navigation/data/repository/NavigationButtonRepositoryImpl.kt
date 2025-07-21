@@ -8,8 +8,8 @@ import com.ataglance.walletglance.navigation.data.mapper.toDataModel
 import com.ataglance.walletglance.navigation.data.mapper.toDto
 import com.ataglance.walletglance.navigation.data.mapper.toEntity
 import com.ataglance.walletglance.navigation.data.model.NavigationButtonDataModel
-import com.glanci.navigation.shared.dto.NavigationButtonDto
 import com.ataglance.walletglance.navigation.data.remote.source.NavigationButtonRemoteDataSource
+import com.glanci.navigation.shared.dto.NavigationButtonDto
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onStart
@@ -75,7 +75,6 @@ class NavigationButtonRepositoryImpl(
                 )
             },
             dataModelToEntityMapper = NavigationButtonDataModel::toEntity,
-            dataModelToCommandDtoMapper = NavigationButtonDataModel::toDto,
             entityToCommandDtoMapper = NavigationButtonEntity::toDto,
             queryDtoToEntityMapper = NavigationButtonDto::toEntity
         )

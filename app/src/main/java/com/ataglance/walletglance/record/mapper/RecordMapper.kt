@@ -5,7 +5,7 @@ import com.ataglance.walletglance.category.domain.model.CategoryType
 import com.ataglance.walletglance.category.domain.model.GroupedCategoriesByType
 import com.ataglance.walletglance.core.domain.date.DateTimeState
 import com.ataglance.walletglance.record.data.model.RecordDataModel
-import com.ataglance.walletglance.record.data.model.RecordDataModelWithItems
+import com.ataglance.walletglance.record.data.model.RecordWithItemsDataModel
 import com.ataglance.walletglance.record.data.model.RecordItemDataModel
 import com.ataglance.walletglance.record.presentation.model.RecordDraft
 import com.ataglance.walletglance.record.presentation.model.RecordDraftItem
@@ -41,7 +41,7 @@ fun RecordItemDataModel.toDomainModel(): RecordItem {
     )
 }
 
-fun RecordDataModelWithItems.toDomainModelWithItems(): RecordWithItems? {
+fun RecordWithItemsDataModel.toDomainModelWithItems(): RecordWithItems? {
     val record = record.toDomainModel() ?: return null
     val items = items.map { it.toDomainModel() }
 
@@ -71,8 +71,8 @@ fun RecordItem.toDataModel(): RecordItemDataModel {
     )
 }
 
-fun RecordWithItems.toDataModelWithItems(): RecordDataModelWithItems {
-    return RecordDataModelWithItems(
+fun RecordWithItems.toDataModelWithItems(): RecordWithItemsDataModel {
+    return RecordWithItemsDataModel(
         record = record.toDataModel(),
         items = items.map { it.toDataModel() }
     )

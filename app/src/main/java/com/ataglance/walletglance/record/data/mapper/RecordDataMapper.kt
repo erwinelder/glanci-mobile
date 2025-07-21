@@ -4,13 +4,13 @@ import com.ataglance.walletglance.record.data.local.model.RecordEntity
 import com.ataglance.walletglance.record.data.local.model.RecordEntityWithItems
 import com.ataglance.walletglance.record.data.local.model.RecordItemEntity
 import com.ataglance.walletglance.record.data.model.RecordDataModel
-import com.ataglance.walletglance.record.data.model.RecordDataModelWithItems
+import com.ataglance.walletglance.record.data.model.RecordWithItemsDataModel
 import com.ataglance.walletglance.record.data.model.RecordItemDataModel
-import com.ataglance.walletglance.record.data.remote.model.RecordCommandDto
-import com.ataglance.walletglance.record.data.remote.model.RecordCommandDtoWithItems
-import com.ataglance.walletglance.record.data.remote.model.RecordItemDto
-import com.ataglance.walletglance.record.data.remote.model.RecordQueryDto
-import com.ataglance.walletglance.record.data.remote.model.RecordQueryDtoWithItems
+import com.glanci.record.shared.dto.RecordCommandDto
+import com.glanci.record.shared.dto.RecordItemDto
+import com.glanci.record.shared.dto.RecordQueryDto
+import com.glanci.record.shared.dto.RecordWithItemsCommandDto
+import com.glanci.record.shared.dto.RecordWithItemsQueryDto
 
 
 fun RecordDataModel.toEntity(timestamp: Long, deleted: Boolean): RecordEntity {
@@ -37,7 +37,7 @@ fun RecordItemDataModel.toEntity(): RecordItemEntity {
     )
 }
 
-fun RecordDataModelWithItems.toEntityWithItems(
+fun RecordWithItemsDataModel.toEntityWithItems(
     timestamp: Long,
     deleted: Boolean
 ): RecordEntityWithItems {
@@ -70,8 +70,8 @@ fun RecordItemEntity.toDataModel(): RecordItemDataModel {
     )
 }
 
-fun RecordEntityWithItems.toDataModelWithItems(): RecordDataModelWithItems {
-    return RecordDataModelWithItems(
+fun RecordEntityWithItems.toDataModelWithItems(): RecordWithItemsDataModel {
+    return RecordWithItemsDataModel(
         record = record.toDataModel(),
         items = items.map { it.toDataModel() }
     )
@@ -102,11 +102,11 @@ fun RecordItemDataModel.toDto(): RecordItemDto {
     )
 }
 
-fun RecordDataModelWithItems.toCommandDtoWithItems(
+fun RecordWithItemsDataModel.toCommandDtoWithItems(
     timestamp: Long,
     deleted: Boolean
-): RecordCommandDtoWithItems {
-    return RecordCommandDtoWithItems(
+): RecordWithItemsCommandDto {
+    return RecordWithItemsCommandDto(
         record = record.toCommandDto(timestamp = timestamp, deleted = deleted),
         items = items.map { it.toDto() }
     )
@@ -137,8 +137,8 @@ fun RecordItemEntity.toDto(): RecordItemDto {
     )
 }
 
-fun RecordEntityWithItems.toCommandDtoWithItems(): RecordCommandDtoWithItems {
-    return RecordCommandDtoWithItems(
+fun RecordEntityWithItems.toCommandDtoWithItems(): RecordWithItemsCommandDto {
+    return RecordWithItemsCommandDto(
         record = record.toCommandDto(),
         items = items.map { it.toDto() }
     )
@@ -169,7 +169,7 @@ fun RecordItemDto.toEntity(): RecordItemEntity {
     )
 }
 
-fun RecordQueryDtoWithItems.toEntityWithItems(): RecordEntityWithItems {
+fun RecordWithItemsQueryDto.toEntityWithItems(): RecordEntityWithItems {
     return RecordEntityWithItems(
         record = record.toEntity(),
         items = items.map { it.toEntity() }

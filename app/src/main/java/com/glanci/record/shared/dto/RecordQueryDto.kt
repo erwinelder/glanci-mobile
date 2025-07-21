@@ -1,9 +1,10 @@
-package com.ataglance.walletglance.record.data.remote.model
+package com.glanci.record.shared.dto
 
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class RecordCommandDto(
+data class RecordQueryDto(
+    val userId: Int,
     val id: Long,
     val date: Long,
     val type: Char,

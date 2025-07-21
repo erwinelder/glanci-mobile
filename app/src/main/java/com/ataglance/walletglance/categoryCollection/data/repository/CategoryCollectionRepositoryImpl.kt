@@ -8,7 +8,7 @@ import com.ataglance.walletglance.categoryCollection.data.mapper.toDtoWithAssoci
 import com.ataglance.walletglance.categoryCollection.data.mapper.toEntityWithAssociations
 import com.ataglance.walletglance.categoryCollection.data.mapper.withAssociations
 import com.ataglance.walletglance.categoryCollection.data.model.CategoryCollectionDataModel
-import com.ataglance.walletglance.categoryCollection.data.model.CategoryCollectionDataModelWithAssociations
+import com.ataglance.walletglance.categoryCollection.data.model.CategoryCollectionWithAssociationsDataModel
 import com.glanci.categoryCollection.shared.dto.CategoryCollectionWithAssociationsDto
 import com.ataglance.walletglance.categoryCollection.data.remote.source.CategoryCollectionRemoteDataSource
 import com.ataglance.walletglance.core.data.model.DataSyncHelper
@@ -58,7 +58,7 @@ class CategoryCollectionRepositoryImpl(
 
     override suspend fun deleteAndUpsertCollectionsWithAssociations(
         toDelete: List<CategoryCollectionDataModel>,
-        toUpsert: List<CategoryCollectionDataModelWithAssociations>
+        toUpsert: List<CategoryCollectionWithAssociationsDataModel>
     ) {
         syncHelper.deleteAndUpsertDataToken(
             tableName = TableName.CategoryCollection,
@@ -97,8 +97,8 @@ class CategoryCollectionRepositoryImpl(
                 )
             },
             entityDeletedPredicate = { it.deleted },
-            dataModelToEntityMapper = CategoryCollectionDataModelWithAssociations::toEntityWithAssociations,
-            dataModelToCommandDtoMapper = CategoryCollectionDataModelWithAssociations::toDtoWithAssociations,
+            dataModelToEntityMapper = CategoryCollectionWithAssociationsDataModel::toEntityWithAssociations,
+            dataModelToCommandDtoMapper = CategoryCollectionWithAssociationsDataModel::toDtoWithAssociations,
             entityToCommandDtoMapper = CategoryCollectionEntityWithAssociations::toDtoWithAssociations,
             queryDtoToEntityMapper = CategoryCollectionWithAssociationsDto::toEntityWithAssociations
         )
@@ -110,7 +110,7 @@ class CategoryCollectionRepositoryImpl(
     }
 
     override fun getAllCollectionsWithAssociationsAsFlow(
-    ): Flow<List<CategoryCollectionDataModelWithAssociations>> {
+    ): Flow<List<CategoryCollectionWithAssociationsDataModel>> {
         return localSource.getAllCollectionsWithAssociationsAsFlow()
             .onStart { synchronizeCollections() }
             .map { collectionsWithAssociations ->
@@ -119,7 +119,7 @@ class CategoryCollectionRepositoryImpl(
     }
 
     override suspend fun getAllCollectionsWithAssociations(
-    ): List<CategoryCollectionDataModelWithAssociations> {
+    ): List<CategoryCollectionWithAssociationsDataModel> {
         synchronizeCollections()
         return localSource.getAllCollectionsWithAssociations().map {
             it.toDataModelWithAssociations()

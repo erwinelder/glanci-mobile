@@ -21,15 +21,6 @@ fun NavigationButtonEntity.toDataModel(): NavigationButtonDataModel {
     )
 }
 
-fun NavigationButtonDataModel.toDto(timestamp: Long, deleted: Boolean): NavigationButtonDto {
-    return NavigationButtonDto(
-        screenName = screenName,
-        orderNum = orderNum,
-        timestamp = timestamp,
-        deleted = deleted
-    )
-}
-
 fun NavigationButtonEntity.toDto(): NavigationButtonDto {
     return NavigationButtonDto(
         screenName = screenName,

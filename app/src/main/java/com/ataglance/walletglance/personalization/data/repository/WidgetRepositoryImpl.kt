@@ -8,8 +8,8 @@ import com.ataglance.walletglance.personalization.data.mapper.toDataModel
 import com.ataglance.walletglance.personalization.data.mapper.toDto
 import com.ataglance.walletglance.personalization.data.mapper.toEntity
 import com.ataglance.walletglance.personalization.data.model.WidgetDataModel
-import com.glanci.personalization.shared.dto.WidgetDto
 import com.ataglance.walletglance.personalization.data.remote.source.WidgetRemoteDataSource
+import com.glanci.personalization.shared.dto.WidgetDto
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onStart
@@ -75,7 +75,6 @@ class WidgetRepositoryImpl(
                 )
             },
             dataModelToEntityMapper = WidgetDataModel::toEntity,
-            dataModelToCommandDtoMapper = WidgetDataModel::toDto,
             entityToCommandDtoMapper = WidgetEntity::toDto,
             queryDtoToEntityMapper = WidgetDto::toEntity
         )
@@ -121,7 +120,6 @@ class WidgetRepositoryImpl(
             },
             entityDeletedPredicate = { it.deleted },
             dataModelToEntityMapper = WidgetDataModel::toEntity,
-            dataModelToCommandDtoMapper = WidgetDataModel::toDto,
             entityToCommandDtoMapper = WidgetEntity::toDto,
             queryDtoToEntityMapper = WidgetDto::toEntity
         )
