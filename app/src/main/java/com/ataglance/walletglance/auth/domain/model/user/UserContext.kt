@@ -1,6 +1,6 @@
 package com.ataglance.walletglance.auth.domain.model.user
 
-import com.ataglance.walletglance.auth.domain.usecase.auth.DeleteAuthTokenFromSecureStorageUseCase
+import com.ataglance.walletglance.auth.domain.usecase.authToken.DeleteAuthTokenFromSecureStorageUseCase
 import com.ataglance.walletglance.auth.domain.usecase.authToken.GetAuthTokenFromSecureStorageUseCase
 import com.ataglance.walletglance.auth.domain.usecase.authToken.SaveAuthTokenToSecureStorageUseCase
 import com.ataglance.walletglance.billing.domain.model.AppSubscription
@@ -34,6 +34,10 @@ class UserContext(
         return isSignedIn() && subscription != AppSubscription.Base
     }
 
+
+    fun updateName(name: String) {
+        this.name = name
+    }
 
     fun saveUser(user: User) {
         this.userId = user.id

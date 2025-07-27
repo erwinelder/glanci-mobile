@@ -10,7 +10,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import com.ataglance.walletglance.R
-import com.ataglance.walletglance.auth.domain.navigation.AuthScreens
+import com.ataglance.walletglance.auth.presentation.navigation.AuthScreens
 import com.ataglance.walletglance.core.domain.app.AppConfiguration
 import com.ataglance.walletglance.core.domain.app.AppTheme
 import com.ataglance.walletglance.core.presentation.component.button.PrimaryButton
@@ -26,7 +26,7 @@ import com.ataglance.walletglance.personalization.presentation.components.ThemeS
 import com.ataglance.walletglance.personalization.presentation.components.WidgetsSettingsBottomSheet
 import com.ataglance.walletglance.personalization.presentation.viewmodel.PersonalizationViewModel
 import com.ataglance.walletglance.settings.domain.model.AppThemeConfiguration
-import com.ataglance.walletglance.settings.domain.navigation.SettingsScreens
+import com.ataglance.walletglance.settings.presentation.navigation.SettingsScreens
 import com.ataglance.walletglance.settings.presentation.component.OpenSettingsCategoryButton
 import com.ataglance.walletglance.settings.presentation.model.SettingsCategory
 import com.ataglance.walletglance.settings.presentation.screenContainer.SettingsCategoryScreenContainer

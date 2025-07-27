@@ -4,17 +4,17 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ataglance.walletglance.R
 import com.ataglance.walletglance.auth.domain.model.user.UserContext
+import com.ataglance.walletglance.auth.mapper.toResultStateButton
 import com.ataglance.walletglance.category.domain.usecase.TranslateCategoriesUseCase
 import com.ataglance.walletglance.category.presentation.model.DefaultCategoriesPackage
 import com.ataglance.walletglance.core.presentation.model.ResourceManager
 import com.ataglance.walletglance.core.utils.getCurrentTimestamp
-import com.ataglance.walletglance.request.domain.model.result.ResultData
+import com.ataglance.walletglance.request.domain.model.result.SimpleResult
+import com.ataglance.walletglance.request.domain.model.result.error.AuthError
 import com.ataglance.walletglance.request.presentation.model.RequestErrorState
 import com.ataglance.walletglance.request.presentation.model.ResultState.ButtonState
-import com.ataglance.walletglance.settings.error.SettingsError
 import com.ataglance.walletglance.settings.domain.usecase.language.SaveLanguageLocallyUseCase
 import com.ataglance.walletglance.settings.domain.usecase.language.SaveLanguageRemotelyUseCase
-import com.ataglance.walletglance.settings.mapper.toResultStateButton
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
@@ -80,11 +80,11 @@ class LanguageViewModel(
         }
     }
 
-    private fun setRequestResultState(result: ResultData<Unit, SettingsError>) {
+    private fun setRequestResultState(result: SimpleResult<AuthError>) {
         _requestState.update {
             when (result) {
-                is ResultData.Success -> null
-                is ResultData.Error -> RequestErrorState.Error(
+                is SimpleResult.Success -> null
+                is SimpleResult.Error -> RequestErrorState.Error(
                     state = result.error.toResultStateButton()
                 )
             }

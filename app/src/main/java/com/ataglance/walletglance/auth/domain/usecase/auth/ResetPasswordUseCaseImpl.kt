@@ -1,19 +1,21 @@
 package com.ataglance.walletglance.auth.domain.usecase.auth
 
-import com.ataglance.walletglance.auth.data.model.ResetPasswordRequestDto
-import com.ataglance.walletglance.auth.data.repository.AuthRepository
-import com.ataglance.walletglance.auth.domain.model.errorHandling.AuthError
-import com.ataglance.walletglance.auth.domain.model.errorHandling.AuthSuccess
+import com.ataglance.walletglance.auth.domain.repository.AuthRepository
 import com.ataglance.walletglance.request.domain.model.result.Result
+import com.ataglance.walletglance.request.domain.model.result.error.AuthError
+import com.ataglance.walletglance.request.domain.model.result.success.AuthSuccess
 
 class ResetPasswordUseCaseImpl(
     private val authRepository: AuthRepository
 ) : ResetPasswordUseCase {
+
     override suspend fun execute(
         oobCode: String,
         newPassword: String
     ): Result<AuthSuccess, AuthError> {
-        val request = ResetPasswordRequestDto(oobCode = oobCode, newPassword = newPassword)
-        return authRepository.verifyPasswordReset(resetPasswordRequest = request)
+        val result = authRepository.verifyPasswordReset(oobCode = oobCode, newPassword = newPassword)
+
+        return result.toResult(success = AuthSuccess.PasswordUpdated)
     }
+
 }

@@ -13,16 +13,17 @@ import com.ataglance.walletglance.account.presentation.screen.EditAccountScreenP
 import com.ataglance.walletglance.account.presentation.screen.EditAccountsScreenPreview
 import com.ataglance.walletglance.auth.presentation.screen.DeleteAccountScreenPreview
 import com.ataglance.walletglance.auth.presentation.screen.EmailUpdateEmailVerificationScreenPreview
-import com.ataglance.walletglance.auth.presentation.screen.SignUpFinishScreenPreview
-import com.ataglance.walletglance.auth.presentation.screen.ProfileScreenPreview
 import com.ataglance.walletglance.auth.presentation.screen.EmailUpdateRequestScreenPreview
+import com.ataglance.walletglance.auth.presentation.screen.EmailUpdateVerifyScreenPreview
+import com.ataglance.walletglance.auth.presentation.screen.NameUpdateScreenPreview
 import com.ataglance.walletglance.auth.presentation.screen.PasswordResetRequestScreenPreview
 import com.ataglance.walletglance.auth.presentation.screen.PasswordResetScreenPreview
+import com.ataglance.walletglance.auth.presentation.screen.PasswordUpdateScreenPreview
+import com.ataglance.walletglance.auth.presentation.screen.ProfileScreenPreview
 import com.ataglance.walletglance.auth.presentation.screen.SignInScreenPreview
 import com.ataglance.walletglance.auth.presentation.screen.SignUpEmailVerificationScreenPreview
+import com.ataglance.walletglance.auth.presentation.screen.SignUpFinishScreenPreview
 import com.ataglance.walletglance.auth.presentation.screen.SignUpScreenPreview
-import com.ataglance.walletglance.auth.presentation.screen.PasswordUpdateScreenPreview
-import com.ataglance.walletglance.auth.presentation.screen.EmailUpdateVerifyScreenPreview
 import com.ataglance.walletglance.budget.data.model.BudgetAccountAssociationDataModel
 import com.ataglance.walletglance.budget.data.model.BudgetDataModel
 import com.ataglance.walletglance.budget.data.model.BudgetWithAssociationsDataModel
@@ -56,7 +57,6 @@ import com.ataglance.walletglance.core.utils.toTimestamp
 import com.ataglance.walletglance.notification.presentation.screen.NotificationsScreenPreview
 import com.ataglance.walletglance.personalization.domain.model.WidgetName
 import com.ataglance.walletglance.personalization.presentation.screen.PersonalizationScreenPreview
-import com.ataglance.walletglance.transaction.presentation.component.RecentRecordsWidgetPreview
 import com.ataglance.walletglance.record.presentation.model.RecordDraft
 import com.ataglance.walletglance.record.presentation.model.RecordDraftItem
 import com.ataglance.walletglance.record.presentation.model.RecordDraftWithItems
@@ -70,6 +70,7 @@ import com.ataglance.walletglance.transaction.domain.model.RecordItem
 import com.ataglance.walletglance.transaction.domain.model.RecordWithItems
 import com.ataglance.walletglance.transaction.domain.model.Transfer
 import com.ataglance.walletglance.transaction.domain.model.TransferItem
+import com.ataglance.walletglance.transaction.presentation.component.RecentRecordsWidgetPreview
 import com.ataglance.walletglance.transaction.presentation.screen.TransactionsScreenPreview
 import com.ataglance.walletglance.transfer.presentation.model.TransferDraft
 import com.ataglance.walletglance.transfer.presentation.model.TransferDraftItem
@@ -959,13 +960,26 @@ private fun ProfileScreenPreview_() {
 }
 
 @Preview(
-    name = "RequestEmailUpdateScreen",
+    name = "UpdateName",
     group = "AuthScreens",
     locale = langCode,
     device = device
 )
 @Composable
-private fun RequestEmailUpdateScreenPreview_() {
+private fun NameUpdateScreenPreview_() {
+    NameUpdateScreenPreview(
+        appTheme = appTheme
+    )
+}
+
+@Preview(
+    name = "EmailUpdateRequest",
+    group = "AuthScreens",
+    locale = langCode,
+    device = device
+)
+@Composable
+private fun EmailUpdateRequestScreenPreview_() {
     EmailUpdateRequestScreenPreview(
         appTheme = appTheme
     )

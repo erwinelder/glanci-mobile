@@ -13,14 +13,14 @@ import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
-import com.ataglance.walletglance.auth.domain.model.errorHandling.AuthError
-import com.ataglance.walletglance.auth.domain.navigation.AuthScreens
 import com.ataglance.walletglance.auth.domain.usecase.auth.CheckTokenValidityUseCase
+import com.ataglance.walletglance.auth.presentation.navigation.AuthScreens
 import com.ataglance.walletglance.billing.domain.model.BillingSubscriptionManager
 import com.ataglance.walletglance.core.domain.navigation.MainScreens
 import com.ataglance.walletglance.core.presentation.component.GlanciAppComponent
 import com.ataglance.walletglance.core.utils.extractOobCode
-import com.ataglance.walletglance.request.domain.model.result.ResultData
+import com.ataglance.walletglance.request.domain.model.result.SimpleResult
+import com.ataglance.walletglance.request.domain.model.result.error.AuthError
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import org.koin.core.context.GlobalContext
@@ -127,7 +127,7 @@ class MainActivity : AppCompatActivity() {
         val checkTokenValidityUseCase: CheckTokenValidityUseCase = GlobalContext.get().get()
         val result = checkTokenValidityUseCase.execute()
 
-        if (result !is ResultData.Error) return
+        if (result !is SimpleResult.Error) return
 
         when (result.error) {
             AuthError.AppUpdateRequired -> {

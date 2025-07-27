@@ -1,14 +1,14 @@
 package com.ataglance.walletglance.request.domain.model.request
 
-import com.ataglance.walletglance.request.domain.model.result.RootError
-import com.ataglance.walletglance.request.domain.model.result.RootSuccess
+import com.ataglance.walletglance.request.domain.model.result.DomainError
+import com.ataglance.walletglance.request.domain.model.result.DomainSuccess
 
-sealed class RequestState <S : RootSuccess, E : RootError> {
+sealed class RequestState <S : DomainSuccess, E : DomainError> {
 
-    class Loading<S : RootSuccess, E : RootError> : RequestState<S, E>()
+    class Loading<S : DomainSuccess, E : DomainError> : RequestState<S, E>()
 
-    data class Success<S : RootSuccess, E : RootError>(val result: S): RequestState<S, E>()
+    data class Success<S : DomainSuccess, E : DomainError>(val result: S): RequestState<S, E>()
 
-    data class Error<S : RootSuccess, E : RootError>(val result: E): RequestState<S, E>()
+    data class Error<S : DomainSuccess, E : DomainError>(val result: E): RequestState<S, E>()
 
 }

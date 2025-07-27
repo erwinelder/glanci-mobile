@@ -5,23 +5,23 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
-import com.ataglance.walletglance.auth.domain.navigation.AuthScreens
 import com.ataglance.walletglance.auth.presentation.screen.DeleteAccountScreenWrapper
 import com.ataglance.walletglance.auth.presentation.screen.EmailUpdateEmailVerificationScreenWrapper
-import com.ataglance.walletglance.auth.presentation.screen.SignUpFinishScreenWrapper
-import com.ataglance.walletglance.auth.presentation.screen.ProfileScreenWrapper
 import com.ataglance.walletglance.auth.presentation.screen.EmailUpdateRequestScreenWrapper
+import com.ataglance.walletglance.auth.presentation.screen.EmailUpdateVerifyScreenWrapper
+import com.ataglance.walletglance.auth.presentation.screen.NameUpdateScreenWrapper
 import com.ataglance.walletglance.auth.presentation.screen.PasswordResetRequestScreenWrapper
 import com.ataglance.walletglance.auth.presentation.screen.PasswordResetScreenWrapper
+import com.ataglance.walletglance.auth.presentation.screen.PasswordUpdateScreenWrapper
+import com.ataglance.walletglance.auth.presentation.screen.ProfileScreenWrapper
 import com.ataglance.walletglance.auth.presentation.screen.SignInScreenWrapper
 import com.ataglance.walletglance.auth.presentation.screen.SignUpEmailVerificationScreenWrapper
+import com.ataglance.walletglance.auth.presentation.screen.SignUpFinishScreenWrapper
 import com.ataglance.walletglance.auth.presentation.screen.SignUpScreenWrapper
-import com.ataglance.walletglance.auth.presentation.screen.PasswordUpdateScreenWrapper
-import com.ataglance.walletglance.auth.presentation.screen.EmailUpdateVerifyScreenWrapper
 import com.ataglance.walletglance.billing.presentation.screen.SubscriptionsScreenWrapper
 import com.ataglance.walletglance.core.domain.app.AppConfiguration
 import com.ataglance.walletglance.navigation.presentation.viewmodel.NavigationViewModel
-import com.ataglance.walletglance.settings.domain.navigation.SettingsScreens
+import com.ataglance.walletglance.settings.presentation.navigation.SettingsScreens
 
 fun NavGraphBuilder.authGraph(
     screenPadding: PaddingValues = PaddingValues(),
@@ -70,6 +70,12 @@ fun NavGraphBuilder.authGraph(
                 screenPadding = screenPadding,
                 navController = navController,
                 navViewModel = navViewModel
+            )
+        }
+        composable<AuthScreens.UpdateName> {
+            NameUpdateScreenWrapper(
+                screenPadding = screenPadding,
+                navController = navController
             )
         }
         composable<AuthScreens.UpdateEmail> { backStack ->

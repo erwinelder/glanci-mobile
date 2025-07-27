@@ -1,12 +1,12 @@
 package com.ataglance.walletglance.auth.domain.usecase.auth
 
-import com.ataglance.walletglance.auth.data.repository.AuthRepository
-import com.ataglance.walletglance.auth.domain.model.errorHandling.AuthError
+import com.ataglance.walletglance.auth.domain.model.CurrentAppVersion
 import com.ataglance.walletglance.auth.domain.model.user.UserContext
-import com.ataglance.walletglance.auth.mapper.toDomainModel
-import com.ataglance.walletglance.core.data.local.preferences.SecureStorage
-import com.ataglance.walletglance.request.domain.model.result.ResultData
+import com.ataglance.walletglance.auth.domain.repository.AuthRepository
 import com.ataglance.walletglance.auth.domain.usecase.user.GetUserProfileLocalTimestampUseCase
+import com.ataglance.walletglance.core.data.local.preferences.SecureStorage
+import com.ataglance.walletglance.request.domain.model.result.SimpleResult
+import com.ataglance.walletglance.request.domain.model.result.error.AuthError
 import com.ataglance.walletglance.settings.domain.usecase.language.GetLanguagePreferenceUseCase
 import com.ataglance.walletglance.settings.domain.usecase.language.SaveLanguageLocallyUseCase
 import com.ataglance.walletglance.settings.domain.usecase.language.SaveLanguageRemotelyUseCase
@@ -21,23 +21,22 @@ class CheckTokenValidityUseCaseImpl(
     private val saveLanguagePreferenceRemotelyUseCase: SaveLanguageRemotelyUseCase
 ) : CheckTokenValidityUseCase {
 
-    override suspend fun execute(): ResultData<Unit, AuthError> {
+    override suspend fun execute(): SimpleResult<AuthError> {
         val token = secureStorage.getAuthToken()
-            ?: return ResultData.Error(AuthError.UserNotSignedIn)
-        val result = authRepository.checkTokenValidity(token = token)
+            ?: return SimpleResult.Error(AuthError.SessionExpired)
+        val appVersion = CurrentAppVersion(5, 0, 0, alpha = 5)
 
-        result.getDataIfSuccess()?.let { data ->
-            val user = data.toDomainModel()
-                ?: return ResultData.Error(AuthError.RequestDataNotValid)
+        val result = authRepository.checkTokenValidity(appVersion = appVersion, token = token)
 
+        result.getDataOrNull()?.let { user ->
             userContext.saveUser(user = user)
             syncDataIfRequired(
-                remoteTimestamp = data.timestamp,
+                remoteTimestamp = user.timestamp,
                 remoteLangCode = user.language.languageCode
             )
         }
 
-        return result.mapDataToUnit()
+        return result.toSimpleResult()
     }
 
     private suspend fun syncDataIfRequired(

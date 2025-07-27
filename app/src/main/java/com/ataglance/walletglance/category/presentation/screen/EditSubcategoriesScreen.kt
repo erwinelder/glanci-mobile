@@ -30,7 +30,7 @@ import com.ataglance.walletglance.category.domain.model.Category
 import com.ataglance.walletglance.category.domain.model.DefaultCategoriesPackage
 import com.ataglance.walletglance.category.domain.model.GroupedCategories
 import com.ataglance.walletglance.category.domain.model.GroupedCategoriesByType
-import com.ataglance.walletglance.category.domain.navigation.CategoriesSettingsScreens
+import com.ataglance.walletglance.category.presentation.navigation.CategoriesSettingsScreens
 import com.ataglance.walletglance.category.presentation.component.CategoryIconComponent
 import com.ataglance.walletglance.category.presentation.component.EditingSubcategoryComponent
 import com.ataglance.walletglance.category.presentation.viewmodel.EditCategoriesViewModel

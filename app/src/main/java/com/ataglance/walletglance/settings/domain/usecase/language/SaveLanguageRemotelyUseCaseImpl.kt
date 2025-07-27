@@ -1,18 +1,15 @@
 package com.ataglance.walletglance.settings.domain.usecase.language
 
-import com.ataglance.walletglance.auth.data.model.SaveLanguageRequestDto
-import com.ataglance.walletglance.auth.data.repository.AuthRepository
-import com.ataglance.walletglance.request.domain.model.result.ResultData
-import com.ataglance.walletglance.settings.error.SettingsError
+import com.ataglance.walletglance.auth.domain.repository.AuthRepository
+import com.ataglance.walletglance.request.domain.model.result.SimpleResult
+import com.ataglance.walletglance.request.domain.model.result.error.AuthError
 
 class SaveLanguageRemotelyUseCaseImpl(
     private val authRepository: AuthRepository
 ) : SaveLanguageRemotelyUseCase {
-    override suspend fun execute(langCode: String, timestamp: Long): ResultData<Unit, SettingsError> {
-        val request = SaveLanguageRequestDto(langCode = langCode, timestamp = timestamp)
 
-        return authRepository.saveLanguage(saveLanguageRequest = request).mapError {
-            SettingsError.LanguageNotSavedRemotely
-        }
+    override suspend fun execute(langCode: String, timestamp: Long): SimpleResult<AuthError> {
+        return authRepository.saveUserLanguage(langCode = langCode, timestamp = timestamp)
     }
+
 }

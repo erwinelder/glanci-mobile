@@ -23,9 +23,9 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import com.ataglance.walletglance.R
-import com.ataglance.walletglance.auth.domain.model.errorHandling.AuthSuccess
+import com.ataglance.walletglance.request.domain.model.result.success.AuthSuccess
 import com.ataglance.walletglance.auth.domain.model.validation.UserDataValidator
-import com.ataglance.walletglance.auth.domain.navigation.AuthScreens
+import com.ataglance.walletglance.auth.presentation.navigation.AuthScreens
 import com.ataglance.walletglance.auth.mapper.toResultStateButton
 import com.ataglance.walletglance.auth.mapper.toUiStates
 import com.ataglance.walletglance.auth.presentation.viewmodel.PasswordUpdateViewModel

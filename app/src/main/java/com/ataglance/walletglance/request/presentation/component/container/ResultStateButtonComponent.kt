@@ -8,9 +8,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.ataglance.walletglance.core.domain.app.FilledWidthByScreenType
 import com.ataglance.walletglance.core.presentation.component.button.SmallPrimaryButton
 import com.ataglance.walletglance.core.presentation.component.button.SmallSecondaryButton
 import com.ataglance.walletglance.core.presentation.component.text.TitleWithMessageComponent
+import com.ataglance.walletglance.core.presentation.theme.CurrWindowType
 import com.ataglance.walletglance.request.presentation.model.ResultState
 
 @Composable
@@ -22,7 +24,9 @@ fun ResultStateButtonComponent(
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(24.dp),
-        modifier = Modifier.fillMaxWidth()
+        modifier = Modifier.fillMaxWidth(
+            FilledWidthByScreenType(.86f).get(CurrWindowType)
+        )
     ) {
 
         TitleWithMessageComponent(

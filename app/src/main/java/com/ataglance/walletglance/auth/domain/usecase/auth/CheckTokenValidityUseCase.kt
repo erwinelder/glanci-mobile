@@ -1,8 +1,10 @@
 package com.ataglance.walletglance.auth.domain.usecase.auth
 
-import com.ataglance.walletglance.auth.domain.model.errorHandling.AuthError
-import com.ataglance.walletglance.request.domain.model.result.ResultData
+import com.ataglance.walletglance.request.domain.model.result.SimpleResult
+import com.ataglance.walletglance.request.domain.model.result.error.AuthError
 
 interface CheckTokenValidityUseCase {
-    suspend fun execute(): ResultData<Unit, AuthError>
+
+    suspend fun execute(): SimpleResult<AuthError>
+
 }

@@ -15,7 +15,7 @@ import com.ataglance.walletglance.navigation.domain.utils.simpleName
 import com.ataglance.walletglance.navigation.mapper.toAppScreenEnum
 import com.ataglance.walletglance.navigation.mapper.toBottomBarNavButtonState
 import com.ataglance.walletglance.navigation.presentation.model.BottomNavBarButtonState
-import com.ataglance.walletglance.settings.domain.navigation.SettingsScreens
+import com.ataglance.walletglance.settings.presentation.navigation.SettingsScreens
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -57,9 +57,7 @@ class NavigationViewModel(
     }
 
 
-    private val _navigationButtons = MutableStateFlow<List<BottomNavBarButtonState>>(
-        BottomNavBarButtonState.asDefaultList()
-    )
+    private val _navigationButtons = MutableStateFlow(BottomNavBarButtonState.asDefaultList())
 
     val primaryNavigationButtons: StateFlow<List<BottomNavBarButtonState>> = _navigationButtons
         .map { buttons ->

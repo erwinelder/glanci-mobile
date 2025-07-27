@@ -6,9 +6,9 @@ import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hierarchy
 import com.ataglance.walletglance.R
 import com.ataglance.walletglance.account.domain.navigation.AccountsSettingsScreens
-import com.ataglance.walletglance.category.domain.navigation.CategoriesSettingsScreens
+import com.ataglance.walletglance.category.presentation.navigation.CategoriesSettingsScreens
 import com.ataglance.walletglance.core.domain.navigation.MainScreens
-import com.ataglance.walletglance.settings.domain.navigation.SettingsScreens
+import com.ataglance.walletglance.settings.presentation.navigation.SettingsScreens
 import kotlin.reflect.KClass
 
 
@@ -23,13 +23,13 @@ fun NavBackStackEntry?.fromRoute(): String {
 
 fun NavBackStackEntry?.fromMainScreen(): MainScreens {
     this.fromRoute().let {
-        when (it) {
-            MainScreens.Home::class.simpleName() -> return MainScreens.Home
-            MainScreens.Transactions::class.simpleName() -> return MainScreens.Transactions
+        return when (it) {
+            MainScreens.Home::class.simpleName() -> MainScreens.Home
+            MainScreens.Transactions::class.simpleName() -> MainScreens.Transactions
             MainScreens.CategoryStatistics::class.simpleName() ->
-                return MainScreens.CategoryStatistics()
-            MainScreens.Budgets::class.simpleName() -> return MainScreens.Budgets
-            else -> return MainScreens.Settings
+                MainScreens.CategoryStatistics()
+            MainScreens.Budgets::class.simpleName() -> MainScreens.Budgets
+            else -> MainScreens.Settings
         }
     }
 }

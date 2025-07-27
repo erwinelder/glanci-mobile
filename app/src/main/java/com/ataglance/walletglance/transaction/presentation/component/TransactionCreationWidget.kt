@@ -48,13 +48,13 @@ fun TransactionCreationWidget(
             .fillMaxWidth(FilledWidthByScreenType().get(CurrWindowType))
     ) {
         TransactionCreationWidgetButton(
-            iconRes = R.drawable.create_record_dark_default,
+            iconRes = R.drawable.create_record_dark_default_icon,
             contentDescription = "Create record",
             text = stringResource(R.string.create_record),
             onClick = onMakeRecord
         )
         TransactionCreationWidgetButton(
-            iconRes = R.drawable.make_transfer_dark_default,
+            iconRes = R.drawable.make_transfer_dark_default_icon,
             contentDescription = "Make transfer",
             text = stringResource(R.string.make_transfer),
             onClick = onMakeTransfer

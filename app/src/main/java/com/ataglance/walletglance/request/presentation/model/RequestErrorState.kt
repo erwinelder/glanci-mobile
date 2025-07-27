@@ -1,7 +1,6 @@
 package com.ataglance.walletglance.request.presentation.model
 
 import androidx.annotation.StringRes
-import com.ataglance.walletglance.request.presentation.model.ResultState
 
 sealed class RequestErrorState <E : ResultState> {
 

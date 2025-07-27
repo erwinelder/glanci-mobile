@@ -1,39 +1,42 @@
 package com.ataglance.walletglance.request.domain.model.result
 
-sealed interface ResultData<out D, out E: RootError> {
+sealed interface ResultData<out D, out E: DomainError> {
 
-    data class Success<out D, out E: RootError>(val data: D): ResultData<D, E>
-    data class Error<out D, out E: RootError>(val error: E): ResultData<D, E>
+    data class Success<out D, out E: DomainError>(val data: D): ResultData<D, E>
+
+    data class Error<out D, out E: DomainError>(val error: E): ResultData<D, E>
 
 
-    fun getDataIfSuccess(): D? = (this as? Success)?.data
-    fun getErrorIfError(): E? = (this as? Error)?.error
+    fun getDataOrNull(): D? = (this as? Success)?.data
+    fun getErrorOrNull(): E? = (this as? Error)?.error
+
 
     fun <R> mapData(transform: (D) -> R): ResultData<R, E> {
         return when (this) {
-            is Success -> Success<R, E>(this.data.let(transform))
-            is Error -> Error(this.error)
+            is Success -> Success<R, E>(data = transform(this.data))
+            is Error -> Error(error = this.error)
         }
     }
 
-    fun mapDataToUnit(): ResultData<Unit, E> {
+    fun <R : DomainError> mapError(transform: (E) -> R): ResultData<D, R> {
         return when (this) {
-            is Success -> Success(Unit)
-            is Error -> Error(this.error)
+            is Success -> Success(data = this.data)
+            is Error -> Error<D, R>(error = transform(this.error))
         }
     }
 
-    fun <R : RootError> mapError(transform: (E) -> R): ResultData<D, R> {
+
+    fun <S : DomainSuccess> toResult(success: S): Result<S, E> {
         return when (this) {
-            is Success -> Success(this.data)
-            is Error -> Error<D, R>(this.error.let(transform))
+            is Success -> Result.Success(success = success)
+            is Error -> Result.Error(error = this.error)
         }
     }
 
-    fun <S : RootSuccess?> toDefaultResult(success: S): Result<S, E> {
+    fun toSimpleResult(): SimpleResult<E> {
         return when (this) {
-            is Success -> Result.Success(success)
-            is Error -> Result.Error(this.error)
+            is Success -> SimpleResult.Success()
+            is Error -> SimpleResult.Error(error = this.error)
         }
     }
 

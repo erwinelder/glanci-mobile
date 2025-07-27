@@ -34,7 +34,7 @@ import com.ataglance.walletglance.category.presentation.model.GroupedCategorySta
 import com.ataglance.walletglance.category.presentation.viewmodel.CategoryStatisticsViewModel
 import com.ataglance.walletglance.categoryCollection.domain.model.CategoryCollectionType
 import com.ataglance.walletglance.categoryCollection.domain.model.CategoryCollectionWithIds
-import com.ataglance.walletglance.categoryCollection.domain.navigation.CategoryCollectionsSettingsScreens
+import com.ataglance.walletglance.categoryCollection.presentation.navigation.CategoryCollectionsSettingsScreens
 import com.ataglance.walletglance.categoryCollection.presentation.model.CategoryCollectionsUiState
 import com.ataglance.walletglance.core.domain.app.AppTheme
 import com.ataglance.walletglance.core.domain.app.AppUiState

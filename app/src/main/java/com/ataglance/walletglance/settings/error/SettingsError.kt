@@ -1,7 +1,7 @@
 package com.ataglance.walletglance.settings.error
 
-import com.ataglance.walletglance.request.domain.model.result.Error
+import com.ataglance.walletglance.request.domain.model.result.DomainError
 
-enum class SettingsError : Error {
+enum class SettingsError : DomainError {
     LanguageNotSavedRemotely
 }

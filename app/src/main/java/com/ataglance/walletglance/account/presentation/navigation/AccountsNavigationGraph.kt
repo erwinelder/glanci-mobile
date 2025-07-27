@@ -11,7 +11,7 @@ import com.ataglance.walletglance.account.presentation.screen.EditAccountScreenW
 import com.ataglance.walletglance.account.presentation.screen.EditAccountsScreenWrapper
 import com.ataglance.walletglance.core.domain.app.AppConfiguration
 import com.ataglance.walletglance.navigation.presentation.viewmodel.NavigationViewModel
-import com.ataglance.walletglance.settings.domain.navigation.SettingsScreens
+import com.ataglance.walletglance.settings.presentation.navigation.SettingsScreens
 
 fun NavGraphBuilder.accountsGraph(
     screenPadding: PaddingValues = PaddingValues(),

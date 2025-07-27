@@ -17,7 +17,7 @@ import com.ataglance.walletglance.account.domain.model.Account
 import com.ataglance.walletglance.budget.data.model.BudgetWithAssociationsDataModel
 import com.ataglance.walletglance.budget.domain.model.Budget
 import com.ataglance.walletglance.budget.domain.model.BudgetsByType
-import com.ataglance.walletglance.budget.domain.navigation.BudgetsSettingsScreens
+import com.ataglance.walletglance.budget.presentation.navigation.BudgetsSettingsScreens
 import com.ataglance.walletglance.budget.domain.utils.groupByType
 import com.ataglance.walletglance.budget.mapper.budget.toDomainModel
 import com.ataglance.walletglance.budget.presentation.component.BudgetListsByPeriodComponent

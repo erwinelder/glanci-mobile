@@ -23,9 +23,9 @@ import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavHostController
 import androidx.navigation.toRoute
 import com.ataglance.walletglance.R
-import com.ataglance.walletglance.auth.domain.model.errorHandling.AuthSuccess
+import com.ataglance.walletglance.request.domain.model.result.success.AuthSuccess
 import com.ataglance.walletglance.auth.domain.model.validation.UserDataValidator
-import com.ataglance.walletglance.auth.domain.navigation.AuthScreens
+import com.ataglance.walletglance.auth.presentation.navigation.AuthScreens
 import com.ataglance.walletglance.auth.mapper.toResultStateButton
 import com.ataglance.walletglance.auth.mapper.toUiStates
 import com.ataglance.walletglance.auth.presentation.viewmodel.SignInViewModel
@@ -47,7 +47,7 @@ import com.ataglance.walletglance.request.presentation.component.screenContainer
 import com.ataglance.walletglance.request.presentation.model.ValidatedFieldState
 import com.ataglance.walletglance.request.presentation.model.RequestState
 import com.ataglance.walletglance.request.presentation.model.ResultState.ButtonState
-import com.ataglance.walletglance.settings.domain.navigation.SettingsScreens
+import com.ataglance.walletglance.settings.presentation.navigation.SettingsScreens
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch

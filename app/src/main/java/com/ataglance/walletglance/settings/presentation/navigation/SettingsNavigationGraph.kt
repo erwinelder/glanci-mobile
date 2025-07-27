@@ -15,7 +15,6 @@ import com.ataglance.walletglance.core.domain.navigation.MainScreens
 import com.ataglance.walletglance.navigation.presentation.viewmodel.NavigationViewModel
 import com.ataglance.walletglance.notification.presentation.screen.NotificationsScreenWrapper
 import com.ataglance.walletglance.personalization.presentation.screen.PersonalizationScreenWrapper
-import com.ataglance.walletglance.settings.domain.navigation.SettingsScreens
 import com.ataglance.walletglance.settings.presentation.screen.LanguageScreenWrapper
 import com.ataglance.walletglance.settings.presentation.screen.ResetDataScreenWrapper
 import com.ataglance.walletglance.settings.presentation.screen.SettingsHomeScreenWrapper

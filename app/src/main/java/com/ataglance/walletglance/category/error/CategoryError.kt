@@ -1,7 +1,7 @@
 package com.ataglance.walletglance.category.error
 
-import com.ataglance.walletglance.request.domain.model.result.RootError
+import com.ataglance.walletglance.request.domain.model.result.DomainError
 
-enum class CategoryError : RootError {
+enum class CategoryError : DomainError {
     TranslatedCategoriesNotSavedRemotely
 }

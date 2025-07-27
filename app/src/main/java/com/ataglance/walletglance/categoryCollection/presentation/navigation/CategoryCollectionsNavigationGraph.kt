@@ -5,11 +5,10 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
-import com.ataglance.walletglance.categoryCollection.domain.navigation.CategoryCollectionsSettingsScreens
 import com.ataglance.walletglance.categoryCollection.presentation.screen.EditCategoryCollectionScreenWrapper
 import com.ataglance.walletglance.categoryCollection.presentation.screen.EditCategoryCollectionsScreenWrapper
 import com.ataglance.walletglance.navigation.presentation.viewmodel.NavigationViewModel
-import com.ataglance.walletglance.settings.domain.navigation.SettingsScreens
+import com.ataglance.walletglance.settings.presentation.navigation.SettingsScreens
 
 fun NavGraphBuilder.categoryCollectionsGraph(
     screenPadding: PaddingValues = PaddingValues(),

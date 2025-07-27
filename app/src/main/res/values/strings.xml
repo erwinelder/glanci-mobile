@@ -7,7 +7,6 @@
     <string name="records">Records</string>
     <string name="statistics">Statistics</string>
     <string name="settings">Settings</string>
-    <string name="setup">Setup</string>
 
     <!-- Widget names -->
     <string name="total_for_period">Monthly total amount</string>
@@ -22,7 +21,6 @@
     <string name="update">Update</string>
     <string name="confirm">Confirm</string>
     <string name="check">Check</string>
-    <string name="check_verification">Check verification</string>
     <string name="verify">Verify</string>
     <string name="cancel">Cancel</string>
     <string name="_continue">Continue</string>
@@ -71,10 +69,7 @@
     <string name="manage_subscriptions">Manage subscriptions</string>
 
     <!-- Settings -->
-    <string name="start">Start</string>
     <string name="finish">Finish</string>
-    <string name="_import">Import</string>
-    <string name="start_setup">Start setup</string>
     <string name="continue_to_app">Continue to app</string>
     <string name="continue_setup">Continue setup</string>
     <string name="adjust_app_notifications">Adjust app notifications</string>
@@ -94,7 +89,6 @@
 
     <!-- Fields -->
     <string name="email">E-mail</string>
-    <string name="current_email">Current e-mail</string>
     <string name="new_email">New e-mail</string>
     <string name="password">Password</string>
     <string name="confirm_password">Confirm password</string>
@@ -104,6 +98,7 @@
     <string name="use_device_theme">Use device theme</string>
     <string name="color">Color</string>
     <string name="name">Name</string>
+    <string name="new_name">New name</string>
     <string name="currency">Currency</string>
     <string name="balance">Balance</string>
     <string name="hide_from_top_bar">Hide from top bar</string>
@@ -149,11 +144,14 @@
     <string name="sign_up">Sign up</string>
     <string name="sign_out">Sign out</string>
     <string name="send_email">Send email</string>
+    <string name="update_name">Update name</string>
     <string name="update_email">Update email</string>
     <string name="reset_password">Reset password</string>
     <string name="update_password">Update password</string>
     <string name="sign_in_to_your_account">Sign in to your account</string>
     <string name="create_new_account">Create a new account</string>
+    <string name="update_your_name">Update your name</string>
+    <string name="update_your_name_to">Update your name to %s?</string>
     <string name="update_your_email">Update your email</string>
     <string name="update_your_password">Update your password</string>
     <string name="request_password_reset">Request password reset</string>
@@ -172,6 +170,7 @@
     <string name="creating_your_identity_loader">Creating your identity…</string>
     <string name="checking_email_verification_loader">Checking email verification…</string>
     <string name="finishing_your_registration_loader">Finishing your registration…</string>
+    <string name="updating_your_name_loader">Updating your name…</string>
     <string name="requesting_email_update_loader">Requesting email update…</string>
     <string name="verifying_your_email_loader">Verifying your email…</string>
     <string name="updating_your_password_loader">Updating your password…</string>
@@ -187,31 +186,46 @@
     <string name="update_email_email_verification_sent_message">A verification email to update your email address has been sent. Please follow the link in the email to complete the update.</string>
     <string name="email_updated_successfully_message">Email has been updated successfully.</string>
     <string name="password_updated_successfully_message">Password has been updated successfully.</string>
+    <string name="name_updated_successfully_message">Name has been updated successfully.</string>
     <string name="reset_password_email_sent_message">An email for password reset has been sent. Please follow the link in the email.</string>
     <string name="your_account_deleted_successfully_message">Your account has been deleted successfully.</string>
 
     <!-- Auth error -->
-    <string name="user_not_signed_in_message">User is not signed in.</string>
-    <string name="request_contains_invalid_data_message">The request contains invalid data.</string>
-    <string name="your_session_expired_message">Your session has expired.</string>
-    <string name="update_required">Update required</string>
+    <string name="session_expired_title">Session expired</string>
+    <string name="session_expired_message">Your session has expired, please sign in again.</string>
+    <string name="insufficient_permissions_title">Insufficient permissions</string>
+    <string name="insufficient_permissions_message">Sorry, but you do not have permissions for this action.</string>
+    <string name="app_update_required_title">Update required</string>
     <string name="app_update_required_message">The new app version is available. Please update the app to ensure all features work correctly.</string>
-    <string name="credentials_are_invalid_message">Credentials are invalid.</string>
-    <string name="reauthentication_error">Error during reauthentication.</string>
-    <string name="email_not_verified_message">Email is not verified.</string>
-    <string name="user_not_found_message">User not found.</string>
-    <string name="sign_in_failed_message">An error occurred during sign-in.</string>
-    <string name="user_already_exists_message">User already exists.</string>
-    <string name="sign_up_email_verification_failed_message">An error occurred while sending the verification email.</string>
+    <string name="auth_session_creation_error_message">An error occurred while creating your user session.</string>
     <string name="sign_up_failed_message">An error occurred during sign-up.</string>
-    <string name="email_verification_check_failed_message">An error occurred while checking email verification.</string>
-    <string name="verification_code_invalid_or_expired_message">Verification code is invalid or expired.</string>
-    <string name="sign_up_completing_failed_message">An error occurred while completing sign-up.</string>
+    <string name="verification_code_expired_message">Verification code has been expired.</string>
+    <string name="verification_code_invalid_message">Verification code is invalid.</string>
+    <string name="fetching_user_data_from_auth_provider_error_message">An error occurred while fetching your data from authentication provider.</string>
+    <string name="verifying_verification_code_at_auth_provider_error_message">An error occurred while verifying code at authentication provider.</string>
+    <string name="deleting_user_at_auth_provider_error_message">An error occurred while deleting user account at authentication provider.</string>
+    <string name="sending_email_verification_email_failed_message">An error occurred while sending the verification email.</string>
+    <string name="email_verification_failed_message">An error occurred while verifying your email.</string>
+    <string name="email_not_verified_title">Not verified</string>
+    <string name="email_not_verified_message">Email is not verified.</string>
     <string name="email_update_request_failed_message">An error occurred while requesting an email update.</string>
     <string name="email_update_failed_message">An error occurred while updating your email.</string>
     <string name="password_update_failed_message">An error occurred while updating your password.</string>
     <string name="password_reset_request_failed_message">An error occurred while requesting a password reset.</string>
     <string name="password_reset_failed_message">An error occurred while resetting your password.</string>
+    <string name="invalid_credentials_message">Credentials are invalid.</string>
+    <string name="invalid_email_message">Email is invalid.</string>
+    <string name="invalid_password_message">Password is invalid.</string>
+    <string name="invalid_name_message">Name is invalid.</string>
+    <string name="invalid_language_message">Language is invalid.</string>
+    <string name="user_already_exists_message">User already exists.</string>
+    <string name="user_not_found_message">User was not found.</string>
+    <string name="user_not_fetched_message">User was not fetched.</string>
+    <string name="user_not_created_message">User was not created.</string>
+    <string name="user_email_not_saved_message">User email was not saved.</string>
+    <string name="user_name_not_saved_message">User name was not saved.</string>
+    <string name="user_language_not_saved_message">User language was not saved.</string>
+    <string name="user_subscription_not_saved_message">User subscription was not saved.</string>
     <string name="account_deletion_failed_message">An error occurred while deleting your account.</string>
 
     <!-- Billing error handling -->
@@ -313,7 +327,6 @@
     <string name="you_have_no_income_in_date_range">You have no income in this period</string>
     <string name="no_data_for_the_selected_filter">No data for the selected filter</string>
     <string name="you_have_no_budgets_yet">You have no budgets yet</string>
-    <string name="follow_link_in_email">Please follow the link in the email</string>
 
     <!-- Subscriptions benefits -->
     <string name="all_basic_app_features">All basic app features</string>
@@ -362,7 +375,6 @@
     <string name="parking">Parking</string>
     <string name="fuel">Fuel</string>
     <string name="leasing">Leasing</string>
-    <string name="rent_vehicle_category">Rent</string>
     <string name="internet_communication">Internet, communication</string>
     <string name="professional_subs">Professional subs</string>
     <string name="entertainment_subs">Entertainment subs</string>
@@ -394,7 +406,6 @@
     <string name="salary">Salary</string>
     <string name="scholarship">Scholarship</string>
     <string name="sale">Sale</string>
-    <string name="realty_income">Realty income</string>
     <string name="refunds">Refunds</string>
     <string name="gifts">Gifts</string>
     <string name="transfers">Transfers</string>

@@ -22,7 +22,7 @@ fun UpdateRequestScreen(
         screenPadding = screenPadding
     ) {
         LargePrimaryIconWithMessage(
-            title = stringResource(R.string.update_required),
+            title = stringResource(R.string.app_update_required_title),
             message = stringResource(R.string.app_update_required_message),
             iconRes = R.drawable.error_large_icon,
             iconDescription = "error icon"

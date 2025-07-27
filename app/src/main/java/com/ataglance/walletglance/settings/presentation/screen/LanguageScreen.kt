@@ -32,7 +32,7 @@ import com.ataglance.walletglance.request.presentation.component.screenContainer
 import com.ataglance.walletglance.request.presentation.model.RequestErrorState
 import com.ataglance.walletglance.request.presentation.model.ResultState.ButtonState
 import com.ataglance.walletglance.settings.error.SettingsError
-import com.ataglance.walletglance.settings.domain.navigation.SettingsScreens
+import com.ataglance.walletglance.settings.presentation.navigation.SettingsScreens
 import com.ataglance.walletglance.settings.mapper.toResultStateButton
 import com.ataglance.walletglance.settings.presentation.component.LanguagePicker
 import com.ataglance.walletglance.settings.presentation.viewmodel.LanguageViewModel

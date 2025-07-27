@@ -42,7 +42,7 @@ import com.ataglance.walletglance.core.presentation.theme.WindowTypeIsExpanded
 import com.ataglance.walletglance.core.presentation.viewmodel.sharedKoinNavViewModel
 import com.ataglance.walletglance.core.presentation.viewmodel.sharedViewModel
 import com.ataglance.walletglance.navigation.presentation.viewmodel.NavigationViewModel
-import com.ataglance.walletglance.settings.domain.navigation.SettingsScreens
+import com.ataglance.walletglance.settings.presentation.navigation.SettingsScreens
 import com.ataglance.walletglance.settings.presentation.model.SettingsCategory
 import kotlinx.coroutines.launch
 

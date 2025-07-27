@@ -2,7 +2,7 @@ package com.ataglance.walletglance.settings.domain.usecase
 
 import com.ataglance.walletglance.core.domain.navigation.MainScreens
 import com.ataglance.walletglance.settings.data.repository.SettingsRepository
-import com.ataglance.walletglance.settings.domain.navigation.SettingsScreens
+import com.ataglance.walletglance.settings.presentation.navigation.SettingsScreens
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.flow

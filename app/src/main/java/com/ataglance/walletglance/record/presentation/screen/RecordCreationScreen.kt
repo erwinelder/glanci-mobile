@@ -169,8 +169,8 @@ fun RecordCreationScreen(
     val focusManager = LocalFocusManager.current
 
     val backNavButtonImageRes = DrawableResByTheme(
-        lightDefault = R.drawable.create_record_light_default,
-        darkDefault = R.drawable.create_record_dark_default
+        lightDefault = R.drawable.create_record_light_default_icon,
+        darkDefault = R.drawable.create_record_dark_default_icon
     ).get(CurrAppTheme)
 
     var showDatePicker by remember { mutableStateOf(false) }

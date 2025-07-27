@@ -33,7 +33,7 @@ import com.ataglance.walletglance.category.domain.model.CategoryType
 import com.ataglance.walletglance.category.domain.model.DefaultCategoriesPackage
 import com.ataglance.walletglance.category.domain.model.GroupedCategories
 import com.ataglance.walletglance.category.domain.model.GroupedCategoriesByType
-import com.ataglance.walletglance.category.domain.navigation.CategoriesSettingsScreens
+import com.ataglance.walletglance.category.presentation.navigation.CategoriesSettingsScreens
 import com.ataglance.walletglance.category.presentation.component.CategoryTypeBar
 import com.ataglance.walletglance.category.presentation.component.EditingParentCategoryComponent
 import com.ataglance.walletglance.category.presentation.model.SetupCategoriesUiState
@@ -52,7 +52,7 @@ import com.ataglance.walletglance.core.presentation.viewmodel.sharedKoinNavViewM
 import com.ataglance.walletglance.core.presentation.viewmodel.sharedViewModel
 import com.ataglance.walletglance.core.utils.takeRowComposableIf
 import com.ataglance.walletglance.navigation.presentation.viewmodel.NavigationViewModel
-import com.ataglance.walletglance.settings.domain.navigation.SettingsScreens
+import com.ataglance.walletglance.settings.presentation.navigation.SettingsScreens
 import com.ataglance.walletglance.settings.presentation.model.SettingsCategory
 import kotlinx.coroutines.launch
 import org.koin.core.parameter.parametersOf

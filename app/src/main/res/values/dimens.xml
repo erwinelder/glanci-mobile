@@ -3,12 +3,7 @@
     <dimen name="screen_vertical_padding">24dp</dimen>
     <dimen name="screen_horizontal_padding">16dp</dimen>
 
-    <dimen name="widgets_gap">30dp</dimen>
-    <dimen name="buttons_gap">20dp</dimen>
-    <dimen name="nav_widget_gap">10dp</dimen>
-    <dimen name="big_spacer_line_height">4dp</dimen>
     <dimen name="large_button_corners">23dp</dimen>
-    <dimen name="medium_button_corners">22dp</dimen>
 
     <dimen name="field_corners">18dp</dimen>
     <dimen name="field_gap">20dp</dimen>
@@ -19,8 +14,4 @@
     <dimen name="record_corner_size">26dp</dimen>
 
     <dimen name="dialog_corner_size">30dp</dimen>
-
-    <dimen name="settings_category_plate_corner_size">30dp</dimen>
-
-    <dimen name="button_bar_to_widget_gap">10dp</dimen>
 </resources>

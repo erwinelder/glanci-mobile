@@ -108,7 +108,7 @@ dependencies {
     implementation(libs.androidx.navigation.common.ktx)
     implementation(libs.androidx.ui)
     implementation(libs.androidx.ui.graphics)
-    debugImplementation(libs.androidx.ui.tooling)
+    implementation(libs.androidx.ui.tooling)
     implementation(libs.androidx.ui.tooling.preview)
     // Google Play Services
     implementation(libs.app.update)

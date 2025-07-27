@@ -21,7 +21,6 @@ import com.ataglance.walletglance.core.presentation.theme.CurrAppTheme
 import com.ataglance.walletglance.core.presentation.utils.getGreetingsWidgetTitleRes
 import com.ataglance.walletglance.navigation.presentation.viewmodel.NavigationViewModel
 import com.ataglance.walletglance.settings.presentation.component.NavigateToSettingsCategoryButton
-import com.ataglance.walletglance.settings.presentation.component.OpenSettingsCategoryButton
 import com.ataglance.walletglance.settings.presentation.model.SettingsCategory
 import com.ataglance.walletglance.settings.presentation.screenContainer.SettingsCategoryScreenContainer
 import org.koin.compose.viewmodel.koinViewModel
@@ -74,9 +73,10 @@ fun ProfileScreen(
             title = greetingsTitle,
             mainScreenContent = {
                 NavigateToSettingsCategoryButton(SettingsCategory.DeleteAccount(appTheme), onPopBackStackAndNavigateToScreen)
-                OpenSettingsCategoryButton(SettingsCategory.SignOut(appTheme)) { showSignOutSheet = true }
-                NavigateToSettingsCategoryButton(SettingsCategory.UpdateEmail(appTheme), onPopBackStackAndNavigateToScreen)
+                NavigateToSettingsCategoryButton(SettingsCategory.SignOut(appTheme), onPopBackStackAndNavigateToScreen)
                 NavigateToSettingsCategoryButton(SettingsCategory.UpdatePassword(appTheme), onPopBackStackAndNavigateToScreen)
+                NavigateToSettingsCategoryButton(SettingsCategory.UpdateEmail(appTheme), onPopBackStackAndNavigateToScreen)
+                NavigateToSettingsCategoryButton(SettingsCategory.UpdateName(appTheme), onPopBackStackAndNavigateToScreen)
 //                NavigateToSettingsCategoryButton(SettingsCategory.ManageSubscriptions(appTheme), onNavigateToScreen)
             }
         )

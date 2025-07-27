@@ -16,9 +16,9 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavHostController
 import com.ataglance.walletglance.R
-import com.ataglance.walletglance.auth.domain.model.errorHandling.AuthSuccess
+import com.ataglance.walletglance.request.domain.model.result.success.AuthSuccess
 import com.ataglance.walletglance.auth.domain.model.validation.UserDataValidator
-import com.ataglance.walletglance.auth.domain.navigation.AuthScreens
+import com.ataglance.walletglance.auth.presentation.navigation.AuthScreens
 import com.ataglance.walletglance.auth.mapper.toResultStateButton
 import com.ataglance.walletglance.auth.mapper.toUiStates
 import com.ataglance.walletglance.auth.presentation.viewmodel.EmailUpdateViewModel
@@ -33,9 +33,9 @@ import com.ataglance.walletglance.core.presentation.viewmodel.sharedKoinNavViewM
 import com.ataglance.walletglance.navigation.presentation.viewmodel.NavigationViewModel
 import com.ataglance.walletglance.request.presentation.component.field.SmallTextFieldWithLabelAndMessages
 import com.ataglance.walletglance.request.presentation.component.screenContainer.AnimatedRequestScreenContainerWithTopNavBackButton
-import com.ataglance.walletglance.request.presentation.model.ValidatedFieldState
 import com.ataglance.walletglance.request.presentation.model.RequestState
 import com.ataglance.walletglance.request.presentation.model.ResultState.ButtonState
+import com.ataglance.walletglance.request.presentation.model.ValidatedFieldState
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -128,43 +128,6 @@ fun EmailUpdateRequestScreen(
             )
         }
     )
-
-
-
-    /*val backButtonImageRes = DrawableResByTheme(
-        lightDefault = R.drawable.email_light_default,
-        darkDefault = R.drawable.email_dark_default,
-    ).get(CurrAppTheme)
-
-    AnimatedScreenWithRequestState(
-        screenPadding = screenPadding,
-        requestState = requestState,
-        onCancelRequest = onCancelRequest,
-        onErrorClose = onErrorButton
-    ) {
-        ScreenContainerWithBackNavButtonTitleAndGlassSurface(
-            onNavigateBack = onNavigateBack,
-            backButtonText = stringResource(R.string.update_email),
-            backButtonImageRes = backButtonImageRes,
-            title = stringResource(R.string.update_your_email),
-            glassSurfaceContent = {
-                GlassSurfaceContent(
-                    passwordState = passwordState,
-                    onPasswordChange = onPasswordChange,
-                    newEmailState = newEmailState,
-                    onNewEmailChange = onNewEmailChange,
-                    onRequestUpdateEmail = onRequestEmailUpdate
-                )
-            },
-            bottomButtonBlock = {
-                PrimaryButton(
-                    text = stringResource(R.string.update_email),
-                    enabled = emailUpdateIsAllowed,
-                    onClick = onRequestEmailUpdate
-                )
-            }
-        )
-    }*/
 }
 
 @Composable

@@ -3,9 +3,9 @@ package com.ataglance.walletglance.settings.presentation.model
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import com.ataglance.walletglance.R
-import com.ataglance.walletglance.auth.domain.navigation.AuthScreens
+import com.ataglance.walletglance.auth.presentation.navigation.AuthScreens
 import com.ataglance.walletglance.core.domain.app.AppTheme
-import com.ataglance.walletglance.settings.domain.navigation.SettingsScreens
+import com.ataglance.walletglance.settings.presentation.navigation.SettingsScreens
 
 sealed class SettingsCategory(
     val screen: Any,
@@ -107,8 +107,8 @@ sealed class SettingsCategory(
         screen = AuthScreens.SignIn(),
         stringRes = R.string.sign_in,
         iconRes = when (appTheme) {
-            AppTheme.LightDefault -> R.drawable.sign_in_light_default
-            AppTheme.DarkDefault -> R.drawable.sign_in_dark_default
+            AppTheme.LightDefault -> R.drawable.sign_in_light_default_icon
+            AppTheme.DarkDefault -> R.drawable.sign_in_dark_default_icon
         }
     )
 
@@ -116,8 +116,8 @@ sealed class SettingsCategory(
         screen = AuthScreens.Profile,
         stringRes = R.string.profile,
         iconRes = when (appTheme) {
-            AppTheme.LightDefault -> R.drawable.profile_light_default
-            AppTheme.DarkDefault -> R.drawable.profile_dark_default
+            AppTheme.LightDefault -> R.drawable.profile_light_default_icon
+            AppTheme.DarkDefault -> R.drawable.profile_dark_default_icon
         }
     )
 
@@ -125,17 +125,26 @@ sealed class SettingsCategory(
         screen = AuthScreens.DeleteAccount,
         stringRes = R.string.delete_account,
         iconRes = when (appTheme) {
-            AppTheme.LightDefault -> R.drawable.delete_account_light_default
-            AppTheme.DarkDefault -> R.drawable.delete_account_dark_default
+            AppTheme.LightDefault -> R.drawable.delete_account_light_default_icon
+            AppTheme.DarkDefault -> R.drawable.delete_account_dark_default_icon
         }
     )
 
     data class SignOut(val appTheme: AppTheme) : SettingsCategory(
-        screen = AuthScreens.Profile,
+        screen = AuthScreens.SignOut,
         stringRes = R.string.sign_out,
         iconRes = when (appTheme) {
-            AppTheme.LightDefault -> R.drawable.sign_out_light_default
-            AppTheme.DarkDefault -> R.drawable.sign_out_dark_default
+            AppTheme.LightDefault -> R.drawable.sign_out_light_default_icon
+            AppTheme.DarkDefault -> R.drawable.sign_out_dark_default_icon
+        }
+    )
+
+    data class UpdateName(val appTheme: AppTheme) : SettingsCategory(
+        screen = AuthScreens.UpdateName,
+        stringRes = R.string.update_name,
+        iconRes = when (appTheme) {
+            AppTheme.LightDefault -> R.drawable.name_light_default_icon
+            AppTheme.DarkDefault -> R.drawable.name_dark_default_icon
         }
     )
 
@@ -143,8 +152,8 @@ sealed class SettingsCategory(
         screen = AuthScreens.UpdateEmail,
         stringRes = R.string.update_email,
         iconRes = when (appTheme) {
-            AppTheme.LightDefault -> R.drawable.email_light_default
-            AppTheme.DarkDefault -> R.drawable.email_dark_default
+            AppTheme.LightDefault -> R.drawable.email_light_default_icon
+            AppTheme.DarkDefault -> R.drawable.email_dark_default_icon
         }
     )
 
@@ -152,8 +161,8 @@ sealed class SettingsCategory(
         screen = AuthScreens.UpdatePassword,
         stringRes = R.string.update_password,
         iconRes = when (appTheme) {
-            AppTheme.LightDefault -> R.drawable.password_light_default
-            AppTheme.DarkDefault -> R.drawable.password_dark_default
+            AppTheme.LightDefault -> R.drawable.password_light_default_icon
+            AppTheme.DarkDefault -> R.drawable.password_dark_default_icon
         }
     )
 
@@ -161,8 +170,8 @@ sealed class SettingsCategory(
         screen = AuthScreens.ManageSubscriptions,
         stringRes = R.string.manage_subscriptions,
         iconRes = when (appTheme) {
-            AppTheme.LightDefault -> R.drawable.manage_subscriptions_light_default
-            AppTheme.DarkDefault -> R.drawable.manage_subscriptions_dark_default
+            AppTheme.LightDefault -> R.drawable.manage_subscriptions_light_default_icon
+            AppTheme.DarkDefault -> R.drawable.manage_subscriptions_dark_default_icon
         }
     )
 

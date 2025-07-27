@@ -1,29 +1,30 @@
 package com.ataglance.walletglance.auth.domain.usecase.auth
 
-import com.ataglance.walletglance.auth.data.model.UserCredentialsDto
-import com.ataglance.walletglance.auth.data.repository.AuthRepository
 import com.ataglance.walletglance.auth.domain.model.user.UserContext
+import com.ataglance.walletglance.auth.domain.repository.AuthRepository
 import com.ataglance.walletglance.core.domain.usecase.DeleteAllDataLocallyUseCase
-import com.ataglance.walletglance.auth.domain.model.errorHandling.AuthError
-import com.ataglance.walletglance.auth.domain.model.errorHandling.AuthSuccess
 import com.ataglance.walletglance.request.domain.model.result.Result
+import com.ataglance.walletglance.request.domain.model.result.SimpleResult
+import com.ataglance.walletglance.request.domain.model.result.error.AuthError
+import com.ataglance.walletglance.request.domain.model.result.success.AuthSuccess
 
 class DeleteAccountUseCaseImpl(
     private val authRepository: AuthRepository,
     private val userContext: UserContext,
     private val deleteAllDataLocallyUseCase: DeleteAllDataLocallyUseCase
 ) : DeleteAccountUseCase {
+
     override suspend fun execute(password: String): Result<AuthSuccess, AuthError> {
-        val email = userContext.email ?: return Result.Error(AuthError.UserNotSignedIn)
-        val credentials = UserCredentialsDto(email = email, password = password)
+        val email = userContext.email ?: return Result.Error(AuthError.SessionExpired)
 
-        val result = authRepository.deleteAccount(userCredentials = credentials)
+        val result = authRepository.deleteAccount(email = email, password = password)
 
-        if (result is Result.Success) {
+        if (result is SimpleResult.Success) {
             userContext.deleteData()
             deleteAllDataLocallyUseCase.execute()
         }
 
-        return result
+        return result.toResult(success = AuthSuccess.AccountDeleted)
     }
+
 }

@@ -3,11 +3,11 @@ package com.ataglance.walletglance.auth.presentation.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ataglance.walletglance.R
-import com.ataglance.walletglance.auth.domain.model.errorHandling.AuthError
-import com.ataglance.walletglance.auth.domain.model.errorHandling.AuthSuccess
 import com.ataglance.walletglance.auth.domain.usecase.auth.FinishSignUpUseCase
 import com.ataglance.walletglance.auth.mapper.toResultStateButton
 import com.ataglance.walletglance.request.domain.model.result.Result
+import com.ataglance.walletglance.request.domain.model.result.error.AuthError
+import com.ataglance.walletglance.request.domain.model.result.success.AuthSuccess
 import com.ataglance.walletglance.request.presentation.model.RequestState
 import com.ataglance.walletglance.request.presentation.model.ResultState.ButtonState
 import kotlinx.coroutines.flow.MutableStateFlow

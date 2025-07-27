@@ -11,10 +11,8 @@ data class CheckedGroupedCategoriesByType(
     fun concatenateLists(): List<CheckedGroupedCategories> {
         return if (expense.isNotEmpty() && income.isNotEmpty()) {
             expense + income
-        } else if (income.isEmpty()) {
-            expense
         } else {
-            income
+            income.ifEmpty { expense }
         }
     }
 
