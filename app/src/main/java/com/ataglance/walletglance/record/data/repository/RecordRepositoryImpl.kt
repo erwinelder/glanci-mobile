@@ -23,7 +23,7 @@ class RecordRepositoryImpl(
 ) : RecordRepository {
 
     private suspend fun synchronizeRecords() {
-        syncHelper.synchronizeDataToken(
+        syncHelper.synchronizeData(
             tableName = TableName.Record,
             localTimestampGetter = { localSource.getUpdateTime() },
             remoteTimestampGetter = { token -> remoteSource.getUpdateTime(token = token) },
@@ -56,7 +56,7 @@ class RecordRepositoryImpl(
     }
 
     override suspend fun upsertRecordsWithItems(recordsWithItems: List<RecordWithItemsDataModel>) {
-        syncHelper.upsertDataToken(
+        syncHelper.upsertData(
             tableName = TableName.Record,
             data = recordsWithItems,
             localTimestampGetter = { localSource.getUpdateTime() },
@@ -89,7 +89,7 @@ class RecordRepositoryImpl(
     }
 
     override suspend fun deleteRecordWithItems(recordWithItems: RecordWithItemsDataModel) {
-        syncHelper.deleteDataToken(
+        syncHelper.deleteData(
             tableName = TableName.Record,
             data = recordWithItems.asList(),
             localTimestampGetter = { localSource.getUpdateTime() },
@@ -137,7 +137,7 @@ class RecordRepositoryImpl(
         recordWithItemsToDelete: RecordWithItemsDataModel,
         recordWithItemsToUpsert: RecordWithItemsDataModel
     ) {
-        syncHelper.deleteAndUpsertDataToken(
+        syncHelper.deleteAndUpsertData(
             tableName = TableName.Record,
             toDelete = recordWithItemsToDelete.asList(),
             toUpsert = recordWithItemsToUpsert.asList(),

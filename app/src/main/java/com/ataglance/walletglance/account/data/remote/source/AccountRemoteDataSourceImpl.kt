@@ -16,7 +16,7 @@ class AccountRemoteDataSourceImpl(
 
     override suspend fun getUpdateTime(token: String): Long? {
         return runCatching {
-            service.getUpdateTime(token = token)
+            service.getUpdateTime(token = token).getDataOrNull()
         }.getOrNull().also { timestamp ->
             if (timestamp != null) {
                 Log.d("AccountRemoteDataSourceImpl", "getUpdateTime:" +
@@ -33,10 +33,10 @@ class AccountRemoteDataSourceImpl(
         timestamp: Long,
         token: String
     ): Boolean {
-        return runCatching {
-            service.saveAccounts(accounts = accounts, timestamp = timestamp, token = token)
-        }.isSuccess.also { success ->
-            if (success) {
+        val result = runCatching {
+            service.saveAccounts(accounts = accounts, timestamp = timestamp, token = token).isSuccess()
+        }.also { result ->
+            if (result.isSuccess) {
                 Log.d("AccountRemoteDataSourceImpl", "synchronizeAccounts: " +
                         "synchronized ${accounts.size} accounts at timestamp $timestamp")
             } else {
@@ -44,6 +44,8 @@ class AccountRemoteDataSourceImpl(
                         "failed to synchronize ${accounts.size} accounts at timestamp $timestamp")
             }
         }
+
+        return result.getOrNull() ?: false
     }
 
     override suspend fun getAccountsAfterTimestamp(
@@ -51,7 +53,7 @@ class AccountRemoteDataSourceImpl(
         token: String
     ): List<AccountQueryDto>? {
         return runCatching {
-            service.getAccountsAfterTimestamp(timestamp = timestamp, token = token)
+            service.getAccountsAfterTimestamp(timestamp = timestamp, token = token).getDataOrNull()
         }.getOrNull().also { accounts ->
             accounts?.forEach {
                 Log.d("AccountRemoteDataSourceImpl", "getAccountsAfterTimestamp:" +
@@ -72,10 +74,10 @@ class AccountRemoteDataSourceImpl(
                 timestamp = timestamp,
                 localTimestamp = localTimestamp,
                 token = token
-            )
+            ).getDataOrNull()
         }.getOrNull().also { accounts ->
             Log.d("AccountRemoteDataSourceImpl", "synchronizeAccountsAndGetAfterTimestamp:" +
-                    "synchronized ${accounts?.size ?: 0} accounts at timestamp $timestamp" +
+                    "synchronized ${accounts?.size} accounts at timestamp $timestamp" +
                     " with local timestamp $localTimestamp")
             accounts?.forEach {
                 Log.d("AccountRemoteDataSourceImpl", "synchronizeAccountsAndGetAfterTimestamp:" +

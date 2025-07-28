@@ -63,14 +63,14 @@ data class Transfer(
         if (type == CategoryType.Income && receiverAccountId != accountId) return emptyList()
 
         return when (type) {
-            CategoryType.Expense -> listOf(12 to listOf(79 to senderAmount))
-            CategoryType.Income -> listOf(67 to listOf(null to receiverAmount))
+            CategoryType.Expense -> listOf(12 to listOf(67 to senderAmount))
+            CategoryType.Income -> listOf(79 to listOf(null to receiverAmount))
         }
     }
 
     fun getIfMatchAnyCategoryId(categoryIds: List<Int>): Transfer? {
         return takeIf {
-            categoryIds.contains(12) || categoryIds.contains(79) || categoryIds.contains(67)
+            categoryIds.contains(12) || categoryIds.contains(67) || categoryIds.contains(79)
         }
     }
 

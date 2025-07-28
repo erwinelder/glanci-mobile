@@ -1,6 +1,6 @@
-package com.ataglance.walletglance.request.data.model.result
+package com.glanci.request.shared
 
-import com.ataglance.walletglance.request.data.model.result.error.DataError
+import com.glanci.request.shared.error.DataError
 import kotlinx.serialization.Serializable
 
 @Serializable
@@ -12,6 +12,8 @@ sealed interface SimpleResult<out E: DataError> {
     @Serializable
     data class Error<out E: DataError>(val error: E): SimpleResult<E>
 
+
+    fun isSuccess(): Boolean = this is Success
 
     fun getErrorOrNull(): E? = (this as? Error)?.error
 

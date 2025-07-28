@@ -12,7 +12,7 @@ class UpdateNameUseCaseImpl(
     override suspend fun execute(name: String): Result<AuthSuccess, AuthError> {
         val result = authRepository.saveUserName(name = name)
 
-        return result.toResult(success = AuthSuccess.EmailUpdated)
+        return result.toResult(success = AuthSuccess.NameUpdated)
     }
 
 }

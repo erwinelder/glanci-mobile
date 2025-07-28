@@ -15,7 +15,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import com.ataglance.walletglance.R
-import com.ataglance.walletglance.request.domain.model.result.success.AuthSuccess
 import com.ataglance.walletglance.auth.domain.model.validation.UserDataValidator
 import com.ataglance.walletglance.auth.mapper.toResultStateButton
 import com.ataglance.walletglance.auth.mapper.toUiStates
@@ -27,6 +26,7 @@ import com.ataglance.walletglance.core.presentation.component.container.glassSur
 import com.ataglance.walletglance.core.presentation.component.container.glassSurface.GlassSurfaceContentColumnWrapper
 import com.ataglance.walletglance.core.presentation.model.IconPathsRes
 import com.ataglance.walletglance.core.presentation.preview.PreviewWithMainScaffoldContainer
+import com.ataglance.walletglance.request.domain.model.result.success.AuthSuccess
 import com.ataglance.walletglance.request.presentation.component.field.SmallTextFieldWithLabelAndMessages
 import com.ataglance.walletglance.request.presentation.component.screenContainer.AnimatedRequestScreenContainerWithTopNavBackButton
 import com.ataglance.walletglance.request.presentation.model.RequestState
@@ -57,6 +57,7 @@ fun NameUpdateScreenWrapper(
         onUpdateName = viewModel::updateName,
         requestState = requestState,
         onCancelRequest = viewModel::cancelNameUpdate,
+        onSuccessButton = navController::popBackStack,
         onErrorButton = viewModel::resetRequestState
     )
 }
@@ -72,6 +73,7 @@ fun NameUpdateScreen(
 
     requestState: RequestState<ButtonState, ButtonState>?,
     onCancelRequest: () -> Unit,
+    onSuccessButton: () -> Unit,
     onErrorButton: () -> Unit
 ) {
     val title = if (nameUpdateIsAllowed) {
@@ -86,6 +88,7 @@ fun NameUpdateScreen(
         title = title,
         requestStateButton = requestState,
         onCancelRequest = onCancelRequest,
+        onSuccessButton = onSuccessButton,
         onErrorButton = onErrorButton,
         backButtonText = stringResource(R.string.update_name),
         onBackButtonClick = onNavigateBack,
@@ -102,7 +105,7 @@ fun NameUpdateScreen(
         },
         screenBottomContent = {
             PrimaryButton(
-                text = stringResource(R.string.update_email),
+                text = stringResource(R.string.update_name),
                 enabled = nameUpdateIsAllowed,
                 onClick = onUpdateName
             )
@@ -166,7 +169,7 @@ fun NameUpdateScreenPreview(
                     )
                     delay(2000)
                     requestState = RequestState.Success(
-                        state = AuthSuccess.EmailUpdateEmailVerificationSent.toResultStateButton()
+                        state = AuthSuccess.NameUpdated.toResultStateButton()
                     )
                 }
             },
@@ -176,6 +179,7 @@ fun NameUpdateScreenPreview(
                 requestState = initialRequestState
                 job?.cancel()
             },
+            onSuccessButton = { requestState = initialRequestState },
             onErrorButton = { requestState = initialRequestState }
         )
     }

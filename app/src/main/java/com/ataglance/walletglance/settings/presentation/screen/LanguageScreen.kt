@@ -19,6 +19,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import com.ataglance.walletglance.R
+import com.ataglance.walletglance.auth.mapper.toResultStateButton
 import com.ataglance.walletglance.core.domain.app.AppConfiguration
 import com.ataglance.walletglance.core.domain.app.AppLanguage
 import com.ataglance.walletglance.core.domain.app.AppTheme
@@ -28,13 +29,12 @@ import com.ataglance.walletglance.core.presentation.model.IconPathsRes
 import com.ataglance.walletglance.core.presentation.preview.PreviewWithMainScaffoldContainer
 import com.ataglance.walletglance.core.utils.takeComposableIf
 import com.ataglance.walletglance.navigation.presentation.viewmodel.NavigationViewModel
+import com.ataglance.walletglance.request.domain.model.result.error.AuthError
 import com.ataglance.walletglance.request.presentation.component.screenContainer.AnimatedRequestScreenContainerWithTopNavBackButton
 import com.ataglance.walletglance.request.presentation.model.RequestErrorState
 import com.ataglance.walletglance.request.presentation.model.ResultState.ButtonState
-import com.ataglance.walletglance.settings.error.SettingsError
-import com.ataglance.walletglance.settings.presentation.navigation.SettingsScreens
-import com.ataglance.walletglance.settings.mapper.toResultStateButton
 import com.ataglance.walletglance.settings.presentation.component.LanguagePicker
+import com.ataglance.walletglance.settings.presentation.navigation.SettingsScreens
 import com.ataglance.walletglance.settings.presentation.viewmodel.LanguageViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -148,7 +148,7 @@ fun LanguageScreenPreview(
                     )
                     delay(2000)
                     requestState = RequestErrorState.Error(
-                        state = SettingsError.LanguageNotSavedRemotely.toResultStateButton()
+                        state = AuthError.UserLanguageNotSaved.toResultStateButton()
                     )
                 }
             },

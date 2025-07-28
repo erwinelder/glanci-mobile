@@ -32,10 +32,15 @@ data class CategoryStatistics(
                 currency = accountCurrency,
                 percentageFormatted = percentage.roundToTwoDecimals(suffix = "%"),
                 percentageFloat = percentage / 100,
-                subcategoriesStatistics = subcategoriesStats
+                subcategoriesStatistics = subcategoriesStats?.takeIf { it.isNotEmpty() }
             )
         }
 
+    }
+
+
+    fun getTotalAmountDouble(): Double {
+        return totalAmount.filterNot { it == ' ' }.toDoubleOrNull() ?: 0.0
     }
 
 }

@@ -21,7 +21,7 @@ class CategoryRepositoryImpl(
 ) : CategoryRepository {
 
     private suspend fun synchronizeCategories() {
-        syncHelper.synchronizeDataToken(
+        syncHelper.synchronizeData(
             tableName = TableName.Category,
             localTimestampGetter = { localSource.getUpdateTime() },
             remoteTimestampGetter = { token -> remoteSource.getUpdateTime(token = token) },
@@ -48,7 +48,7 @@ class CategoryRepositoryImpl(
     }
 
     override suspend fun upsertCategories(categories: List<CategoryDataModel>) {
-        syncHelper.upsertDataToken(
+        syncHelper.upsertData(
             tableName = TableName.Category,
             data = categories,
             localTimestampGetter = { localSource.getUpdateTime() },
@@ -82,7 +82,7 @@ class CategoryRepositoryImpl(
         toDelete: List<CategoryDataModel>,
         toUpsert: List<CategoryDataModel>
     ) {
-        syncHelper.deleteAndUpsertDataToken(
+        syncHelper.deleteAndUpsertData(
             tableName = TableName.Category,
             toDelete = toDelete,
             toUpsert = toUpsert,

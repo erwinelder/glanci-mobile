@@ -3,7 +3,7 @@ package com.ataglance.walletglance.auth.mapper
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import com.ataglance.walletglance.R
-import com.ataglance.walletglance.request.data.model.result.error.AuthDataError
+import com.glanci.request.shared.error.AuthDataError
 import com.ataglance.walletglance.request.domain.model.result.error.AuthError
 import com.ataglance.walletglance.request.domain.model.result.success.AuthSuccess
 import com.ataglance.walletglance.request.presentation.model.ResultState

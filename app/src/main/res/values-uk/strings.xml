@@ -6,7 +6,6 @@
     <string name="records">Записи</string>
     <string name="statistics">Статистика</string>
     <string name="settings">Налаштування</string>
-    <string name="setup">Налаштування</string>
 
     <!-- Widget names -->
     <string name="total_for_period">Загальна сума за обраний період</string>
@@ -21,7 +20,6 @@
     <string name="update">Оновити</string>
     <string name="confirm">Підтвердити</string>
     <string name="check">Перевірити</string>
-    <string name="check_verification">Перевірити підтвердження</string>
     <string name="verify">Підтвердити</string>
     <string name="cancel">Скасувати</string>
     <string name="_continue">Продовжити</string>
@@ -70,10 +68,7 @@
     <string name="manage_subscriptions">Керувати підписками</string>
 
     <!-- Settings -->
-    <string name="start">Старт</string>
     <string name="finish">Завершити</string>
-    <string name="_import">Імпорт</string>
-    <string name="start_setup">Почати налаштування</string>
     <string name="continue_to_app">Перейти до додатка</string>
     <string name="continue_setup">Продовжити налаштування</string>
     <string name="adjust_app_notifications">Налаштуйте сповіщення додатка</string>
@@ -81,9 +76,6 @@
 
     <!-- Settings loaders -->
     <string name="saving_language_loader">Збереження мови…</string>
-
-    <!-- Settings error -->
-    <string name="language_not_saved_remotely_message">Мову не вдалося зберегти на сервері. Glanci спробує зберегти її пізніше.</string>
 
     <!-- Settings Notifications -->
     <string name="daily_reminders_to_record_expenses">Щоденні нагадування фіксувати витрати</string>
@@ -93,7 +85,6 @@
 
     <!-- Fields -->
     <string name="email">Електронна пошта</string>
-    <string name="current_email">Поточна електронна пошта</string>
     <string name="new_email">Нова електронна пошта</string>
     <string name="password">Пароль</string>
     <string name="confirm_password">Підтвердження пароля</string>
@@ -332,7 +323,6 @@
     <string name="you_have_no_income_in_date_range">У вас немає доходів за цей період</string>
     <string name="no_data_for_the_selected_filter">Немає даних для обраного фільтра</string>
     <string name="you_have_no_budgets_yet">У вас ще немає бюджетів</string>
-    <string name="follow_link_in_email">Будь ласка, перейдіть за посиланням у листі</string>
 
     <!-- Subscriptions benefits -->
     <string name="all_basic_app_features">Усі базові функції додатка</string>
@@ -381,7 +371,6 @@
     <string name="parking">Паркування</string>
     <string name="fuel">Паливо</string>
     <string name="leasing">Лізинг</string>
-    <string name="rent_vehicle_category">Оренда автомобіля</string>
     <string name="internet_communication">Інтернет та зв\'язок</string>
     <string name="professional_subs">Проф підписки</string>
     <string name="entertainment_subs">Розваж. підписки</string>
@@ -413,7 +402,6 @@
     <string name="salary">Зарплатня</string>
     <string name="scholarship">Стипендія</string>
     <string name="sale">Продаж</string>
-    <string name="realty_income">Дохід від нерухомості</string>
     <string name="refunds">Повернення коштів</string>
     <string name="gifts">Подарунки</string>
     <string name="transfers">Перекази</string>

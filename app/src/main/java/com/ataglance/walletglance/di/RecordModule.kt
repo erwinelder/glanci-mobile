@@ -58,8 +58,7 @@ val recordModule = module {
     single<DeleteRecordUseCase> {
         DeleteRecordUseCaseImpl(
             recordRepository = get(),
-            getAccountsUseCase = get(),
-            saveAccountsUseCase = get()
+            accountRepository = get()
         )
     }
 
@@ -67,8 +66,7 @@ val recordModule = module {
         SaveRecordUseCaseImpl(
             recordRepository = get(),
             getRecordUseCase = get(),
-            getAccountsUseCase = get(),
-            saveAccountsUseCase = get()
+            accountRepository = get()
         )
     }
 
@@ -83,7 +81,7 @@ val recordModule = module {
     single<GetRecordDraftUseCase> {
         GetRecordDraftUseCaseImpl(
             getRecordUseCase = get(),
-            getAccountsUseCase = get(),
+            accountRepository = get(),
             getCategoriesUseCase = get()
         )
     }
@@ -113,7 +111,7 @@ val recordModule = module {
             saveRecordUseCase = get(),
             getRecordDraftUseCase = get(),
             getLastUsedRecordCategoryUseCase = get(),
-            getAccountsUseCase = get(),
+            accountRepository = get(),
             getCategoriesUseCase = get()
         )
     }

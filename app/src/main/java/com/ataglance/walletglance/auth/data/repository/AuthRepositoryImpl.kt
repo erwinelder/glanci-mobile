@@ -105,6 +105,23 @@ class AuthRepositoryImpl(
         )
     }
 
+    override suspend fun finishEmailUpdate(
+        newEmail: String,
+        password: String
+    ): ResultData<UserWithToken, AuthError> {
+        val token = userContext.getAuthToken()
+            ?: return ResultData.Error(AuthError.SessionExpired)
+
+        val result = service.finishEmailUpdate(
+            newEmail = newEmail, password = password, token = token
+        )
+
+        return result.toDomainResultData(
+            dataMapper = { it.toDomainModel() },
+            errorMapper = { it.toDomainError() }
+        )
+    }
+
     override suspend fun requestPasswordReset(email: String): SimpleResult<AuthError> {
         val result = service.requestPasswordReset(email = email)
 

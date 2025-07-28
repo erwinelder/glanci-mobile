@@ -7,6 +7,10 @@ import com.ataglance.walletglance.account.data.mapper.toDataModel
 import com.ataglance.walletglance.account.data.mapper.toEntity
 import com.ataglance.walletglance.account.data.model.AccountDataModel
 import com.ataglance.walletglance.account.data.remote.source.AccountRemoteDataSource
+import com.ataglance.walletglance.account.domain.model.Account
+import com.ataglance.walletglance.account.domain.repository.AccountRepository
+import com.ataglance.walletglance.account.mapper.toDataModel
+import com.ataglance.walletglance.account.mapper.toDomainModel
 import com.ataglance.walletglance.core.data.model.DataSyncHelper
 import com.ataglance.walletglance.core.data.model.TableName
 import com.glanci.account.shared.dto.AccountQueryDto
@@ -21,7 +25,7 @@ class AccountRepositoryImpl(
 ) : AccountRepository {
 
     private suspend fun synchronizeAccounts() {
-        syncHelper.synchronizeDataToken(
+        syncHelper.synchronizeData(
             tableName = TableName.Account,
             localTimestampGetter = { localSource.getUpdateTime() },
             remoteTimestampGetter = { token -> remoteSource.getUpdateTime(token = token) },
@@ -47,8 +51,10 @@ class AccountRepositoryImpl(
         )
     }
 
-    override suspend fun upsertAccounts(accounts: List<AccountDataModel>) {
-        syncHelper.upsertDataToken(
+    override suspend fun upsertAccounts(accounts: List<Account>) {
+        val accounts = accounts.map { it.toDataModel() }
+
+        syncHelper.upsertData(
             tableName = TableName.Account,
             data = accounts,
             localTimestampGetter = { localSource.getUpdateTime() },
@@ -79,10 +85,13 @@ class AccountRepositoryImpl(
     }
 
     override suspend fun deleteAndUpsertAccounts(
-        toDelete: List<AccountDataModel>,
-        toUpsert: List<AccountDataModel>
+        toDelete: List<Account>,
+        toUpsert: List<Account>
     ) {
-        syncHelper.deleteAndUpsertDataToken(
+        val toDelete = toDelete.map { it.toDataModel() }
+        val toUpsert = toUpsert.map { it.toDataModel() }
+
+        syncHelper.deleteAndUpsertData(
             tableName = TableName.Account,
             toDelete = toDelete,
             toUpsert = toUpsert,
@@ -126,30 +135,30 @@ class AccountRepositoryImpl(
         localSource.deleteAllAccounts()
     }
 
-    override suspend fun getAccount(id: Int): AccountDataModel? {
+    override suspend fun getAccount(id: Int): Account? {
         synchronizeAccounts()
-        return localSource.getAccount(id = id)?.toDataModel()
+        return localSource.getAccount(id = id)?.toDataModel()?.toDomainModel()
     }
 
-    override suspend fun getAccounts(ids: List<Int>): List<AccountDataModel> {
+    override suspend fun getAccounts(ids: List<Int>): List<Account> {
         synchronizeAccounts()
         return localSource
             .getAccounts(ids = ids)
-            .map { it.toDataModel() }
+            .map { it.toDataModel().toDomainModel() }
     }
 
-    override fun getAllAccountsAsFlow(): Flow<List<AccountDataModel>> {
+    override fun getAllAccountsAsFlow(): Flow<List<Account>> {
         return localSource
             .getAllAccountsAsFlow()
             .onStart { synchronizeAccounts() }
             .map { accounts ->
-                accounts.map { it.toDataModel() }
+                accounts.map { it.toDataModel().toDomainModel() }
             }
     }
 
-    override suspend fun getAllAccounts(): List<AccountDataModel> {
+    override suspend fun getAllAccounts(): List<Account> {
         synchronizeAccounts()
-        return localSource.getAllAccounts().map { it.toDataModel() }
+        return localSource.getAllAccounts().map { it.toDataModel().toDomainModel() }
     }
 
 }

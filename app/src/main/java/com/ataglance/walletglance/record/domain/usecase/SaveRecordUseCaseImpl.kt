@@ -1,9 +1,7 @@
 package com.ataglance.walletglance.record.domain.usecase
 
+import com.ataglance.walletglance.account.domain.repository.AccountRepository
 import com.ataglance.walletglance.account.domain.model.Account
-import com.ataglance.walletglance.account.domain.usecase.GetAccountsUseCase
-import com.ataglance.walletglance.account.domain.usecase.SaveAccountsUseCase
-import com.ataglance.walletglance.account.mapper.toDataModel
 import com.ataglance.walletglance.core.utils.asList
 import com.ataglance.walletglance.record.data.repository.RecordRepository
 import com.ataglance.walletglance.record.mapper.toDataModelWithItems
@@ -12,15 +10,14 @@ import com.ataglance.walletglance.transaction.domain.model.RecordWithItems
 class SaveRecordUseCaseImpl(
     private val recordRepository: RecordRepository,
     private val getRecordUseCase: GetRecordUseCase,
-    private val getAccountsUseCase: GetAccountsUseCase,
-    private val saveAccountsUseCase: SaveAccountsUseCase
+    private val accountRepository: AccountRepository
 ) : SaveRecordUseCase {
 
     override suspend fun execute(createdRecord: RecordWithItems) {
         if (createdRecord.isNew) {
             val accounts = getAccountsAfterNewRecord(createdRecord = createdRecord) ?: return
 
-            saveAccountsUseCase.save(accounts = accounts.map { it.toDataModel() })
+            accountRepository.upsertAccounts(accounts = accounts)
             recordRepository.upsertRecordWithItems(
                 recordWithItems = createdRecord.toDataModelWithItems()
             )
@@ -30,7 +27,7 @@ class SaveRecordUseCaseImpl(
                 createdRecord = createdRecord, currentRecord = currentRecord
             ) ?: return
 
-            saveAccountsUseCase.save(accounts = accounts.map { it.toDataModel() })
+            accountRepository.upsertAccounts(accounts = accounts)
             recordRepository.deleteAndUpsertRecordWithItems(
                 recordWithItemsToDelete = currentRecord.toDataModelWithItems(),
                 recordWithItemsToUpsert = createdRecord.toDataModelWithItems()
@@ -41,8 +38,8 @@ class SaveRecordUseCaseImpl(
     private suspend fun getAccountsAfterNewRecord(
         createdRecord: RecordWithItems
     ): List<Account>? {
-        return getAccountsUseCase
-            .get(id = createdRecord.accountId)
+        return accountRepository
+            .getAccount(id = createdRecord.accountId)
             ?.applyTransaction(
                 amount = createdRecord.totalAmount, type = createdRecord.type
             )
@@ -54,8 +51,8 @@ class SaveRecordUseCaseImpl(
         currentRecord: RecordWithItems
     ): List<Account>? {
         return if (createdRecord.accountId == currentRecord.accountId) {
-            getAccountsUseCase
-                .get(id = createdRecord.accountId)
+            accountRepository
+                .getAccount(id = createdRecord.accountId)
                 ?.reapplyTransaction(
                     prevAmount = currentRecord.totalAmount,
                     newAmount = createdRecord.totalAmount,
@@ -63,12 +60,12 @@ class SaveRecordUseCaseImpl(
                 )
                 ?.asList()
         } else {
-            val prevAccount = getAccountsUseCase
-                .get(id = currentRecord.accountId)
+            val prevAccount = accountRepository
+                .getAccount(id = currentRecord.accountId)
                 ?.rollbackTransaction(amount = currentRecord.totalAmount, type = currentRecord.type)
                 ?: return null
-            val newAccount = getAccountsUseCase
-                .get(id = createdRecord.accountId)
+            val newAccount = accountRepository
+                .getAccount(id = createdRecord.accountId)
                 ?.applyTransaction(amount = createdRecord.totalAmount, type = createdRecord.type)
                 ?: return null
             listOf(prevAccount, newAccount)

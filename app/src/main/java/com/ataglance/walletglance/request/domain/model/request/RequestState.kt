@@ -1,7 +1,7 @@
 package com.ataglance.walletglance.request.domain.model.request
 
-import com.ataglance.walletglance.request.domain.model.result.DomainError
-import com.ataglance.walletglance.request.domain.model.result.DomainSuccess
+import com.ataglance.walletglance.request.domain.model.result.error.DomainError
+import com.ataglance.walletglance.request.domain.model.result.success.DomainSuccess
 
 sealed class RequestState <S : DomainSuccess, E : DomainError> {
 

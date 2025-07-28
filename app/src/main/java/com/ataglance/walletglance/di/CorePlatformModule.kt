@@ -6,7 +6,6 @@ import com.ataglance.walletglance.core.presentation.model.ResourceManager
 import com.ataglance.walletglance.core.presentation.model.ResourceManagerImpl
 import com.ataglance.walletglance.core.presentation.vibration.Vibrator
 import com.ataglance.walletglance.core.presentation.vibration.VibratorImpl
-import com.google.firebase.firestore.FirebaseFirestore
 import com.russhwolf.settings.Settings
 import org.koin.dsl.module
 import java.util.Locale
@@ -17,10 +16,6 @@ val corePlatformModule = module {
 
     single<Settings> {
         SecureStorageWithKeyGenerator(context = get())
-    }
-
-    single {
-        FirebaseFirestore.getInstance()
     }
 
     factory<ResourceManager> { parameters ->

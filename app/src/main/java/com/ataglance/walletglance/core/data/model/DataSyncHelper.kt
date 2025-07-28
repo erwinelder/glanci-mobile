@@ -23,7 +23,7 @@ class DataSyncHelper(
     }
 
 
-    suspend fun <E, QD, CD> synchronizeDataToken(
+    suspend fun <E, QD, CD> synchronizeData(
         tableName: TableName,
         localTimestampGetter: suspend () -> Long?,
         remoteTimestampGetter: suspend (token: String) -> Long?,
@@ -61,7 +61,7 @@ class DataSyncHelper(
         }
     }
 
-    suspend fun <DM, E, QD, CD> upsertDataToken(
+    suspend fun <DM, E, QD, CD> upsertData(
         tableName: TableName,
         data: List<DM>,
         localTimestampGetter: suspend () -> Long?,
@@ -124,7 +124,7 @@ class DataSyncHelper(
         }
     }
 
-    suspend fun <DM, E, QD, CD> deleteDataToken(
+    suspend fun <DM, E, QD, CD> deleteData(
         tableName: TableName,
         data: List<DM>,
         localTimestampGetter: suspend () -> Long?,
@@ -205,7 +205,7 @@ class DataSyncHelper(
         }
     }
 
-    suspend fun <DM, E, QD, CD> deleteAndUpsertDataToken(
+    suspend fun <DM, E, QD, CD> deleteAndUpsertData(
         tableName: TableName,
         toDelete: List<DM>,
         toUpsert: List<DM>,

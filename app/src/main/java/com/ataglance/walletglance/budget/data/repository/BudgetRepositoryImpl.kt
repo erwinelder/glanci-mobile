@@ -21,7 +21,7 @@ class BudgetRepositoryImpl(
 ) : BudgetRepository {
 
     private suspend fun synchronizeBudgetsWithAssociations() {
-        syncHelper.synchronizeDataToken(
+        syncHelper.synchronizeData(
             tableName = TableName.Account,
             localTimestampGetter = { localSource.getUpdateTime() },
             remoteTimestampGetter = { token -> remoteSource.getUpdateTime(token = token) },
@@ -53,7 +53,7 @@ class BudgetRepositoryImpl(
         toDelete: List<BudgetDataModel>,
         toUpsert: List<BudgetWithAssociationsDataModel>
     ) {
-        syncHelper.deleteAndUpsertDataToken(
+        syncHelper.deleteAndUpsertData(
             tableName = TableName.Budget,
             toDelete = toDelete.map { it.withAssociations() },
             toUpsert = toUpsert,

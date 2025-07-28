@@ -21,7 +21,7 @@ class WidgetRepositoryImpl(
 ) : WidgetRepository {
 
     private suspend fun synchronizeWidgets() {
-        syncHelper.synchronizeDataToken(
+        syncHelper.synchronizeData(
             tableName = TableName.Widget,
             localTimestampGetter = { localSource.getUpdateTime() },
             remoteTimestampGetter = { token -> remoteSource.getUpdateTime(token = token) },
@@ -49,7 +49,7 @@ class WidgetRepositoryImpl(
 
 
     override suspend fun upsertWidgets(widgets: List<WidgetDataModel>) {
-        syncHelper.upsertDataToken(
+        syncHelper.upsertData(
             tableName = TableName.Widget,
             data = widgets,
             localTimestampGetter = { localSource.getUpdateTime() },
@@ -84,7 +84,7 @@ class WidgetRepositoryImpl(
         toDelete: List<WidgetDataModel>,
         toUpsert: List<WidgetDataModel>
     ) {
-        syncHelper.deleteAndUpsertDataToken(
+        syncHelper.deleteAndUpsertData(
             tableName = TableName.Widget,
             toDelete = toDelete,
             toUpsert = toUpsert,

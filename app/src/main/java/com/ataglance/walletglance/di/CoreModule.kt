@@ -13,17 +13,14 @@ import com.ataglance.walletglance.settings.domain.usecase.language.ApplyLanguage
 import com.ataglance.walletglance.settings.domain.usecase.language.ApplyLanguageToSystemUseCaseImpl
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.okhttp.OkHttp
-import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.http.URLProtocol
 import io.ktor.http.encodedPath
-import io.ktor.serialization.kotlinx.json.json
 import kotlinx.rpc.krpc.ktor.client.KtorRpcClient
 import kotlinx.rpc.krpc.ktor.client.installKrpc
 import kotlinx.rpc.krpc.ktor.client.rpc
 import kotlinx.rpc.krpc.ktor.client.rpcConfig
 import kotlinx.rpc.krpc.serialization.protobuf.protobuf
 import kotlinx.serialization.ExperimentalSerializationApi
-import kotlinx.serialization.json.Json
 import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
 
@@ -44,15 +41,7 @@ val coreModule = module {
         DataSyncHelper(userContext = get())
     }
 
-    single<HttpClient> {
-        HttpClient(OkHttp) {
-            install(ContentNegotiation) {
-                json(Json { ignoreUnknownKeys = true })
-            }
-        }
-    }
-
-    single<KtorRpcClient> { params ->
+    factory<KtorRpcClient> { params ->
         val path = params.get<String>()
 
         HttpClient(OkHttp) {
@@ -100,7 +89,7 @@ val coreModule = module {
             changeAppSetupStageUseCase = get(),
             getStartDestinationsBySetupStageUseCase = get(),
 
-            getAccountsUseCase = get(),
+            accountRepository = get(),
             getWidgetsUseCase = get()
         )
     }

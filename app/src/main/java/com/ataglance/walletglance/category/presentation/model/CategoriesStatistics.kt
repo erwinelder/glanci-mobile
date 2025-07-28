@@ -38,32 +38,35 @@ data class CategoriesStatistics(
         ): List<CategoryStatistics> {
             val generalTotalAmount = rawStats.values.sumOf { map -> map.values.sum() }
 
-            return rawStats.mapNotNull { (categoryId, subcategoryIdToAmountMap) ->
-                val categoryTotalAmount = subcategoryIdToAmountMap.values.sum()
-                val categoryWithSub = groupedCategories.find { it.categoryId == categoryId }
-                    ?: return@mapNotNull null
+            return rawStats
+                .mapNotNull { (categoryId, subcategoryIdToAmountMap) ->
+                    val categoryTotalAmount = subcategoryIdToAmountMap.values.sum()
+                    val categoryWithSub = groupedCategories.find { it.categoryId == categoryId }
+                        ?: return@mapNotNull null
 
-                val subcategoriesStats = subcategoryIdToAmountMap
-                    .mapNotNull { (subcategoryId, subcategoryTotalAmount) ->
-                        val subcategory = categoryWithSub.getSubcategoryById(id = subcategoryId)
-                            ?: return@mapNotNull null
+                    val subcategoriesStats = subcategoryIdToAmountMap
+                        .mapNotNull { (subcategoryId, subcategoryTotalAmount) ->
+                            val subcategory = categoryWithSub.getSubcategoryById(id = subcategoryId)
+                                ?: return@mapNotNull null
 
-                        CategoryStatistics.fromStats(
-                            category = subcategory,
-                            totalAmount = subcategoryTotalAmount,
-                            generalTotalAmount = categoryTotalAmount,
-                            accountCurrency = accountCurrency
-                        )
-                    }
+                            CategoryStatistics.fromStats(
+                                category = subcategory,
+                                totalAmount = subcategoryTotalAmount,
+                                generalTotalAmount = categoryTotalAmount,
+                                accountCurrency = accountCurrency
+                            )
+                        }
+                        .sortedByDescending { stats -> stats.getTotalAmountDouble() }
 
-                CategoryStatistics.fromStats(
-                    category = categoryWithSub.category,
-                    totalAmount = categoryTotalAmount,
-                    generalTotalAmount = generalTotalAmount,
-                    accountCurrency = accountCurrency,
-                    subcategoriesStats = subcategoriesStats
-                )
-            }
+                    CategoryStatistics.fromStats(
+                        category = categoryWithSub.category,
+                        totalAmount = categoryTotalAmount,
+                        generalTotalAmount = generalTotalAmount,
+                        accountCurrency = accountCurrency,
+                        subcategoriesStats = subcategoriesStats
+                    )
+                }
+                .sortedByDescending { stats -> stats.getTotalAmountDouble() }
         }
 
     }

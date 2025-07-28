@@ -1,6 +1,6 @@
 package com.ataglance.walletglance.request.domain.model.result.error
 
-import com.ataglance.walletglance.request.domain.model.result.DomainError
+import com.ataglance.walletglance.request.domain.model.result.error.DomainError
 
 enum class AuthError : DomainError {
     SessionExpired,

@@ -1,7 +1,7 @@
 package com.ataglance.walletglance.record.domain.usecase
 
+import com.ataglance.walletglance.account.domain.repository.AccountRepository
 import com.ataglance.walletglance.account.domain.model.Account
-import com.ataglance.walletglance.account.domain.usecase.GetAccountsUseCase
 import com.ataglance.walletglance.account.domain.utils.findById
 import com.ataglance.walletglance.category.domain.model.CategoryWithSub
 import com.ataglance.walletglance.category.domain.model.GroupedCategoriesByType
@@ -11,7 +11,7 @@ import com.ataglance.walletglance.record.presentation.model.RecordDraftWithItems
 
 class GetRecordDraftUseCaseImpl(
     private val getRecordUseCase: GetRecordUseCase,
-    private val getAccountsUseCase: GetAccountsUseCase,
+    private val accountRepository: AccountRepository,
     private val getCategoriesUseCase: GetCategoriesUseCase
 ) : GetRecordDraftUseCase {
 
@@ -22,7 +22,7 @@ class GetRecordDraftUseCaseImpl(
         categoryWithSub: CategoryWithSub?,
         categories: GroupedCategoriesByType?
     ): RecordDraftWithItems {
-        val accounts = accounts ?: getAccountsUseCase.getAll()
+        val accounts = accounts ?: accountRepository.getAllAccounts()
         val categories = categories ?: getCategoriesUseCase.getGrouped()
 
         return id

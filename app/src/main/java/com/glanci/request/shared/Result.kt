@@ -1,7 +1,7 @@
-package com.ataglance.walletglance.request.data.model.result
+package com.glanci.request.shared
 
-import com.ataglance.walletglance.request.data.model.result.error.DataError
-import com.ataglance.walletglance.request.data.model.result.success.DataSuccess
+import com.glanci.request.shared.error.DataError
+import com.glanci.request.shared.success.DataSuccess
 import kotlinx.serialization.Serializable
 
 @Serializable

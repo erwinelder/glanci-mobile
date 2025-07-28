@@ -3,7 +3,7 @@ package com.ataglance.walletglance.core.presentation.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ataglance.walletglance.account.domain.model.AccountsAndActiveOne
-import com.ataglance.walletglance.account.domain.usecase.GetAccountsUseCase
+import com.ataglance.walletglance.account.domain.repository.AccountRepository
 import com.ataglance.walletglance.account.domain.utils.findById
 import com.ataglance.walletglance.core.domain.app.AppConfiguration
 import com.ataglance.walletglance.core.domain.app.AppTheme
@@ -35,7 +35,7 @@ class AppViewModel(
     private val changeAppSetupStageUseCase: ChangeAppSetupStageUseCase,
     getStartDestinationsBySetupStageUseCase: GetStartDestinationsBySetupStageUseCase,
 
-    private val getAccountsUseCase: GetAccountsUseCase,
+    private val accountRepository: AccountRepository,
     private val getWidgetsUseCase: GetWidgetsUseCase
 ) : ViewModel() {
 
@@ -104,9 +104,12 @@ class AppViewModel(
 
     private fun fetchAccounts() {
         viewModelScope.launch {
-            getAccountsUseCase.getAllAsFlow().collect { accounts ->
+            accountRepository.getAllAccountsAsFlow().collect { accounts ->
                 _accountsAndActiveOne.update {
-                    AccountsAndActiveOne.fromAccounts(accounts = accounts)
+                    AccountsAndActiveOne.fromAccounts(
+                        accounts = accounts,
+                        currentActiveAccountId = it.activeAccount?.id
+                    )
                 }
             }
         }

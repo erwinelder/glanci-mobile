@@ -6,7 +6,6 @@
     <string name="records">Записи</string>
     <string name="statistics">Статистика</string>
     <string name="settings">Настройки</string>
-    <string name="setup">Настройка</string>
 
     <!-- Widget names -->
     <string name="total_for_period">Итоговая сумма за выбранный период</string>
@@ -21,7 +20,6 @@
     <string name="update">Обновить</string>
     <string name="confirm">Подтвердить</string>
     <string name="check">Проверить</string>
-    <string name="check_verification">Проверить подтверждение</string>
     <string name="verify">Подтвердить</string>
     <string name="cancel">Отменить</string>
     <string name="_continue">Продолжить</string>
@@ -70,10 +68,7 @@
     <string name="manage_subscriptions">Управлять подписками</string>
 
     <!-- Settings -->
-    <string name="start">Старт</string>
     <string name="finish">Завершить</string>
-    <string name="_import">Импорт</string>
-    <string name="start_setup">Начать настройку</string>
     <string name="continue_to_app">Перейти в приложение</string>
     <string name="continue_setup">Продолжить настройку</string>
     <string name="adjust_app_notifications">Настройте уведомления приложения</string>
@@ -81,9 +76,6 @@
 
     <!-- Settings loaders -->
     <string name="saving_language_loader">Сохранение языка…</string>
-
-    <!-- Settings error -->
-    <string name="language_not_saved_remotely_message">Язык не был сохранён на сервере. Glanci попытается сохранить его позже.</string>
 
     <!-- Settings Notifications -->
     <string name="daily_reminders_to_record_expenses">Ежедневные напоминания о записи расходов</string>
@@ -93,7 +85,6 @@
 
     <!-- Fields -->
     <string name="email">Электронная почта</string>
-    <string name="current_email">Текущая электронная почта</string>
     <string name="new_email">Новая электронная почта</string>
     <string name="password">Пароль</string>
     <string name="confirm_password">Подтверждение пароля</string>
@@ -332,7 +323,6 @@
     <string name="you_have_no_income_in_date_range">У вас нет доходов за этот период</string>
     <string name="no_data_for_the_selected_filter">Нет данных для выбранного фильтра</string>
     <string name="you_have_no_budgets_yet">У вас еще нет бюджетов</string>
-    <string name="follow_link_in_email">Пожалуйста, перейдите по ссылке в письме</string>
 
     <!-- Subscriptions benefits -->
     <string name="all_basic_app_features">Все основные функции приложения</string>
@@ -381,7 +371,6 @@
     <string name="parking">Парковка</string>
     <string name="fuel">Топливо</string>
     <string name="leasing">Лизинг</string>
-    <string name="rent_vehicle_category">Аренда автомобиля</string>
     <string name="internet_communication">Интернет и связь</string>
     <string name="professional_subs">Проф подписки</string>
     <string name="entertainment_subs">Развлек. подписки</string>
@@ -413,7 +402,6 @@
     <string name="salary">Зарплата</string>
     <string name="scholarship">Стидендия</string>
     <string name="sale">Продажа</string>
-    <string name="realty_income">Доход от недвижимости</string>
     <string name="refunds">Возврат денег</string>
     <string name="gifts">Подарки</string>
     <string name="transfers">Переводы</string>

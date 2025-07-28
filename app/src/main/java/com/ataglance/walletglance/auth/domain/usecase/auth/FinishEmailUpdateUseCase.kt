@@ -4,8 +4,8 @@ import com.ataglance.walletglance.request.domain.model.result.Result
 import com.ataglance.walletglance.request.domain.model.result.error.AuthError
 import com.ataglance.walletglance.request.domain.model.result.success.AuthSuccess
 
-interface CheckEmailVerificationUseCase {
+interface FinishEmailUpdateUseCase {
 
-    suspend fun execute(email: String, password: String): Result<AuthSuccess, AuthError>
+    suspend fun execute(newEmail: String, password: String): Result<AuthSuccess, AuthError>
 
 }

@@ -50,7 +50,7 @@ val transactionModule = module {
             activeDateRange = parameters.get(),
             resourceManager = get(),
             defaultCollectionName = parameters.get(),
-            getAccountsUseCase = get(),
+            accountRepository = get(),
             getCategoriesUseCase = get(),
             getCategoryCollectionsUseCase = get(),
             getTransactionsInDateRangeUseCase = get()
@@ -62,7 +62,7 @@ val transactionModule = module {
             activeAccount = parameters.getOrNull(),
             activeDateRange = parameters.get(),
             resourceManager = get(),
-            getAccountsUseCase = get(),
+            accountRepository = get(),
             getCategoriesUseCase = get(),
             getTransactionsInDateRangeUseCase = get()
         )

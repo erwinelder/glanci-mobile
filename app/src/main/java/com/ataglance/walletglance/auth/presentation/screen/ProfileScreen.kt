@@ -12,6 +12,7 @@ import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavHostController
 import com.ataglance.walletglance.R
+import com.ataglance.walletglance.auth.domain.model.user.UserContext
 import com.ataglance.walletglance.auth.presentation.viewmodel.ProfileViewModel
 import com.ataglance.walletglance.core.domain.app.AppTheme
 import com.ataglance.walletglance.core.presentation.component.bottomSheet.BottomSheetDialogComponent
@@ -23,6 +24,7 @@ import com.ataglance.walletglance.navigation.presentation.viewmodel.NavigationVi
 import com.ataglance.walletglance.settings.presentation.component.NavigateToSettingsCategoryButton
 import com.ataglance.walletglance.settings.presentation.model.SettingsCategory
 import com.ataglance.walletglance.settings.presentation.screenContainer.SettingsCategoryScreenContainer
+import org.koin.compose.koinInject
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
@@ -33,17 +35,15 @@ fun ProfileScreenWrapper(
 ) {
     val viewModel = koinViewModel<ProfileViewModel>()
     val greetingsTitleRes by getGreetingsWidgetTitleRes()
+    val userContext = koinInject<UserContext>()
 
     ProfileScreen(
         screenPadding = screenPadding,
         onNavigateBack = navController::popBackStack,
-        greetingsTitle = stringResource(greetingsTitleRes),
+        greetingsTitle = stringResource(greetingsTitleRes, userContext.name ?: ""),
         onSignOut = {
             viewModel.signOut()
             navController.popBackStack()
-        },
-        onNavigateToScreen = { screen ->
-            navViewModel.navigateToScreen(navController, screen)
         },
         onPopBackStackAndNavigateToScreen = { screen ->
             navViewModel.popBackStackAndNavigate(navController, screen)
@@ -57,13 +57,10 @@ fun ProfileScreen(
     onNavigateBack: () -> Unit,
     greetingsTitle: String,
     onSignOut: () -> Unit,
-    onNavigateToScreen: (Any) -> Unit,
     onPopBackStackAndNavigateToScreen: (Any) -> Unit
 ) {
     val appTheme = CurrAppTheme
-
     var showSignOutSheet by remember { mutableStateOf(false) }
-
 
     Box {
         SettingsCategoryScreenContainer(
@@ -112,7 +109,6 @@ fun ProfileScreenPreview(
             onNavigateBack = {},
             greetingsTitle = "Good afternoon, username!",
             onSignOut = {},
-            onNavigateToScreen = {},
             onPopBackStackAndNavigateToScreen = {}
         )
     }

@@ -2,12 +2,10 @@ package com.ataglance.walletglance.account.presentation.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.ataglance.walletglance.account.domain.repository.AccountRepository
 import com.ataglance.walletglance.account.domain.model.Account
-import com.ataglance.walletglance.account.domain.usecase.GetAccountsUseCase
-import com.ataglance.walletglance.account.domain.usecase.SaveAccountsUseCase
+import com.ataglance.walletglance.account.domain.usecase.SaveAccountsAndDeleteRestUseCase
 import com.ataglance.walletglance.account.domain.utils.fixOrderNums
-import com.ataglance.walletglance.account.domain.utils.makeSureActiveAccountIsVisibleOne
-import com.ataglance.walletglance.account.domain.utils.makeSureThereIsOnlyOneActiveAccount
 import com.ataglance.walletglance.core.utils.deleteItemAndMoveOrderNum
 import com.ataglance.walletglance.core.utils.moveItems
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -19,8 +17,8 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class EditAccountsViewModel(
-    private val saveAccountsUseCase: SaveAccountsUseCase,
-    private val getAccountsUseCase: GetAccountsUseCase
+    private val saveAccountsAndDeleteRestUseCase: SaveAccountsAndDeleteRestUseCase,
+    private val accountRepository: AccountRepository
 ) : ViewModel() {
 
     private val _accounts = MutableStateFlow<List<Account>>(emptyList())
@@ -76,11 +74,9 @@ class EditAccountsViewModel(
         val accounts = accounts.value
             .takeIf { it.isNotEmpty() }
             ?.fixOrderNums()
-            ?.makeSureThereIsOnlyOneActiveAccount()
-            ?.makeSureActiveAccountIsVisibleOne()
             ?: return
 
-        saveAccountsUseCase.saveAndDeleteRest(accounts = accounts)
+        saveAccountsAndDeleteRestUseCase.execute(accounts = accounts)
     }
 
 
@@ -95,7 +91,7 @@ class EditAccountsViewModel(
 
     init {
         viewModelScope.launch {
-            val accounts = getAccountsUseCase.getAll().takeIf { it.isNotEmpty() }
+            val accounts = accountRepository.getAllAccounts().takeIf { it.isNotEmpty() }
                 ?: listOf(Account(id = 1, orderNum = 1))
             _accounts.update { accounts }
         }

@@ -22,8 +22,8 @@ import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.ataglance.walletglance.core.domain.app.AppTheme
-import com.ataglance.walletglance.core.presentation.preview.PreviewContainer
 import com.ataglance.walletglance.core.presentation.modifier.bounceClickEffect
+import com.ataglance.walletglance.core.presentation.preview.PreviewContainer
 import com.ataglance.walletglance.core.presentation.theme.GlanciColors
 import com.ataglance.walletglance.core.presentation.theme.Manrope
 import com.ataglance.walletglance.core.presentation.theme.WindowTypeIsCompact
@@ -50,7 +50,7 @@ fun SecondaryButton(
             disabledContentColor = GlanciColors.outline
         ),
         shape = RoundedCornerShape(cornerSize),
-        contentPadding = PaddingValues(vertical = 14.dp),
+        contentPadding = PaddingValues(vertical = 12.dp),
         modifier = Modifier
             .run {
                 if (WindowTypeIsCompact) fillMaxWidth(.84f) else width(400.dp)

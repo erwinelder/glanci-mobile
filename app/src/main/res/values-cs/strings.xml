@@ -7,7 +7,6 @@
     <string name="records">Záznamy</string>
     <string name="statistics">Statistiky</string>
     <string name="settings">Nastavení</string>
-    <string name="setup">Nastavování</string>
 
     <!-- Widget names -->
     <string name="total_for_period">Celková částka za vybrané období</string>
@@ -22,7 +21,6 @@
     <string name="update">Aktualizovat</string>
     <string name="confirm">Potvrdit</string>
     <string name="check">Zkontrolovat</string>
-    <string name="check_verification">Zkontrolovat ověření</string>
     <string name="verify">Ověřit</string>
     <string name="cancel">Zrušit</string>
     <string name="_continue">Pokračovat</string>
@@ -71,10 +69,7 @@
     <string name="manage_subscriptions">Spravovat předplatná</string>
 
     <!-- Settings -->
-    <string name="start">Start</string>
     <string name="finish">Dokončit</string>
-    <string name="_import">Import</string>
-    <string name="start_setup">Začít nastavení</string>
     <string name="continue_to_app">Pokračovat do aplikace</string>
     <string name="continue_setup">Pokračovat v nastavení</string>
     <string name="adjust_app_notifications">Upravte oznámení aplikace</string>
@@ -82,9 +77,6 @@
 
     <!-- Settings loaders -->
     <string name="saving_language_loader">Ukládání jazyka…</string>
-
-    <!-- Settings error -->
-    <string name="language_not_saved_remotely_message">Jazyk nebyl uložen na serveru. Glanci se jej pokusí uložit později.</string>
 
     <!-- Settings Notifications -->
     <string name="daily_reminders_to_record_expenses">Denní připomenutí k zaznamenání výdajů</string>
@@ -94,7 +86,6 @@
 
     <!-- Fields -->
     <string name="email">E-mail</string>
-    <string name="current_email">Aktuální e-mail</string>
     <string name="new_email">Nový e-mail</string>
     <string name="password">Heslo</string>
     <string name="confirm_password">Potvrzení hesla</string>
@@ -333,7 +324,6 @@
     <string name="you_have_no_income_in_date_range">Nemáte žádné příjmy v tomto období</string>
     <string name="no_data_for_the_selected_filter">Žádná data pro vybraný filtr</string>
     <string name="you_have_no_budgets_yet">Ještě nemáte žádné rozpočty</string>
-    <string name="follow_link_in_email">Postupujte prosím podle odkazu v e-mailu</string>
 
     <!-- Subscriptions benefits -->
     <string name="all_basic_app_features">Všechny základní funkce aplikace</string>
@@ -382,7 +372,6 @@
     <string name="parking">Parkování</string>
     <string name="fuel">Palivo</string>
     <string name="leasing">Leasing</string>
-    <string name="rent_vehicle_category">Půjčovné vozidlo</string>
     <string name="internet_communication">Internet a komunikace</string>
     <string name="professional_subs">Profesní předplatné</string>
     <string name="entertainment_subs">Zábavné předplatné</string>
@@ -414,7 +403,6 @@
     <string name="salary">Plat</string>
     <string name="scholarship">Stipendium</string>
     <string name="sale">Prodej</string>
-    <string name="realty_income">Příjmy z nemovitosti</string>
     <string name="refunds">Vrácení peněz</string>
     <string name="gifts">Dárky</string>
     <string name="transfers">Převody</string>

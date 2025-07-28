@@ -59,6 +59,14 @@ class PasswordUpdateViewModel(
                 validationStates = UserDataValidator.validatePassword(password).toUiStates()
             )
         }
+        _confirmNewPasswordState.update {
+            it.copy(
+                validationStates = UserDataValidator.validateConfirmationPassword(
+                    password = password,
+                    confirmationPassword = _confirmNewPasswordState.value.fieldText
+                ).toUiStates()
+            )
+        }
     }
 
 

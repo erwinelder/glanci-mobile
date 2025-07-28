@@ -21,7 +21,7 @@ class NavigationButtonRepositoryImpl(
 ) : NavigationButtonRepository {
 
     private suspend fun synchronizeNavigationButtons() {
-        syncHelper.synchronizeDataToken(
+        syncHelper.synchronizeData(
             tableName = TableName.NavigationButton,
             localTimestampGetter = { localSource.getUpdateTime() },
             remoteTimestampGetter = { token -> remoteSource.getUpdateTime(token = token) },
@@ -49,7 +49,7 @@ class NavigationButtonRepositoryImpl(
 
 
     override suspend fun upsertNavigationButtons(buttons: List<NavigationButtonDataModel>) {
-        syncHelper.upsertDataToken(
+        syncHelper.upsertData(
             tableName = TableName.NavigationButton,
             data = buttons,
             localTimestampGetter = { localSource.getUpdateTime() },

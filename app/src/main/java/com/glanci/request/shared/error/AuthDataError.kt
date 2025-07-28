@@ -1,4 +1,4 @@
-package com.ataglance.walletglance.request.data.model.result.error
+package com.glanci.request.shared.error
 
 enum class AuthDataError : DataError {
     InvalidToken,

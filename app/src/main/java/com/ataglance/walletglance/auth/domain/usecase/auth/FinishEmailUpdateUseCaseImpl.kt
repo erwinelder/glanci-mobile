@@ -6,19 +6,22 @@ import com.ataglance.walletglance.request.domain.model.result.Result
 import com.ataglance.walletglance.request.domain.model.result.error.AuthError
 import com.ataglance.walletglance.request.domain.model.result.success.AuthSuccess
 
-class CheckEmailVerificationUseCaseImpl(
+class FinishEmailUpdateUseCaseImpl(
     private val authRepository: AuthRepository,
     private val userContext: UserContext
-) : CheckEmailVerificationUseCase {
+) : FinishEmailUpdateUseCase {
 
-    override suspend fun execute(email: String, password: String): Result<AuthSuccess, AuthError> {
-        val result = authRepository.signIn(email = email, password = password)
+    override suspend fun execute(
+        newEmail: String,
+        password: String
+    ): Result<AuthSuccess, AuthError> {
+        val result = authRepository.finishEmailUpdate(newEmail = newEmail, password = password)
 
         result.getDataOrNull()?.let { user ->
             userContext.saveUserWithToken(user = user)
         }
 
-        return result.toResult(success = AuthSuccess.SignedUp)
+        return result.toResult(success = AuthSuccess.EmailUpdated)
     }
 
 }

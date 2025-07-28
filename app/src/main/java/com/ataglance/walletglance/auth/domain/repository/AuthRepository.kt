@@ -29,6 +29,8 @@ interface AuthRepository {
 
     suspend fun verifyEmailUpdate(oobCode: String): ResultData<UserWithToken, AuthError>
 
+    suspend fun finishEmailUpdate(newEmail: String, password: String): ResultData<UserWithToken, AuthError>
+
     suspend fun requestPasswordReset(email: String): SimpleResult<AuthError>
 
     suspend fun verifyPasswordReset(oobCode: String, newPassword: String): SimpleResult<AuthError>

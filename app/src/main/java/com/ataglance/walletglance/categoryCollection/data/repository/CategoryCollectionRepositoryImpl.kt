@@ -24,7 +24,7 @@ class CategoryCollectionRepositoryImpl(
 ) : CategoryCollectionRepository {
 
     private suspend fun synchronizeCollections() {
-        syncHelper.synchronizeDataToken(
+        syncHelper.synchronizeData(
             tableName = TableName.CategoryCollection,
             localTimestampGetter = { localSource.getUpdateTime() },
             remoteTimestampGetter = { token -> remoteSource.getUpdateTime(token = token) },
@@ -60,7 +60,7 @@ class CategoryCollectionRepositoryImpl(
         toDelete: List<CategoryCollectionDataModel>,
         toUpsert: List<CategoryCollectionWithAssociationsDataModel>
     ) {
-        syncHelper.deleteAndUpsertDataToken(
+        syncHelper.deleteAndUpsertData(
             tableName = TableName.CategoryCollection,
             toDelete = toDelete.map { it.withAssociations() },
             toUpsert = toUpsert,

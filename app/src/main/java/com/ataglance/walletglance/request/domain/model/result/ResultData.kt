@@ -1,5 +1,8 @@
 package com.ataglance.walletglance.request.domain.model.result
 
+import com.ataglance.walletglance.request.domain.model.result.error.DomainError
+import com.ataglance.walletglance.request.domain.model.result.success.DomainSuccess
+
 sealed interface ResultData<out D, out E: DomainError> {
 
     data class Success<out D, out E: DomainError>(val data: D): ResultData<D, E>

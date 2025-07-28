@@ -2,8 +2,8 @@ package com.ataglance.walletglance.transaction.presentation.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.ataglance.walletglance.account.domain.repository.AccountRepository
 import com.ataglance.walletglance.account.domain.model.Account
-import com.ataglance.walletglance.account.domain.usecase.GetAccountsUseCase
 import com.ataglance.walletglance.category.domain.model.GroupedCategoriesByType
 import com.ataglance.walletglance.category.domain.usecase.GetCategoriesUseCase
 import com.ataglance.walletglance.core.domain.date.TimestampRange
@@ -25,7 +25,7 @@ class RecentTransactionsWidgetViewModel(
     activeAccount: Account?,
     activeDateRange: TimestampRange,
     private val resourceManager: ResourceManager,
-    private val getAccountsUseCase: GetAccountsUseCase,
+    private val accountRepository: AccountRepository,
     private val getCategoriesUseCase: GetCategoriesUseCase,
     private val getTransactionsInDateRangeUseCase: GetTransactionsInDateRangeUseCase
 ) : ViewModel() {
@@ -66,7 +66,7 @@ class RecentTransactionsWidgetViewModel(
     ) { transactions, accountId ->
         if (accountId == null) return@combine RecentTransactionsWidgetUiState()
 
-        val accounts = accounts ?: getAccountsUseCase.getAll().also { accounts = it }
+        val accounts = accounts ?: accountRepository.getAllAccounts().also { accounts = it }
         val groupedCategoriesByType = groupedCategoriesByType
             ?: getCategoriesUseCase.getGrouped().also { groupedCategoriesByType = it }
 

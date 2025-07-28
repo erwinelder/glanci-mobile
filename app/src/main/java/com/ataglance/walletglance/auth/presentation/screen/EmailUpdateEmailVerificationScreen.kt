@@ -13,7 +13,6 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavHostController
 import com.ataglance.walletglance.R
-import com.ataglance.walletglance.request.domain.model.result.success.AuthSuccess
 import com.ataglance.walletglance.auth.mapper.toResultStateButton
 import com.ataglance.walletglance.auth.presentation.viewmodel.EmailUpdateViewModel
 import com.ataglance.walletglance.core.domain.app.AppTheme
@@ -21,6 +20,7 @@ import com.ataglance.walletglance.core.presentation.model.IconPathsRes
 import com.ataglance.walletglance.core.presentation.preview.PreviewWithMainScaffoldContainer
 import com.ataglance.walletglance.core.presentation.viewmodel.sharedKoinNavViewModel
 import com.ataglance.walletglance.navigation.presentation.viewmodel.NavigationViewModel
+import com.ataglance.walletglance.request.domain.model.result.success.AuthSuccess
 import com.ataglance.walletglance.request.presentation.component.screenContainer.AnimatedRequestScreenContainer
 import com.ataglance.walletglance.request.presentation.model.RequestState
 import com.ataglance.walletglance.request.presentation.model.ResultState.ButtonState
@@ -48,7 +48,7 @@ fun EmailUpdateEmailVerificationScreenWrapper(
             if (viewModel.isEmailVerified()) {
                 navViewModel.navigateAndPopUpTo(
                     navController = navController,
-                    screenToNavigateTo = SettingsScreens.Accounts,
+                    screenToNavigateTo = SettingsScreens.SettingsHome,
                     inclusive = false
                 )
             } else {

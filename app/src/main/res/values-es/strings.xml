@@ -7,7 +7,6 @@
     <string name="records">Registros</string>
     <string name="statistics">Estadísticas</string>
     <string name="settings">Ajustes</string>
-    <string name="setup">Configuración</string>
 
     <!-- Widget names -->
     <string name="total_for_period">Monto total para el período seleccionado</string>
@@ -22,7 +21,6 @@
     <string name="update">Actualizar</string>
     <string name="confirm">Confirmar</string>
     <string name="check">Comprobar</string>
-    <string name="check_verification">Comprobar verificación</string>
     <string name="verify">Verificar</string>
     <string name="cancel">Cancelar</string>
     <string name="_continue">Continuar</string>
@@ -71,10 +69,7 @@
     <string name="manage_subscriptions">Gestionar suscripciones</string>
 
     <!-- Settings -->
-    <string name="start">Iniciar</string>
     <string name="finish">Finalizar</string>
-    <string name="_import">Importar</string>
-    <string name="start_setup">Iniciar configuración</string>
     <string name="continue_to_app">Continuar como invitado</string>
     <string name="continue_setup">Continuar con la configuración</string>
     <string name="adjust_app_notifications">Ajusta las notificaciones de la app</string>
@@ -82,9 +77,6 @@
 
     <!-- Settings loaders -->
     <string name="saving_language_loader">Guardando idioma…</string>
-
-    <!-- Settings error -->
-    <string name="language_not_saved_remotely_message">El idioma no se guardó en el servidor. Glanci intentará guardarlo más tarde.</string>
 
     <!-- Settings Notifications -->
     <string name="daily_reminders_to_record_expenses">Recordatorios diarios para registrar tus gastos</string>
@@ -94,7 +86,6 @@
 
     <!-- Fields -->
     <string name="email">Correo electrónico</string>
-    <string name="current_email">Correo electrónico actual</string>
     <string name="new_email">Nuevo correo electrónico</string>
     <string name="password">Contraseña</string>
     <string name="confirm_password">Confirmar contraseña</string>
@@ -333,7 +324,6 @@
     <string name="you_have_no_income_in_date_range">No tienes ingresos en este período</string>
     <string name="no_data_for_the_selected_filter">No hay datos para el filtro seleccionado</string>
     <string name="you_have_no_budgets_yet">Aún no tienes presupuestos</string>
-    <string name="follow_link_in_email">Por favor, siga el enlace en el correo</string>
 
     <!-- Subscriptions benefits -->
     <string name="all_basic_app_features">Todas las funciones básicas de la aplicación</string>
@@ -382,7 +372,6 @@
     <string name="parking">Estacionamiento</string>
     <string name="fuel">Combustible</string>
     <string name="leasing">Leasing</string>
-    <string name="rent_vehicle_category">Alquiler</string>
     <string name="internet_communication">Internet, comunicación</string>
     <string name="professional_subs">Suscripciones profesionales</string>
     <string name="entertainment_subs">Suscripciones de entretenimiento</string>
@@ -414,7 +403,6 @@
     <string name="salary">Sueldo</string>
     <string name="scholarship">Beca</string>
     <string name="sale">Venta</string>
-    <string name="realty_income">Ingresos por inmuebles</string>
     <string name="refunds">Reembolsos</string>
     <string name="gifts">Regalos</string>
     <string name="transfers">Transferencias</string>

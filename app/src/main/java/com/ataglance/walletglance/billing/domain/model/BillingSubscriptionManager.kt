@@ -20,7 +20,7 @@ import com.ataglance.walletglance.auth.domain.model.user.UserContext
 import com.ataglance.walletglance.billing.domain.mapper.getProductDetails
 import com.ataglance.walletglance.billing.domain.mapper.getProductsDetails
 import com.ataglance.walletglance.billing.domain.mapper.subsToProductDetailsParamsList
-import com.ataglance.walletglance.billing.domain.model.errorHandling.BillingError
+import com.ataglance.walletglance.request.domain.model.result.error.BillingError
 import com.ataglance.walletglance.billing.domain.usecase.UpdateUserSubscriptionUseCase
 import com.ataglance.walletglance.request.domain.model.result.ResultData
 import kotlinx.coroutines.CoroutineScope

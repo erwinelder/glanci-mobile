@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ataglance.walletglance.R
 import com.ataglance.walletglance.auth.domain.model.validation.UserDataValidator
-import com.ataglance.walletglance.auth.domain.usecase.auth.CheckEmailVerificationUseCase
+import com.ataglance.walletglance.auth.domain.usecase.auth.FinishEmailUpdateUseCase
 import com.ataglance.walletglance.auth.domain.usecase.auth.RequestEmailUpdateUseCase
 import com.ataglance.walletglance.auth.mapper.toResultStateButton
 import com.ataglance.walletglance.auth.mapper.toUiStates
@@ -25,7 +25,7 @@ import kotlinx.coroutines.launch
 
 class EmailUpdateViewModel(
     private val requestEmailUpdateUseCase: RequestEmailUpdateUseCase,
-    private val checkEmailVerificationUseCase: CheckEmailVerificationUseCase
+    private val finishEmailUpdateUseCase: FinishEmailUpdateUseCase
 ) : ViewModel() {
 
     /* ---------- Fields' states ---------- */
@@ -145,8 +145,8 @@ class EmailUpdateViewModel(
         setEmailVerificationRequestLoadingState()
 
         checkVerificationJob = viewModelScope.launch {
-            val result = checkEmailVerificationUseCase.execute(
-                email = newEmailState.value.trimmedText,
+            val result = finishEmailUpdateUseCase.execute(
+                newEmail = newEmailState.value.trimmedText,
                 password = passwordState.value.trimmedText
             )
 

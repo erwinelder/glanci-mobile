@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ataglance.walletglance.R
 import com.ataglance.walletglance.auth.domain.model.validation.UserDataValidator
-import com.ataglance.walletglance.auth.domain.usecase.auth.CheckEmailVerificationUseCase
+import com.ataglance.walletglance.auth.domain.usecase.auth.CheckSignUpEmailVerificationUseCase
 import com.ataglance.walletglance.auth.domain.usecase.auth.SignUpUseCase
 import com.ataglance.walletglance.auth.mapper.toResultStateButton
 import com.ataglance.walletglance.auth.mapper.toUiStates
@@ -26,7 +26,7 @@ import kotlinx.coroutines.launch
 class SignUpViewModel(
     email: String,
     private val signUpUseCase: SignUpUseCase,
-    private val checkEmailVerificationUseCase: CheckEmailVerificationUseCase
+    private val checkSignUpEmailVerificationUseCase: CheckSignUpEmailVerificationUseCase
 ) : ViewModel() {
 
     /* ---------- Fields' states ---------- */
@@ -78,6 +78,14 @@ class SignUpViewModel(
             it.copy(
                 fieldText = password,
                 validationStates = UserDataValidator.validatePassword(password).toUiStates()
+            )
+        }
+        _confirmPasswordState.update {
+            it.copy(
+                validationStates = UserDataValidator.validateConfirmationPassword(
+                    password = password,
+                    confirmationPassword = _confirmPasswordState.value.fieldText
+                ).toUiStates()
             )
         }
     }
@@ -189,7 +197,7 @@ class SignUpViewModel(
         setEmailVerificationRequestLoadingState()
 
         checkVerificationJob = viewModelScope.launch {
-            val result = checkEmailVerificationUseCase.execute(
+            val result = checkSignUpEmailVerificationUseCase.execute(
                 email = emailState.value.trimmedText,
                 password = passwordState.value.trimmedText
             )

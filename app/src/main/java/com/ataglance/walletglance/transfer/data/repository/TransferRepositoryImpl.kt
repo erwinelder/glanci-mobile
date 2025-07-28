@@ -22,7 +22,7 @@ class TransferRepositoryImpl(
 ) : TransferRepository {
 
     private suspend fun synchronizeTransfers() {
-        syncHelper.synchronizeDataToken(
+        syncHelper.synchronizeData(
             tableName = TableName.Transfer,
             localTimestampGetter = { localSource.getUpdateTime() },
             remoteTimestampGetter = { token -> remoteSource.getUpdateTime(token = token) },
@@ -49,7 +49,7 @@ class TransferRepositoryImpl(
     }
 
     override suspend fun upsertTransfer(transfer: TransferDataModel) {
-        syncHelper.upsertDataToken(
+        syncHelper.upsertData(
             tableName = TableName.Transfer,
             data = transfer.asList(),
             localTimestampGetter = { localSource.getUpdateTime() },
@@ -82,7 +82,7 @@ class TransferRepositoryImpl(
     }
 
     override suspend fun deleteTransfer(transfer: TransferDataModel) {
-        syncHelper.deleteDataToken(
+        syncHelper.deleteData(
             tableName = TableName.Transfer,
             data = transfer.asList(),
             localTimestampGetter = { localSource.getUpdateTime() },

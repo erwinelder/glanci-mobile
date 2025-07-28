@@ -27,8 +27,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.ataglance.walletglance.R
 import com.ataglance.walletglance.core.domain.app.AppTheme
-import com.ataglance.walletglance.core.presentation.preview.PreviewContainer
 import com.ataglance.walletglance.core.presentation.modifier.bounceClickEffect
+import com.ataglance.walletglance.core.presentation.preview.PreviewContainer
 import com.ataglance.walletglance.core.presentation.theme.GlanciColors
 import com.ataglance.walletglance.core.presentation.theme.Manrope
 
@@ -41,7 +41,7 @@ fun SmallSecondaryButton(
     fontSize: TextUnit = 17.sp,
     onClick: () -> Unit
 ) {
-    val cornerSize = 20.dp
+    val cornerSize = 21.dp
     val borderGradient = if (enabled) GlanciColors.primarySemiTransparentGlassBorderGradient else
         listOf(GlanciColors.outline, GlanciColors.outline)
 

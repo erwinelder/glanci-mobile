@@ -9,7 +9,7 @@ import androidx.lifecycle.viewModelScope
 import com.android.billingclient.api.ProductDetails
 import com.ataglance.walletglance.billing.domain.model.AppSubscriptions
 import com.ataglance.walletglance.billing.domain.model.BillingSubscriptionManager
-import com.ataglance.walletglance.billing.domain.model.errorHandling.BillingError
+import com.ataglance.walletglance.request.domain.model.result.error.BillingError
 import com.ataglance.walletglance.billing.mapper.toSubscriptionUiState
 import com.ataglance.walletglance.billing.mapper.toSubscriptionUiStateList
 import com.ataglance.walletglance.billing.presentation.model.SubscriptionUiState

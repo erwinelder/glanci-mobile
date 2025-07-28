@@ -1,11 +1,11 @@
 package com.glanci.auth.shared.service
 
-import com.ataglance.walletglance.request.data.model.result.ResultData
-import com.ataglance.walletglance.request.data.model.result.SimpleResult
-import com.ataglance.walletglance.request.data.model.result.error.AuthDataError
 import com.glanci.auth.shared.dto.CheckAppVersionRequestDto
 import com.glanci.auth.shared.dto.UserDto
 import com.glanci.auth.shared.dto.UserWithTokenDto
+import com.glanci.request.shared.ResultData
+import com.glanci.request.shared.SimpleResult
+import com.glanci.request.shared.error.AuthDataError
 import kotlinx.rpc.annotations.Rpc
 
 @Rpc
@@ -22,6 +22,8 @@ interface AuthService {
     suspend fun requestEmailUpdate(password: String, newEmail: String, token: String): SimpleResult<AuthDataError>
 
     suspend fun verifyEmailUpdate(oobCode: String, token: String): ResultData<UserWithTokenDto, AuthDataError>
+
+    suspend fun finishEmailUpdate(newEmail: String, password: String, token: String): ResultData<UserWithTokenDto, AuthDataError>
 
     suspend fun requestPasswordReset(email: String): SimpleResult<AuthDataError>
 

@@ -1,4 +1,4 @@
-package com.ataglance.walletglance.request.data.model.result.success
+package com.glanci.request.shared.success
 
 import kotlinx.serialization.Serializable
 

@@ -921,7 +921,7 @@ private fun SignUpScreenPreview_() {
 }
 
 @Preview(
-    name = "EmailVerificationScreen",
+    name = "SignUpEmailVerificationScreen",
     group = "AuthScreens",
     locale = langCode,
     device = device
@@ -934,13 +934,13 @@ private fun SignUpEmailVerificationScreenPreview_() {
 }
 
 @Preview(
-    name = "FinishSignUpScreen",
+    name = "SignUpFinishScreen",
     group = "AuthScreens",
     locale = langCode,
     device = device
 )
 @Composable
-private fun FinishSignUpScreenPreview_() {
+private fun SignUpFinishScreenPreview_() {
     SignUpFinishScreenPreview(
         appTheme = appTheme
     )
@@ -960,7 +960,7 @@ private fun ProfileScreenPreview_() {
 }
 
 @Preview(
-    name = "UpdateName",
+    name = "NameUpdateScreen",
     group = "AuthScreens",
     locale = langCode,
     device = device
@@ -973,7 +973,7 @@ private fun NameUpdateScreenPreview_() {
 }
 
 @Preview(
-    name = "EmailUpdateRequest",
+    name = "EmailUpdateRequestScreen",
     group = "AuthScreens",
     locale = langCode,
     device = device
@@ -986,7 +986,7 @@ private fun EmailUpdateRequestScreenPreview_() {
 }
 
 @Preview(
-    name = "EmailUpdateEmailVerification",
+    name = "EmailUpdateEmailVerificationScreen",
     group = "AuthScreens",
     locale = langCode,
     device = device
@@ -999,52 +999,52 @@ private fun EmailUpdateEmailVerificationScreenPreview_() {
 }
 
 @Preview(
-    name = "VerifyEmailUpdate",
+    name = "EmailUpdateVerifyScreen",
     group = "AuthScreens",
     locale = langCode,
     device = device
 )
 @Composable
-private fun VerifyEmailUpdateScreenPreview_() {
+private fun EmailUpdateVerifyScreenPreview_() {
     EmailUpdateVerifyScreenPreview(
         appTheme = appTheme
     )
 }
 
 @Preview(
-    name = "UpdatePasswordScreen",
+    name = "PasswordUpdateScreen",
     group = "AuthScreens",
     locale = langCode,
     device = device
 )
 @Composable
-private fun UpdatePasswordScreenPreview_() {
+private fun PasswordUpdateScreenPreview_() {
     PasswordUpdateScreenPreview(
         appTheme = appTheme
     )
 }
 
 @Preview(
-    name = "RequestPasswordResetScreen",
+    name = "PasswordResetRequestScreen",
     group = "AuthScreens",
     locale = langCode,
     device = device
 )
 @Composable
-private fun RequestPasswordResetScreenPreview_() {
+private fun PasswordResetRequestScreenPreview_() {
     PasswordResetRequestScreenPreview(
         appTheme = appTheme
     )
 }
 
 @Preview(
-    name = "ResetPasswordScreen",
+    name = "PasswordResetScreen",
     group = "AuthScreens",
     locale = langCode,
     device = device
 )
 @Composable
-private fun ResetPasswordScreenPreview_() {
+private fun PasswordResetScreenPreview_() {
     PasswordResetScreenPreview(
         appTheme = appTheme
     )

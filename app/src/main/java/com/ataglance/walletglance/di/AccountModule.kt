@@ -4,12 +4,10 @@ import com.ataglance.walletglance.account.data.local.source.AccountLocalDataSour
 import com.ataglance.walletglance.account.data.local.source.getAccountLocalDataSource
 import com.ataglance.walletglance.account.data.remote.source.AccountRemoteDataSource
 import com.ataglance.walletglance.account.data.remote.source.AccountRemoteDataSourceImpl
-import com.ataglance.walletglance.account.data.repository.AccountRepository
+import com.ataglance.walletglance.account.domain.repository.AccountRepository
 import com.ataglance.walletglance.account.data.repository.AccountRepositoryImpl
-import com.ataglance.walletglance.account.domain.usecase.GetAccountsUseCase
-import com.ataglance.walletglance.account.domain.usecase.GetAccountsUseCaseImpl
-import com.ataglance.walletglance.account.domain.usecase.SaveAccountsUseCase
-import com.ataglance.walletglance.account.domain.usecase.SaveAccountsUseCaseImpl
+import com.ataglance.walletglance.account.domain.usecase.SaveAccountsAndDeleteRestUseCase
+import com.ataglance.walletglance.account.domain.usecase.SaveAccountsAndDeleteRestUseCaseImpl
 import com.ataglance.walletglance.account.presentation.viewmodel.ActiveAccountCardViewModel
 import com.ataglance.walletglance.account.presentation.viewmodel.CurrencyPickerViewModel
 import com.ataglance.walletglance.account.presentation.viewmodel.EditAccountsViewModel
@@ -45,23 +43,19 @@ val accountModule = module {
 
     /* ---------- Use Cases ---------- */
 
-    single<SaveAccountsUseCase> {
-        SaveAccountsUseCaseImpl(
+    single<SaveAccountsAndDeleteRestUseCase> {
+        SaveAccountsAndDeleteRestUseCaseImpl(
             accountRepository = get(),
             transformAccountTransactionsToRecords = get()
         )
-    }
-
-    single<GetAccountsUseCase> {
-        GetAccountsUseCaseImpl(accountRepository = get())
     }
 
     /* ---------- ViewModels ---------- */
 
     viewModel {
         EditAccountsViewModel(
-            saveAccountsUseCase = get(),
-            getAccountsUseCase = get()
+            saveAccountsAndDeleteRestUseCase = get(),
+            accountRepository = get()
         )
     }
 

@@ -1,5 +1,8 @@
 package com.ataglance.walletglance.request.domain.model.result
 
+import com.ataglance.walletglance.request.domain.model.result.error.DomainError
+import com.ataglance.walletglance.request.domain.model.result.success.DomainSuccess
+
 sealed interface SimpleResult<out E: DomainError> {
 
     class Success<out E: DomainError>: SimpleResult<E>

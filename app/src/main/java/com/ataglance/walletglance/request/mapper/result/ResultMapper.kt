@@ -1,9 +1,9 @@
 package com.ataglance.walletglance.request.mapper.result
 
-import com.ataglance.walletglance.request.data.model.result.ResultData
-import com.ataglance.walletglance.request.data.model.result.SimpleResult
-import com.ataglance.walletglance.request.data.model.result.error.DataError
-import com.ataglance.walletglance.request.domain.model.result.DomainError
+import com.glanci.request.shared.ResultData
+import com.glanci.request.shared.SimpleResult
+import com.glanci.request.shared.error.DataError
+import com.ataglance.walletglance.request.domain.model.result.error.DomainError
 
 
 fun <E1 : DataError, E2 : DomainError> SimpleResult<E1>.toDomainSimpleResult(

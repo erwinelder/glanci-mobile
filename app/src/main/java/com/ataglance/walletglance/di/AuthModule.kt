@@ -3,12 +3,14 @@ package com.ataglance.walletglance.di
 import com.ataglance.walletglance.auth.data.repository.AuthRepositoryImpl
 import com.ataglance.walletglance.auth.domain.model.user.UserContext
 import com.ataglance.walletglance.auth.domain.repository.AuthRepository
-import com.ataglance.walletglance.auth.domain.usecase.auth.CheckEmailVerificationUseCase
-import com.ataglance.walletglance.auth.domain.usecase.auth.CheckEmailVerificationUseCaseImpl
+import com.ataglance.walletglance.auth.domain.usecase.auth.CheckSignUpEmailVerificationUseCase
+import com.ataglance.walletglance.auth.domain.usecase.auth.CheckSignUpEmailVerificationUseCaseImpl
 import com.ataglance.walletglance.auth.domain.usecase.auth.CheckTokenValidityUseCase
 import com.ataglance.walletglance.auth.domain.usecase.auth.CheckTokenValidityUseCaseImpl
 import com.ataglance.walletglance.auth.domain.usecase.auth.DeleteAccountUseCase
 import com.ataglance.walletglance.auth.domain.usecase.auth.DeleteAccountUseCaseImpl
+import com.ataglance.walletglance.auth.domain.usecase.auth.FinishEmailUpdateUseCase
+import com.ataglance.walletglance.auth.domain.usecase.auth.FinishEmailUpdateUseCaseImpl
 import com.ataglance.walletglance.auth.domain.usecase.auth.FinishSignUpUseCase
 import com.ataglance.walletglance.auth.domain.usecase.auth.FinishSignUpUseCaseImpl
 import com.ataglance.walletglance.auth.domain.usecase.auth.RequestEmailUpdateUseCase
@@ -99,8 +101,8 @@ val authModule = module {
             getLanguagePreferenceUseCase = get()
         )
     }
-    single<CheckEmailVerificationUseCase> {
-        CheckEmailVerificationUseCaseImpl(
+    single<CheckSignUpEmailVerificationUseCase> {
+        CheckSignUpEmailVerificationUseCaseImpl(
             authRepository = get(),
             userContext = get()
         )
@@ -119,6 +121,12 @@ val authModule = module {
     }
     single<VerifyEmailUpdateUseCase> {
         VerifyEmailUpdateUseCaseImpl(
+            authRepository = get(),
+            userContext = get()
+        )
+    }
+    single<FinishEmailUpdateUseCase> {
+        FinishEmailUpdateUseCaseImpl(
             authRepository = get(),
             userContext = get()
         )
@@ -166,7 +174,7 @@ val authModule = module {
         SignUpViewModel(
             email = params.get(),
             signUpUseCase = get(),
-            checkEmailVerificationUseCase = get()
+            checkSignUpEmailVerificationUseCase = get()
         )
     }
 
@@ -187,7 +195,7 @@ val authModule = module {
     viewModel {
         EmailUpdateViewModel(
             requestEmailUpdateUseCase = get(),
-            checkEmailVerificationUseCase = get()
+            finishEmailUpdateUseCase = get()
         )
     }
 

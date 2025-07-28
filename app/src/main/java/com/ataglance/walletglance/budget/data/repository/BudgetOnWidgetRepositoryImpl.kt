@@ -21,7 +21,7 @@ class BudgetOnWidgetRepositoryImpl(
 ) : BudgetOnWidgetRepository {
 
     private suspend fun synchronizeBudgetsOnWidget() {
-        syncHelper.synchronizeDataToken(
+        syncHelper.synchronizeData(
             tableName = TableName.BudgetOnWidget,
             localTimestampGetter = { localSource.getUpdateTime() },
             remoteTimestampGetter = { token -> remoteSource.getUpdateTime(token = token) },
@@ -51,7 +51,7 @@ class BudgetOnWidgetRepositoryImpl(
         toDelete: List<BudgetOnWidgetDataModel>,
         toUpsert: List<BudgetOnWidgetDataModel>
     ) {
-        syncHelper.deleteAndUpsertDataToken(
+        syncHelper.deleteAndUpsertData(
             tableName = TableName.BudgetOnWidget,
             toDelete = toDelete,
             toUpsert = toUpsert,
