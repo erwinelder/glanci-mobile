@@ -1,9 +1,7 @@
 package com.ataglance.walletglance.transfer.domain.usecase
 
 import com.ataglance.walletglance.account.domain.usecase.RollbackTransferToAccountsUseCase
-import com.ataglance.walletglance.transfer.data.repository.TransferRepository
-import com.ataglance.walletglance.transfer.mapper.toDataModel
-import com.ataglance.walletglance.transfer.mapper.toDomainModel
+import com.ataglance.walletglance.transfer.domain.repository.TransferRepository
 
 class DeleteTransferUseCaseImpl(
     private val transferRepository: TransferRepository,
@@ -11,11 +9,11 @@ class DeleteTransferUseCaseImpl(
 ) : DeleteTransferUseCase {
 
     override suspend fun execute(transferId: Long) {
-        val transfer = transferRepository.getTransfer(id = transferId)?.toDomainModel() ?: return
+        val transfer = transferRepository.getTransfer(id = transferId) ?: return
 
         rollbackTransferToAccountsUseCase.execute(transfer = transfer).also { if (!it) return }
 
-        transferRepository.deleteTransfer(transfer = transfer.toDataModel())
+        transferRepository.deleteTransfer(transfer = transfer)
     }
 
 }

@@ -4,14 +4,12 @@ import com.ataglance.walletglance.transfer.data.local.source.TransferLocalDataSo
 import com.ataglance.walletglance.transfer.data.local.source.getTransferLocalDataSource
 import com.ataglance.walletglance.transfer.data.remote.source.TransferRemoteDataSource
 import com.ataglance.walletglance.transfer.data.remote.source.TransferRemoteDataSourceImpl
-import com.ataglance.walletglance.transfer.data.repository.TransferRepository
 import com.ataglance.walletglance.transfer.data.repository.TransferRepositoryImpl
+import com.ataglance.walletglance.transfer.domain.repository.TransferRepository
 import com.ataglance.walletglance.transfer.domain.usecase.DeleteTransferUseCase
 import com.ataglance.walletglance.transfer.domain.usecase.DeleteTransferUseCaseImpl
 import com.ataglance.walletglance.transfer.domain.usecase.GetTransferDraftUseCase
 import com.ataglance.walletglance.transfer.domain.usecase.GetTransferDraftUseCaseImpl
-import com.ataglance.walletglance.transfer.domain.usecase.GetTransferUseCase
-import com.ataglance.walletglance.transfer.domain.usecase.GetTransferUseCaseImpl
 import com.ataglance.walletglance.transfer.domain.usecase.GetTransfersByAccountsUseCase
 import com.ataglance.walletglance.transfer.domain.usecase.GetTransfersByAccountsUseCaseImpl
 import com.ataglance.walletglance.transfer.domain.usecase.GetTransfersInDateRangeUseCase
@@ -68,13 +66,9 @@ val transferModule = module {
         )
     }
 
-    single<GetTransferUseCase> {
-        GetTransferUseCaseImpl(transferRepository = get())
-    }
-
     single<GetTransferDraftUseCase> {
         GetTransferDraftUseCaseImpl(
-            getTransferUseCase = get(),
+            transferRepository = get(),
             getAccountsUseCase = get()
         )
     }

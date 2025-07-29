@@ -1,7 +1,7 @@
 package com.ataglance.walletglance.transfer.domain.usecase
 
 import com.ataglance.walletglance.core.domain.date.TimestampRange
-import com.ataglance.walletglance.transfer.data.repository.TransferRepository
+import com.ataglance.walletglance.transfer.domain.repository.TransferRepository
 
 class GetTransfersTotalExpensesInDateRangeImpl(
     private val transferRepository: TransferRepository

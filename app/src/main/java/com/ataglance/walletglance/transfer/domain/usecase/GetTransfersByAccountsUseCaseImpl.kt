@@ -1,8 +1,7 @@
 package com.ataglance.walletglance.transfer.domain.usecase
 
-import com.ataglance.walletglance.transfer.data.repository.TransferRepository
 import com.ataglance.walletglance.transaction.domain.model.Transfer
-import com.ataglance.walletglance.transfer.mapper.toDomainModel
+import com.ataglance.walletglance.transfer.domain.repository.TransferRepository
 
 class GetTransfersByAccountsUseCaseImpl(
     private val transferRepository: TransferRepository
@@ -10,7 +9,6 @@ class GetTransfersByAccountsUseCaseImpl(
 
     override suspend fun execute(accountIds: List<Int>): List<Transfer> {
         return transferRepository.getTransfersByAccounts(ids = accountIds)
-            .map { it.toDomainModel() }
     }
 
 }

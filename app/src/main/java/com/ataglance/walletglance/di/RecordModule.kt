@@ -4,16 +4,14 @@ import com.ataglance.walletglance.record.data.local.source.RecordLocalDataSource
 import com.ataglance.walletglance.record.data.local.source.getRecordLocalDataSource
 import com.ataglance.walletglance.record.data.remote.source.RecordRemoteDataSource
 import com.ataglance.walletglance.record.data.remote.source.RecordRemoteDataSourceImpl
-import com.ataglance.walletglance.record.domain.repository.RecordRepository
 import com.ataglance.walletglance.record.data.repository.RecordRepositoryImpl
+import com.ataglance.walletglance.record.domain.repository.RecordRepository
 import com.ataglance.walletglance.record.domain.usecase.DeleteRecordUseCase
 import com.ataglance.walletglance.record.domain.usecase.DeleteRecordUseCaseImpl
 import com.ataglance.walletglance.record.domain.usecase.GetLastUsedRecordCategoryUseCase
 import com.ataglance.walletglance.record.domain.usecase.GetLastUsedRecordCategoryUseCaseImpl
 import com.ataglance.walletglance.record.domain.usecase.GetRecordDraftUseCase
 import com.ataglance.walletglance.record.domain.usecase.GetRecordDraftUseCaseImpl
-import com.ataglance.walletglance.record.domain.usecase.GetRecordUseCase
-import com.ataglance.walletglance.record.domain.usecase.GetRecordUseCaseImpl
 import com.ataglance.walletglance.record.domain.usecase.GetRecordsInDateRangeUseCase
 import com.ataglance.walletglance.record.domain.usecase.GetRecordsInDateRangeUseCaseImpl
 import com.ataglance.walletglance.record.domain.usecase.GetRecordsTotalExpensesInDateRange
@@ -63,19 +61,14 @@ val recordModule = module {
     single<SaveRecordUseCase> {
         SaveRecordUseCaseImpl(
             recordRepository = get(),
-            getRecordUseCase = get(),
             applyNewRecordToAccountUseCase = get(),
             applyEditedRecordToAccountsUseCase = get()
         )
     }
 
-    single<GetRecordUseCase> {
-        GetRecordUseCaseImpl(recordRepository = get())
-    }
-
     single<GetRecordDraftUseCase> {
         GetRecordDraftUseCaseImpl(
-            getRecordUseCase = get(),
+            recordRepository = get(),
             getAccountsUseCase = get(),
             getCategoriesGroupedUseCase = get()
         )

@@ -3,14 +3,19 @@ package com.ataglance.walletglance.transfer.data.repository
 import com.ataglance.walletglance.core.data.model.DataSyncHelper
 import com.ataglance.walletglance.core.data.model.TableName
 import com.ataglance.walletglance.core.utils.asList
+import com.ataglance.walletglance.transaction.domain.model.Transfer
 import com.ataglance.walletglance.transfer.data.local.model.TransferEntity
 import com.ataglance.walletglance.transfer.data.local.source.TransferLocalDataSource
 import com.ataglance.walletglance.transfer.data.mapper.toCommandDto
 import com.ataglance.walletglance.transfer.data.mapper.toDataModel
 import com.ataglance.walletglance.transfer.data.mapper.toEntity
 import com.ataglance.walletglance.transfer.data.model.TransferDataModel
-import com.glanci.transfer.shared.dto.TransferQueryDto
 import com.ataglance.walletglance.transfer.data.remote.source.TransferRemoteDataSource
+import com.ataglance.walletglance.transfer.domain.repository.TransferRepository
+import com.ataglance.walletglance.transfer.mapper.toDataModel
+import com.ataglance.walletglance.transfer.mapper.toDomainModel
+import com.glanci.request.shared.SimpleResult
+import com.glanci.transfer.shared.dto.TransferQueryDto
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onStart
@@ -22,7 +27,7 @@ class TransferRepositoryImpl(
 ) : TransferRepository {
 
     private suspend fun synchronizeTransfers() {
-        syncHelper.synchronizeData(
+        syncHelper.synchronizeDataSafe(
             tableName = TableName.Transfer,
             localTimestampGetter = { localSource.getUpdateTime() },
             remoteTimestampGetter = { token -> remoteSource.getUpdateTime(token = token) },
@@ -45,11 +50,18 @@ class TransferRepositoryImpl(
             entityDeletedPredicate = { it.deleted },
             entityToCommandDtoMapper = TransferEntity::toCommandDto,
             queryDtoToEntityMapper = TransferQueryDto::toEntity
-        )
+        ).also { result ->
+            when (result) {
+                is SimpleResult.Success -> println("Transfers synchronized successfully.")
+                is SimpleResult.Error -> println("Error synchronizing transfers: ${result.error}")
+            }
+        }
     }
 
-    override suspend fun upsertTransfer(transfer: TransferDataModel) {
-        syncHelper.upsertData(
+    override suspend fun upsertTransfer(transfer: Transfer) {
+        val transfer = transfer.toDataModel()
+
+        syncHelper.upsertDataSafe(
             tableName = TableName.Transfer,
             data = transfer.asList(),
             localTimestampGetter = { localSource.getUpdateTime() },
@@ -78,11 +90,18 @@ class TransferRepositoryImpl(
             dataModelToEntityMapper = TransferDataModel::toEntity,
             entityToCommandDtoMapper = TransferEntity::toCommandDto,
             queryDtoToEntityMapper = TransferQueryDto::toEntity
-        )
+        ).also { result ->
+            when (result) {
+                is SimpleResult.Success -> println("Transfer upserted successfully.")
+                is SimpleResult.Error -> println("Error upserting transfer: ${result.error}")
+            }
+        }
     }
 
-    override suspend fun deleteTransfer(transfer: TransferDataModel) {
-        syncHelper.deleteData(
+    override suspend fun deleteTransfer(transfer: Transfer) {
+        val transfer = transfer.toDataModel()
+
+        syncHelper.deleteDataSafe(
             tableName = TableName.Transfer,
             data = transfer.asList(),
             localTimestampGetter = { localSource.getUpdateTime() },
@@ -121,36 +140,45 @@ class TransferRepositoryImpl(
             dataModelToCommandDtoMapper = TransferDataModel::toCommandDto,
             entityToCommandDtoMapper = TransferEntity::toCommandDto,
             queryDtoToEntityMapper = TransferQueryDto::toEntity
-        )
+        ).also { result ->
+            when (result) {
+                is SimpleResult.Success -> println("Transfer deleted successfully.")
+                is SimpleResult.Error -> println("Error deleting transfer: ${result.error}")
+            }
+        }
     }
 
-    override suspend fun getTransfer(id: Long): TransferDataModel? {
+    override suspend fun getTransfer(id: Long): Transfer? {
         synchronizeTransfers()
-        return localSource.getTransfer(id = id)?.toDataModel()
+        return localSource.getTransfer(id = id)?.toDataModel()?.toDomainModel()
     }
 
     override fun getTransfersInDateRangeAsFlow(
         from: Long,
         to: Long
-    ): Flow<List<TransferDataModel>> {
+    ): Flow<List<Transfer>> {
         return localSource.getTransfersInDateRangeAsFlow(from = from, to = to)
             .onStart { synchronizeTransfers() }
             .map { transfers ->
-                transfers.map { it.toDataModel() }
+                transfers.map { it.toDataModel().toDomainModel() }
             }
     }
 
     override suspend fun getTransfersInDateRange(
         from: Long,
         to: Long
-    ): List<TransferDataModel> {
+    ): List<Transfer> {
         synchronizeTransfers()
-        return localSource.getTransfersInDateRange(from = from, to = to).map { it.toDataModel() }
+        return localSource.getTransfersInDateRange(from = from, to = to).map {
+            it.toDataModel().toDomainModel()
+        }
     }
 
-    override suspend fun getTransfersByAccounts(ids: List<Int>): List<TransferDataModel> {
+    override suspend fun getTransfersByAccounts(ids: List<Int>): List<Transfer> {
         synchronizeTransfers()
-        return localSource.getTransfersByAccounts(accountIds = ids).map { it.toDataModel() }
+        return localSource.getTransfersByAccounts(accountIds = ids).map {
+            it.toDataModel().toDomainModel()
+        }
     }
 
     override suspend fun getTotalExpensesInDateRangeByAccounts(

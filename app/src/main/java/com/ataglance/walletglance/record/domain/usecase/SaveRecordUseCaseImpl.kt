@@ -7,7 +7,6 @@ import com.ataglance.walletglance.transaction.domain.model.RecordWithItems
 
 class SaveRecordUseCaseImpl(
     private val recordRepository: RecordRepository,
-    private val getRecordUseCase: GetRecordUseCase,
     private val applyNewRecordToAccountUseCase: ApplyNewRecordToAccountUseCase,
     private val applyEditedRecordToAccountsUseCase: ApplyEditedRecordToAccountsUseCase
 ) : SaveRecordUseCase {
@@ -19,7 +18,8 @@ class SaveRecordUseCaseImpl(
 
             recordRepository.upsertRecordWithItems(recordWithItems = createdRecord)
         } else {
-            val currentRecord = getRecordUseCase.execute(id = createdRecord.recordId) ?: return
+            val currentRecord = recordRepository.getRecordWithItems(id = createdRecord.recordId)
+                ?: return
 
             applyEditedRecordToAccountsUseCase
                 .execute(createdRecord = createdRecord, currentRecord = currentRecord)
