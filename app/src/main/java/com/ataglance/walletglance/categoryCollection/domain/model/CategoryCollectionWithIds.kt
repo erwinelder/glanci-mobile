@@ -11,7 +11,7 @@ data class CategoryCollectionWithIds(
 ) {
 
     fun toCategoryCollectionWithCategories(
-        allCategories: List<Category>
+        categories: List<Category>
     ): CategoryCollectionWithCategories {
 
         return CategoryCollectionWithCategories(
@@ -20,7 +20,7 @@ data class CategoryCollectionWithIds(
             type = type,
             name = name,
             categories = categoryIds?.let { categoriesIds ->
-                allCategories.filter { category ->
+                categories.filter { category ->
                     categoriesIds.find { it == category.id } != null
                 }
             }

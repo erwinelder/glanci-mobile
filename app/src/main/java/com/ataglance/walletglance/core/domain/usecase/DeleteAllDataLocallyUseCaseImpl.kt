@@ -2,7 +2,7 @@ package com.ataglance.walletglance.core.domain.usecase
 
 import com.ataglance.walletglance.account.domain.repository.AccountRepository
 import com.ataglance.walletglance.category.domain.repository.CategoryRepository
-import com.ataglance.walletglance.categoryCollection.data.repository.CategoryCollectionRepository
+import com.ataglance.walletglance.categoryCollection.domain.repository.CategoryCollectionRepository
 import com.ataglance.walletglance.settings.data.repository.SettingsRepository
 import com.ataglance.walletglance.navigation.data.repository.NavigationButtonRepository
 import com.ataglance.walletglance.personalization.data.repository.WidgetRepository

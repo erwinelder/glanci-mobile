@@ -52,7 +52,7 @@ val transactionModule = module {
             defaultCollectionName = parameters.get(),
             getAccountsUseCase = get(),
             getCategoriesGroupedUseCase = get(),
-            getCategoryCollectionsUseCase = get(),
+            getCategoryCollectionsGroupedUseCase = get(),
             getTransactionsInDateRangeUseCase = get()
         )
     }

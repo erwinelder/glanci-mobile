@@ -78,7 +78,7 @@ val categoryModule = module {
             activeDateRange = parameters.get(),
             defaultCollectionName = parameters.get(),
             getCategoriesGroupedUseCase = get(),
-            getCategoryCollectionsUseCase = get(),
+            getCategoryCollectionsGroupedUseCase = get(),
             getTransactionsInDateRangeUseCase = get()
         )
     }

@@ -4,12 +4,12 @@ import com.ataglance.walletglance.categoryCollection.data.local.source.CategoryC
 import com.ataglance.walletglance.categoryCollection.data.local.source.getCategoryCollectionLocalDataSource
 import com.ataglance.walletglance.categoryCollection.data.remote.source.CategoryCollectionRemoteDataSource
 import com.ataglance.walletglance.categoryCollection.data.remote.source.CategoryCollectionRemoteDataSourceImpl
-import com.ataglance.walletglance.categoryCollection.data.repository.CategoryCollectionRepository
+import com.ataglance.walletglance.categoryCollection.domain.repository.CategoryCollectionRepository
 import com.ataglance.walletglance.categoryCollection.data.repository.CategoryCollectionRepositoryImpl
-import com.ataglance.walletglance.categoryCollection.domain.usecase.GetCategoryCollectionsUseCase
-import com.ataglance.walletglance.categoryCollection.domain.usecase.GetCategoryCollectionsUseCaseImpl
-import com.ataglance.walletglance.categoryCollection.domain.usecase.SaveCategoryCollectionsUseCase
-import com.ataglance.walletglance.categoryCollection.domain.usecase.SaveCategoryCollectionsUseCaseImpl
+import com.ataglance.walletglance.categoryCollection.domain.usecase.GetCategoryCollectionsGroupedUseCase
+import com.ataglance.walletglance.categoryCollection.domain.usecase.GetCategoryCollectionsGroupedUseCaseImpl
+import com.ataglance.walletglance.categoryCollection.domain.usecase.SaveCategoryCollectionsAndDeleteRestUseCase
+import com.ataglance.walletglance.categoryCollection.domain.usecase.SaveCategoryCollectionsAndDeleteRestUseCaseImpl
 import com.ataglance.walletglance.categoryCollection.presentation.viewmodel.EditCategoryCollectionViewModel
 import com.ataglance.walletglance.categoryCollection.presentation.viewmodel.EditCategoryCollectionsViewModel
 import org.koin.core.module.dsl.viewModel
@@ -44,20 +44,20 @@ val categoryCollectionModule = module {
 
     /* ---------- Use Cases ---------- */
 
-    single<SaveCategoryCollectionsUseCase> {
-        SaveCategoryCollectionsUseCaseImpl(categoryCollectionRepository = get())
+    single<SaveCategoryCollectionsAndDeleteRestUseCase> {
+        SaveCategoryCollectionsAndDeleteRestUseCaseImpl(categoryCollectionRepository = get())
     }
 
-    single<GetCategoryCollectionsUseCase> {
-        GetCategoryCollectionsUseCaseImpl(categoryCollectionRepository = get())
+    single<GetCategoryCollectionsGroupedUseCase> {
+        GetCategoryCollectionsGroupedUseCaseImpl(categoryCollectionRepository = get())
     }
 
     /* ---------- ViewModels ---------- */
 
     viewModel {
         EditCategoryCollectionsViewModel(
-            saveCategoryCollectionsUseCase = get(),
-            getCategoryCollectionsUseCase = get(),
+            saveCategoryCollectionsAndDeleteRestUseCase = get(),
+            getCategoryCollectionsGroupedUseCase = get(),
             getAllCategoriesUseCase = get()
         )
     }

@@ -12,7 +12,7 @@ import com.ataglance.walletglance.category.presentation.model.CategoryStatistics
 import com.ataglance.walletglance.category.presentation.model.GroupedCategoryStatistics
 import com.ataglance.walletglance.categoryCollection.domain.model.CategoryCollectionType
 import com.ataglance.walletglance.categoryCollection.domain.model.CategoryCollectionsWithIdsByType
-import com.ataglance.walletglance.categoryCollection.domain.usecase.GetCategoryCollectionsUseCase
+import com.ataglance.walletglance.categoryCollection.domain.usecase.GetCategoryCollectionsGroupedUseCase
 import com.ataglance.walletglance.categoryCollection.domain.utils.toggleExpenseIncome
 import com.ataglance.walletglance.categoryCollection.presentation.model.CategoryCollectionsUiState
 import com.ataglance.walletglance.core.domain.date.TimestampRange
@@ -37,7 +37,7 @@ class CategoryStatisticsViewModel(
     activeDateRange: TimestampRange,
     private val defaultCollectionName: String,
     private val getCategoriesGroupedUseCase: GetCategoriesGroupedUseCase,
-    private val getCategoryCollectionsUseCase: GetCategoryCollectionsUseCase,
+    private val getCategoryCollectionsGroupedUseCase: GetCategoryCollectionsGroupedUseCase,
     private val getTransactionsInDateRangeUseCase: GetTransactionsInDateRangeUseCase
 ) : ViewModel() {
 
@@ -186,7 +186,7 @@ class CategoryStatisticsViewModel(
 
             groupedCategoriesByType = getCategoriesGroupedUseCase.get()
 
-            getCategoryCollectionsUseCase.getFlow().collect { collections ->
+            getCategoryCollectionsGroupedUseCase.getAsFlow().collect { collections ->
                 collectionsByType = collections
                 setCategoryCollections(collections = collections)
             }

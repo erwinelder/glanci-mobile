@@ -392,7 +392,7 @@ fun EditCategoryCollectionScreenPreview(
     ),
 ) {
     val collection = collectionWithIds.toCategoryCollectionWithCategories(
-        allCategories = groupedCategoriesByType.asList()
+        categories = groupedCategoriesByType.asList()
     )
     val editingCategoriesWithSubcategories = groupedCategoriesByType
         .toCheckedCategoriesWithSubcategories(collection)

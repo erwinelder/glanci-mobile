@@ -2,7 +2,6 @@ package com.ataglance.walletglance.categoryCollection.domain.model
 
 import com.ataglance.walletglance.category.domain.model.Category
 import com.ataglance.walletglance.category.domain.model.CategoryType
-import com.ataglance.walletglance.categoryCollection.domain.utils.toCollectionsWithCategories
 
 data class CategoryCollectionsWithIdsByType(
     val expense: List<CategoryCollectionWithIds> = listOf(),
@@ -64,9 +63,9 @@ data class CategoryCollectionsWithIdsByType(
         allCategories: List<Category>
     ): CategoryCollectionsWithCategories {
         return CategoryCollectionsWithCategories(
-            expense = expense.toCollectionsWithCategories(allCategories),
-            income = income.toCollectionsWithCategories(allCategories),
-            mixed = mixed.toCollectionsWithCategories(allCategories)
+            expense = expense.map { it.toCategoryCollectionWithCategories(allCategories) },
+            income = income.map { it.toCategoryCollectionWithCategories(allCategories) },
+            mixed = mixed.map { it.toCategoryCollectionWithCategories(allCategories) }
         )
     }
 

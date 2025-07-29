@@ -6,8 +6,8 @@ import com.ataglance.walletglance.category.domain.usecase.GetAllCategoriesUseCas
 import com.ataglance.walletglance.categoryCollection.domain.model.CategoryCollectionType
 import com.ataglance.walletglance.categoryCollection.domain.model.CategoryCollectionWithCategories
 import com.ataglance.walletglance.categoryCollection.domain.model.CategoryCollectionsWithCategories
-import com.ataglance.walletglance.categoryCollection.domain.usecase.GetCategoryCollectionsUseCase
-import com.ataglance.walletglance.categoryCollection.domain.usecase.SaveCategoryCollectionsUseCase
+import com.ataglance.walletglance.categoryCollection.domain.usecase.GetCategoryCollectionsGroupedUseCase
+import com.ataglance.walletglance.categoryCollection.domain.usecase.SaveCategoryCollectionsAndDeleteRestUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -18,8 +18,8 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class EditCategoryCollectionsViewModel(
-    private val saveCategoryCollectionsUseCase: SaveCategoryCollectionsUseCase,
-    private val getCategoryCollectionsUseCase: GetCategoryCollectionsUseCase,
+    private val saveCategoryCollectionsAndDeleteRestUseCase: SaveCategoryCollectionsAndDeleteRestUseCase,
+    private val getCategoryCollectionsGroupedUseCase: GetCategoryCollectionsGroupedUseCase,
     private val getAllCategoriesUseCase: GetAllCategoriesUseCase
 ) : ViewModel() {
 
@@ -71,7 +71,7 @@ class EditCategoryCollectionsViewModel(
 
 
     suspend fun saveCategoryCollections() {
-        saveCategoryCollectionsUseCase.saveAndDeleteRest(
+        saveCategoryCollectionsAndDeleteRestUseCase.execute(
             collections = _collectionsWithCategories.value.concatenateLists()
         )
     }
@@ -80,7 +80,7 @@ class EditCategoryCollectionsViewModel(
     init {
         viewModelScope.launch {
             val categories = getAllCategoriesUseCase.execute()
-            val collections = getCategoryCollectionsUseCase.get().toCollectionsWithCategories(
+            val collections = getCategoryCollectionsGroupedUseCase.get().toCollectionsWithCategories(
                 allCategories = categories
             )
 

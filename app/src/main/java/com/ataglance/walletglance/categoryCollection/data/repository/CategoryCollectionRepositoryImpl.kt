@@ -6,13 +6,18 @@ import com.ataglance.walletglance.categoryCollection.data.mapper.toDataModel
 import com.ataglance.walletglance.categoryCollection.data.mapper.toDataModelWithAssociations
 import com.ataglance.walletglance.categoryCollection.data.mapper.toDtoWithAssociations
 import com.ataglance.walletglance.categoryCollection.data.mapper.toEntityWithAssociations
-import com.ataglance.walletglance.categoryCollection.data.mapper.withAssociations
-import com.ataglance.walletglance.categoryCollection.data.model.CategoryCollectionDataModel
 import com.ataglance.walletglance.categoryCollection.data.model.CategoryCollectionWithAssociationsDataModel
 import com.ataglance.walletglance.categoryCollection.data.remote.source.CategoryCollectionRemoteDataSource
+import com.ataglance.walletglance.categoryCollection.domain.model.CategoryCollection
+import com.ataglance.walletglance.categoryCollection.domain.model.CategoryCollectionWithIds
+import com.ataglance.walletglance.categoryCollection.domain.repository.CategoryCollectionRepository
+import com.ataglance.walletglance.categoryCollection.mapper.toDataModelWithAssociations
+import com.ataglance.walletglance.categoryCollection.mapper.toDomainModel
+import com.ataglance.walletglance.categoryCollection.mapper.toDomainModelWithIds
 import com.ataglance.walletglance.core.data.model.DataSyncHelper
 import com.ataglance.walletglance.core.data.model.TableName
 import com.glanci.categoryCollection.shared.dto.CategoryCollectionWithAssociationsDto
+import com.glanci.request.shared.SimpleResult
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onStart
@@ -24,7 +29,7 @@ class CategoryCollectionRepositoryImpl(
 ) : CategoryCollectionRepository {
 
     private suspend fun synchronizeCollections() {
-        syncHelper.synchronizeData(
+        syncHelper.synchronizeDataSafe(
             tableName = TableName.CategoryCollection,
             localTimestampGetter = { localSource.getUpdateTime() },
             remoteTimestampGetter = { token -> remoteSource.getUpdateTime(token = token) },
@@ -49,7 +54,12 @@ class CategoryCollectionRepositoryImpl(
             entityDeletedPredicate = { it.deleted },
             entityToCommandDtoMapper = CategoryCollectionEntityWithAssociations::toDtoWithAssociations,
             queryDtoToEntityMapper = CategoryCollectionWithAssociationsDto::toEntityWithAssociations,
-        )
+        ).also { result ->
+            when (result) {
+                is SimpleResult.Success -> println("Collections synchronized successfully.")
+                is SimpleResult.Error -> println("Error synchronizing collections: ${result.error}")
+            }
+        }
     }
 
     override suspend fun deleteAllCollectionsLocally() {
@@ -57,12 +67,15 @@ class CategoryCollectionRepositoryImpl(
     }
 
     override suspend fun deleteAndUpsertCollectionsWithAssociations(
-        toDelete: List<CategoryCollectionDataModel>,
-        toUpsert: List<CategoryCollectionWithAssociationsDataModel>
+        toDelete: List<CategoryCollection>,
+        toUpsert: List<CategoryCollectionWithIds>
     ) {
-        syncHelper.deleteAndUpsertData(
+        val toDelete = toDelete.map { it.toDataModelWithAssociations() }
+        val toUpsert = toUpsert.mapNotNull { it.toDataModelWithAssociations() }
+
+        syncHelper.deleteAndUpsertDataSafe(
             tableName = TableName.CategoryCollection,
-            toDelete = toDelete.map { it.withAssociations() },
+            toDelete = toDelete,
             toUpsert = toUpsert,
             localTimestampGetter = { localSource.getUpdateTime() },
             remoteTimestampGetter = { token -> remoteSource.getUpdateTime(token = token) },
@@ -100,28 +113,32 @@ class CategoryCollectionRepositoryImpl(
             dataModelToEntityMapper = CategoryCollectionWithAssociationsDataModel::toEntityWithAssociations,
             entityToCommandDtoMapper = CategoryCollectionEntityWithAssociations::toDtoWithAssociations,
             queryDtoToEntityMapper = CategoryCollectionWithAssociationsDto::toEntityWithAssociations
-        )
+        ).also { result ->
+            when (result) {
+                is SimpleResult.Success -> println("Collections with associations deleted and upserted successfully.")
+                is SimpleResult.Error -> println("Error deleting and upserting collections: ${result.error}")
+            }
+        }
     }
 
-    override suspend fun getAllCollections(): List<CategoryCollectionDataModel> {
+    override suspend fun getAllCollections(): List<CategoryCollection> {
         synchronizeCollections()
-        return localSource.getAllCollections().map { it.toDataModel() }
+        return localSource.getAllCollections().map { it.toDataModel().toDomainModel() }
     }
 
-    override fun getAllCollectionsWithAssociationsAsFlow(
-    ): Flow<List<CategoryCollectionWithAssociationsDataModel>> {
+    override fun getAllCollectionsWithAssociationsAsFlow(): Flow<List<CategoryCollectionWithIds>> {
         return localSource.getAllCollectionsWithAssociationsAsFlow()
             .onStart { synchronizeCollections() }
             .map { collectionsWithAssociations ->
-                collectionsWithAssociations.map { it.toDataModelWithAssociations() }
+                collectionsWithAssociations.map {
+                    it.toDataModelWithAssociations().toDomainModelWithIds()
+                }
             }
     }
 
-    override suspend fun getAllCollectionsWithAssociations(
-    ): List<CategoryCollectionWithAssociationsDataModel> {
-        synchronizeCollections()
+    override suspend fun getAllCollectionsWithAssociations(): List<CategoryCollectionWithIds> {
         return localSource.getAllCollectionsWithAssociations().map {
-            it.toDataModelWithAssociations()
+            it.toDataModelWithAssociations().toDomainModelWithIds()
         }
     }
 

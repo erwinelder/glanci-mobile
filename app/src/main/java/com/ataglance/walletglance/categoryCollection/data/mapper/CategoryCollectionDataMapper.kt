@@ -11,16 +11,6 @@ import com.glanci.categoryCollection.shared.dto.CategoryCollectionDto
 import com.glanci.categoryCollection.shared.dto.CategoryCollectionWithAssociationsDto
 
 
-fun CategoryCollectionDataModel.withAssociations(
-    associations: List<CategoryCollectionCategoryAssociationDataModel> = emptyList()
-): CategoryCollectionWithAssociationsDataModel {
-    return CategoryCollectionWithAssociationsDataModel(
-        collection = this,
-        associations = associations
-    )
-}
-
-
 fun CategoryCollectionDataModel.toEntity(
     timestamp: Long,
     deleted: Boolean

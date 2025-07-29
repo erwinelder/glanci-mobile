@@ -3,11 +3,38 @@ package com.ataglance.walletglance.categoryCollection.mapper
 import com.ataglance.walletglance.categoryCollection.data.model.CategoryCollectionCategoryAssociationDataModel
 import com.ataglance.walletglance.categoryCollection.data.model.CategoryCollectionDataModel
 import com.ataglance.walletglance.categoryCollection.data.model.CategoryCollectionWithAssociationsDataModel
-import com.ataglance.walletglance.categoryCollection.domain.model.CategoryCollectionWithCategories
+import com.ataglance.walletglance.categoryCollection.domain.model.CategoryCollection
+import com.ataglance.walletglance.categoryCollection.domain.model.CategoryCollectionType
 import com.ataglance.walletglance.categoryCollection.domain.model.CategoryCollectionWithIds
-import com.ataglance.walletglance.categoryCollection.domain.model.CategoryCollectionsWithIdsByType
-import com.ataglance.walletglance.categoryCollection.domain.utils.asCategoryCollectionType
-import com.ataglance.walletglance.categoryCollection.domain.utils.asChar
+
+
+fun CategoryCollectionDataModel.toDomainModel(): CategoryCollection {
+    return CategoryCollection(
+        id = id,
+        orderNum = orderNum,
+        type = CategoryCollectionType.fromChar(char = type),
+        name = name
+    )
+}
+
+
+fun CategoryCollection.toDataModel(): CategoryCollectionDataModel {
+    return CategoryCollectionDataModel(
+        id = id,
+        orderNum = orderNum,
+        type = type.asChar(),
+        name = name
+    )
+}
+
+fun CategoryCollection.toDataModelWithAssociations(
+    associations: List<CategoryCollectionCategoryAssociationDataModel> = emptyList()
+): CategoryCollectionWithAssociationsDataModel {
+    return CategoryCollectionWithAssociationsDataModel(
+        collection = this.toDataModel(),
+        associations = associations
+    )
+}
 
 
 fun CategoryCollectionWithIds.toDataModel(): CategoryCollectionDataModel {
@@ -33,25 +60,13 @@ fun CategoryCollectionWithIds.toDataModelWithAssociations(
     )
 }
 
-fun CategoryCollectionWithCategories.toDataModelWithAssociations(
-): CategoryCollectionWithAssociationsDataModel? {
-    return toCollectionWithIds().toDataModelWithAssociations()
-}
-
 
 fun CategoryCollectionWithAssociationsDataModel.toDomainModelWithIds(): CategoryCollectionWithIds {
     return CategoryCollectionWithIds(
         id = collection.id,
         orderNum = collection.orderNum,
-        type = collection.type.asCategoryCollectionType(),
+        type = CategoryCollectionType.fromChar(char = collection.type),
         name = collection.name,
         categoryIds = associations.map { it.categoryId }
-    )
-}
-
-fun List<CategoryCollectionWithAssociationsDataModel>.groupByType(
-): CategoryCollectionsWithIdsByType {
-    return CategoryCollectionsWithIdsByType.fromCollections(
-        collections = map { it.toDomainModelWithIds() }
     )
 }
