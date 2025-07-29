@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ataglance.walletglance.category.domain.model.Category
 import com.ataglance.walletglance.category.domain.model.GroupedCategoriesByType
-import com.ataglance.walletglance.category.domain.usecase.GetCategoriesUseCase
+import com.ataglance.walletglance.category.domain.usecase.GetCategoriesGroupedUseCase
 import com.ataglance.walletglance.category.mapper.toCheckedCategoriesWithSubcategories
 import com.ataglance.walletglance.category.presentation.model.CheckedGroupedCategories
 import com.ataglance.walletglance.category.presentation.model.CheckedGroupedCategoriesByType
@@ -19,7 +19,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class EditCategoryCollectionViewModel(
-    private val getCategoriesUseCase: GetCategoriesUseCase
+    private val getCategoriesGroupedUseCase: GetCategoriesGroupedUseCase
 ) : ViewModel() {
 
     private var groupedCategoriesByType = GroupedCategoriesByType()
@@ -98,7 +98,7 @@ class EditCategoryCollectionViewModel(
 
     init {
         viewModelScope.launch {
-            groupedCategoriesByType = getCategoriesUseCase.getGrouped()
+            groupedCategoriesByType = getCategoriesGroupedUseCase.get()
         }
     }
 

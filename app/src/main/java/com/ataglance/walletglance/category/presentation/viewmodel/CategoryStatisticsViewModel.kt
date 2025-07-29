@@ -5,7 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.ataglance.walletglance.account.domain.model.Account
 import com.ataglance.walletglance.category.domain.model.CategoryType
 import com.ataglance.walletglance.category.domain.model.GroupedCategoriesByType
-import com.ataglance.walletglance.category.domain.usecase.GetCategoriesUseCase
+import com.ataglance.walletglance.category.domain.usecase.GetCategoriesGroupedUseCase
 import com.ataglance.walletglance.category.mapper.toCategoryCollectionType
 import com.ataglance.walletglance.category.presentation.model.CategoriesStatistics
 import com.ataglance.walletglance.category.presentation.model.CategoryStatistics
@@ -36,7 +36,7 @@ class CategoryStatisticsViewModel(
     activeAccount: Account?,
     activeDateRange: TimestampRange,
     private val defaultCollectionName: String,
-    private val getCategoriesUseCase: GetCategoriesUseCase,
+    private val getCategoriesGroupedUseCase: GetCategoriesGroupedUseCase,
     private val getCategoryCollectionsUseCase: GetCategoryCollectionsUseCase,
     private val getTransactionsInDateRangeUseCase: GetTransactionsInDateRangeUseCase
 ) : ViewModel() {
@@ -184,7 +184,7 @@ class CategoryStatisticsViewModel(
     init {
         viewModelScope.launch {
 
-            groupedCategoriesByType = getCategoriesUseCase.getGrouped()
+            groupedCategoriesByType = getCategoriesGroupedUseCase.get()
 
             getCategoryCollectionsUseCase.getFlow().collect { collections ->
                 collectionsByType = collections

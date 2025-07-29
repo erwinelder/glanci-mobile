@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ataglance.walletglance.account.domain.model.Account
 import com.ataglance.walletglance.category.domain.model.GroupedCategoriesByType
-import com.ataglance.walletglance.category.domain.usecase.GetCategoriesUseCase
+import com.ataglance.walletglance.category.domain.usecase.GetCategoriesGroupedUseCase
 import com.ataglance.walletglance.category.presentation.model.CategoriesStatistics
 import com.ataglance.walletglance.category.presentation.model.CategoriesStatisticsWidgetUiState
 import com.ataglance.walletglance.core.domain.date.TimestampRange
@@ -22,7 +22,7 @@ import kotlinx.coroutines.flow.update
 class CategoryStatisticsWidgetViewModel(
     activeAccount: Account?,
     activeDateRange: TimestampRange,
-    private val getCategoriesUseCase: GetCategoriesUseCase,
+    private val getCategoriesGroupedUseCase: GetCategoriesGroupedUseCase,
     private val getTransactionsInDateRangeUseCase: GetTransactionsInDateRangeUseCase
 ) : ViewModel() {
 
@@ -63,7 +63,7 @@ class CategoryStatisticsWidgetViewModel(
         if (account == null) return@combine CategoriesStatisticsWidgetUiState()
 
         val groupedCategoriesByType = groupedCategoriesByType
-            ?: getCategoriesUseCase.getGrouped().also { groupedCategoriesByType = it }
+            ?: getCategoriesGroupedUseCase.get().also { groupedCategoriesByType = it }
 
         val (categoryType, transactions) = transactions.filterNotEmptyByCategoryTypes()
 

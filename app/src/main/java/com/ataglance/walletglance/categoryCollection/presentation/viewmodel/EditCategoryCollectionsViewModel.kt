@@ -2,7 +2,7 @@ package com.ataglance.walletglance.categoryCollection.presentation.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.ataglance.walletglance.category.domain.usecase.GetCategoriesUseCase
+import com.ataglance.walletglance.category.domain.repository.CategoryRepository
 import com.ataglance.walletglance.categoryCollection.domain.model.CategoryCollectionType
 import com.ataglance.walletglance.categoryCollection.domain.model.CategoryCollectionWithCategories
 import com.ataglance.walletglance.categoryCollection.domain.model.CategoryCollectionsWithCategories
@@ -20,7 +20,7 @@ import kotlinx.coroutines.launch
 class EditCategoryCollectionsViewModel(
     private val saveCategoryCollectionsUseCase: SaveCategoryCollectionsUseCase,
     private val getCategoryCollectionsUseCase: GetCategoryCollectionsUseCase,
-    private val getCategoriesUseCase: GetCategoriesUseCase
+    private val categoryRepository: CategoryRepository
 ) : ViewModel() {
 
     private val _collectionsWithCategories = MutableStateFlow(CategoryCollectionsWithCategories())
@@ -79,7 +79,7 @@ class EditCategoryCollectionsViewModel(
 
     init {
         viewModelScope.launch {
-            val categories = getCategoriesUseCase.getAsList()
+            val categories = categoryRepository.getAllCategories()
             val collections = getCategoryCollectionsUseCase.get().toCollectionsWithCategories(
                 allCategories = categories
             )

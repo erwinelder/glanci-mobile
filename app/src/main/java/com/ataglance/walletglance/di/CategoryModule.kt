@@ -4,12 +4,14 @@ import com.ataglance.walletglance.category.data.local.source.CategoryLocalDataSo
 import com.ataglance.walletglance.category.data.local.source.getCategoryLocalDataSource
 import com.ataglance.walletglance.category.data.remote.source.CategoryRemoteDataSource
 import com.ataglance.walletglance.category.data.remote.source.CategoryRemoteDataSourceImpl
-import com.ataglance.walletglance.category.data.repository.CategoryRepository
 import com.ataglance.walletglance.category.data.repository.CategoryRepositoryImpl
-import com.ataglance.walletglance.category.domain.usecase.GetCategoriesUseCase
-import com.ataglance.walletglance.category.domain.usecase.GetCategoriesUseCaseImpl
-import com.ataglance.walletglance.category.domain.usecase.SaveCategoriesUseCase
-import com.ataglance.walletglance.category.domain.usecase.SaveCategoriesUseCaseImpl
+import com.ataglance.walletglance.category.domain.repository.CategoryRepository
+import com.ataglance.walletglance.category.domain.usecase.GetCategoriesGroupedUseCase
+import com.ataglance.walletglance.category.domain.usecase.GetCategoriesGroupedUseCaseImpl
+import com.ataglance.walletglance.category.domain.usecase.GetExpenseCategoriesGroupedUseCase
+import com.ataglance.walletglance.category.domain.usecase.GetExpenseCategoriesGroupedUseCaseImpl
+import com.ataglance.walletglance.category.domain.usecase.SaveCategoriesAndDeleteRestUseCase
+import com.ataglance.walletglance.category.domain.usecase.SaveCategoriesAndDeleteRestUseCaseImpl
 import com.ataglance.walletglance.category.domain.usecase.TranslateCategoriesUseCase
 import com.ataglance.walletglance.category.domain.usecase.TranslateCategoriesUseCaseImpl
 import com.ataglance.walletglance.category.presentation.model.DefaultCategoriesPackage
@@ -44,19 +46,20 @@ val categoryModule = module {
 
     /* ---------- Use Cases ---------- */
 
-    single<SaveCategoriesUseCase> {
-        SaveCategoriesUseCaseImpl(categoryRepository = get())
+    single<SaveCategoriesAndDeleteRestUseCase> {
+        SaveCategoriesAndDeleteRestUseCaseImpl(categoryRepository = get())
     }
 
     single<TranslateCategoriesUseCase> {
-        TranslateCategoriesUseCaseImpl(
-            getCategoriesUseCase = get(),
-            saveCategoriesUseCase = get()
-        )
+        TranslateCategoriesUseCaseImpl(categoryRepository = get())
     }
 
-    single<GetCategoriesUseCase> {
-        GetCategoriesUseCaseImpl(categoryRepository = get())
+    single<GetCategoriesGroupedUseCase> {
+        GetCategoriesGroupedUseCaseImpl(categoryRepository = get())
+    }
+
+    single<GetExpenseCategoriesGroupedUseCase> {
+        GetExpenseCategoriesGroupedUseCaseImpl(categoryRepository = get())
     }
 
     /* ---------- ViewModels ---------- */
@@ -68,7 +71,7 @@ val categoryModule = module {
             activeAccount = parameters.get(),
             activeDateRange = parameters.get(),
             defaultCollectionName = parameters.get(),
-            getCategoriesUseCase = get(),
+            getCategoriesGroupedUseCase = get(),
             getCategoryCollectionsUseCase = get(),
             getTransactionsInDateRangeUseCase = get()
         )
@@ -78,7 +81,7 @@ val categoryModule = module {
         CategoryStatisticsWidgetViewModel(
             activeAccount = parameters.getOrNull(),
             activeDateRange = parameters.get(),
-            getCategoriesUseCase = get(),
+            getCategoriesGroupedUseCase = get(),
             getTransactionsInDateRangeUseCase = get()
         )
     }
@@ -88,8 +91,8 @@ val categoryModule = module {
             defaultCategoriesPackage = DefaultCategoriesPackage(
                 resourceManager = get { parametersOf(parameters.get<String>()) }
             ),
-            saveCategoriesUseCase = get(),
-            getCategoriesUseCase = get()
+            saveCategoriesAndDeleteRestUseCase = get(),
+            getCategoriesGroupedUseCase = get()
         )
     }
 

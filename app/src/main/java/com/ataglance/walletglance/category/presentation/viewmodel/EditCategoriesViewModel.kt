@@ -8,8 +8,8 @@ import com.ataglance.walletglance.category.domain.model.CategoryIcon
 import com.ataglance.walletglance.category.domain.model.CategoryType
 import com.ataglance.walletglance.category.domain.model.GroupedCategories
 import com.ataglance.walletglance.category.domain.model.GroupedCategoriesByType
-import com.ataglance.walletglance.category.domain.usecase.GetCategoriesUseCase
-import com.ataglance.walletglance.category.domain.usecase.SaveCategoriesUseCase
+import com.ataglance.walletglance.category.domain.usecase.GetCategoriesGroupedUseCase
+import com.ataglance.walletglance.category.domain.usecase.SaveCategoriesAndDeleteRestUseCase
 import com.ataglance.walletglance.category.presentation.model.DefaultCategoriesPackage
 import com.ataglance.walletglance.category.presentation.model.SetupCategoriesUiState
 import com.ataglance.walletglance.core.utils.moveItems
@@ -21,8 +21,8 @@ import kotlinx.coroutines.launch
 
 class EditCategoriesViewModel(
     defaultCategoriesPackage: DefaultCategoriesPackage,
-    private val saveCategoriesUseCase: SaveCategoriesUseCase,
-    private val getCategoriesUseCase: GetCategoriesUseCase
+    private val saveCategoriesAndDeleteRestUseCase: SaveCategoriesAndDeleteRestUseCase,
+    private val getCategoriesGroupedUseCase: GetCategoriesGroupedUseCase
 ) : ViewModel() {
 
     private var initialGroupedCategoriesByType = GroupedCategoriesByType()
@@ -170,13 +170,13 @@ class EditCategoriesViewModel(
         val categories = uiState.value.groupedCategoriesByType
             .fixParentCategoriesOrderNums()
             .asList()
-        saveCategoriesUseCase.saveAndDeleteRest(categories = categories)
+        saveCategoriesAndDeleteRestUseCase.execute(categories = categories)
     }
 
 
     init {
         viewModelScope.launch {
-            val categories = getCategoriesUseCase.getGrouped()
+            val categories = getCategoriesGroupedUseCase.get()
                 .takeIf { it.expense.isNotEmpty() && it.income.isNotEmpty() }
                 ?: defaultCategoriesPackage.get()
 

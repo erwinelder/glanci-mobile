@@ -88,7 +88,7 @@ val budgetModule = module {
     single<GetEmptyBudgetsUseCase> {
         GetEmptyBudgetsUseCaseImpl(
             budgetRepository = get(),
-            getCategoriesUseCase = get(),
+            getExpenseCategoriesGroupedUseCase = get(),
             accountRepository = get()
         )
     }
@@ -152,7 +152,7 @@ val budgetModule = module {
     viewModel {
         EditBudgetViewModel(
             accountRepository = get(),
-            getCategoriesUseCase = get()
+            getCategoriesGroupedUseCase = get()
         )
     }
 

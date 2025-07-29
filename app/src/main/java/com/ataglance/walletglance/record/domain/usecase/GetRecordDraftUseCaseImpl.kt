@@ -5,14 +5,14 @@ import com.ataglance.walletglance.account.domain.model.Account
 import com.ataglance.walletglance.account.domain.utils.findById
 import com.ataglance.walletglance.category.domain.model.CategoryWithSub
 import com.ataglance.walletglance.category.domain.model.GroupedCategoriesByType
-import com.ataglance.walletglance.category.domain.usecase.GetCategoriesUseCase
+import com.ataglance.walletglance.category.domain.usecase.GetCategoriesGroupedUseCase
 import com.ataglance.walletglance.record.mapper.toDraftWithItems
 import com.ataglance.walletglance.record.presentation.model.RecordDraftWithItems
 
 class GetRecordDraftUseCaseImpl(
     private val getRecordUseCase: GetRecordUseCase,
     private val accountRepository: AccountRepository,
-    private val getCategoriesUseCase: GetCategoriesUseCase
+    private val getCategoriesGroupedUseCase: GetCategoriesGroupedUseCase
 ) : GetRecordDraftUseCase {
 
     override suspend fun execute(
@@ -23,7 +23,7 @@ class GetRecordDraftUseCaseImpl(
         categories: GroupedCategoriesByType?
     ): RecordDraftWithItems {
         val accounts = accounts ?: accountRepository.getAllAccounts()
-        val categories = categories ?: getCategoriesUseCase.getGrouped()
+        val categories = categories ?: getCategoriesGroupedUseCase.get()
 
         return id
             ?.let { getRecordUseCase.get(id = id) }

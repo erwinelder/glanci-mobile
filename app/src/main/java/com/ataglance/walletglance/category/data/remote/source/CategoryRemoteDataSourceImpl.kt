@@ -1,9 +1,12 @@
 package com.ataglance.walletglance.category.data.remote.source
 
-import android.util.Log
-import com.glanci.category.shared.dto.CategoryQueryDto
 import com.glanci.category.shared.dto.CategoryCommandDto
+import com.glanci.category.shared.dto.CategoryQueryDto
 import com.glanci.category.shared.service.CategoryService
+import com.glanci.request.shared.ResultData
+import com.glanci.request.shared.SimpleResult
+import com.glanci.request.shared.error.CategoryDataError
+import com.glanci.request.shared.error.DataError
 import kotlinx.rpc.krpc.ktor.client.KtorRpcClient
 import kotlinx.rpc.withService
 
@@ -14,50 +17,35 @@ class CategoryRemoteDataSourceImpl(
     constructor(client: KtorRpcClient) : this(service = client.withService<CategoryService>())
 
 
-    override suspend fun getUpdateTime(token: String): Long? {
+    override suspend fun getUpdateTime(token: String): ResultData<Long, DataError> {
         return runCatching {
             service.getUpdateTime(token = token)
-        }.getOrNull().also { timestamp ->
-            if (timestamp != null) {
-                Log.d("CategoryRemoteDataSourceImpl", "getUpdateTime:" +
-                        "received update time $timestamp")
-            } else {
-                Log.w("CategoryRemoteDataSourceImpl", "getUpdateTime:" +
-                        "no update time received")
-            }
-        }
+        }.getOrDefault(
+            defaultValue = ResultData.Error(error = CategoryDataError.CategoryError)
+        )
     }
 
     override suspend fun synchronizeCategories(
         categories: List<CategoryCommandDto>,
         timestamp: Long,
         token: String
-    ): Boolean {
+    ): SimpleResult<DataError> {
         return runCatching {
             service.saveCategories(categories = categories, timestamp = timestamp, token = token)
-        }.isSuccess.also { success ->
-            if (success) {
-                Log.d("CategoryRemoteDataSourceImpl", "synchronizeCategories: " +
-                        "synchronized ${categories.size} categories at timestamp $timestamp")
-            } else {
-                Log.e("CategoryRemoteDataSourceImpl", "synchronizeCategories: " +
-                        "failed to synchronize ${categories.size} categories at timestamp $timestamp")
-            }
-        }
+        }.getOrDefault(
+            defaultValue = SimpleResult.Error(error = CategoryDataError.CategoryError)
+        )
     }
 
     override suspend fun getCategoriesAfterTimestamp(
         timestamp: Long,
         token: String
-    ): List<CategoryQueryDto>? {
+    ): ResultData<List<CategoryQueryDto>, DataError> {
         return runCatching {
             service.getCategoriesAfterTimestamp(timestamp = timestamp, token = token)
-        }.getOrNull().also { categories ->
-            categories?.forEach {
-                Log.d("CategoryRemoteDataSourceImpl", "getCategoriesAfterTimestamp:" +
-                        "received category: id = ${it.id}, name = ${it.name}")
-            }
-        }
+        }.getOrDefault(
+            defaultValue = ResultData.Error(error = CategoryDataError.CategoryError)
+        )
     }
 
     override suspend fun synchronizeCategoriesAndGetAfterTimestamp(
@@ -65,7 +53,7 @@ class CategoryRemoteDataSourceImpl(
         timestamp: Long,
         localTimestamp: Long,
         token: String
-    ): List<CategoryQueryDto>? {
+    ): ResultData<List<CategoryQueryDto>, DataError> {
         return runCatching {
             service.saveCategoriesAndGetAfterTimestamp(
                 categories = categories,
@@ -73,15 +61,9 @@ class CategoryRemoteDataSourceImpl(
                 localTimestamp = localTimestamp,
                 token = token
             )
-        }.getOrNull().also { categories ->
-            Log.d("CategoryRemoteDataSourceImpl", "synchronizeCategoriesAndGetAfterTimestamp:" +
-                    "synchronized ${categories?.size ?: 0} categories at timestamp $timestamp" +
-                    " with local timestamp $localTimestamp")
-            categories?.forEach {
-                Log.d("CategoryRemoteDataSourceImpl", "synchronizeCategoriesAndGetAfterTimestamp:" +
-                        "received category: id = ${it.id}, name = ${it.name}")
-            }
-        }
+        }.getOrDefault(
+            defaultValue = ResultData.Error(error = CategoryDataError.CategoryError)
+        )
     }
 
 }

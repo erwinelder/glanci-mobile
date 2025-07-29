@@ -10,7 +10,7 @@ import com.ataglance.walletglance.budget.presentation.model.BudgetDraft
 import com.ataglance.walletglance.category.domain.model.CategoryType
 import com.ataglance.walletglance.category.domain.model.CategoryWithSub
 import com.ataglance.walletglance.category.domain.model.GroupedCategoriesByType
-import com.ataglance.walletglance.category.domain.usecase.GetCategoriesUseCase
+import com.ataglance.walletglance.category.domain.usecase.GetCategoriesGroupedUseCase
 import com.ataglance.walletglance.core.domain.date.RepeatingPeriod
 import com.ataglance.walletglance.core.utils.isPositiveNumberWithDecimal
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -20,7 +20,7 @@ import kotlinx.coroutines.launch
 
 class EditBudgetViewModel(
     private val accountRepository: AccountRepository,
-    private val getCategoriesUseCase: GetCategoriesUseCase
+    private val getCategoriesGroupedUseCase: GetCategoriesGroupedUseCase
 ) : ViewModel() {
 
     var accounts = emptyList<Account>()
@@ -109,7 +109,7 @@ class EditBudgetViewModel(
     init {
         viewModelScope.launch {
             accountRepository.getAllAccounts().let { accounts = it }
-            getCategoriesUseCase.getGrouped().let { groupedCategoriesByType = it }
+            getCategoriesGroupedUseCase.get().let { groupedCategoriesByType = it }
         }
     }
 

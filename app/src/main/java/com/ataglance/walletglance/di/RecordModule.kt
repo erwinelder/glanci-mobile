@@ -82,7 +82,7 @@ val recordModule = module {
         GetRecordDraftUseCaseImpl(
             getRecordUseCase = get(),
             accountRepository = get(),
-            getCategoriesUseCase = get()
+            getCategoriesGroupedUseCase = get()
         )
     }
 
@@ -96,7 +96,7 @@ val recordModule = module {
 
     single<GetLastUsedRecordCategoryUseCase> {
         GetLastUsedRecordCategoryUseCaseImpl(
-            getCategoriesUseCase = get(),
+            getCategoriesGroupedUseCase = get(),
             recordRepository = get()
         )
     }
@@ -112,7 +112,7 @@ val recordModule = module {
             getRecordDraftUseCase = get(),
             getLastUsedRecordCategoryUseCase = get(),
             accountRepository = get(),
-            getCategoriesUseCase = get()
+            getCategoriesGroupedUseCase = get()
         )
     }
 

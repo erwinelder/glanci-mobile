@@ -8,7 +8,7 @@ import com.ataglance.walletglance.category.domain.model.CategoryType
 import com.ataglance.walletglance.category.domain.model.CategoryWithSub
 import com.ataglance.walletglance.category.domain.model.CategoryWithSubByType
 import com.ataglance.walletglance.category.domain.model.GroupedCategoriesByType
-import com.ataglance.walletglance.category.domain.usecase.GetCategoriesUseCase
+import com.ataglance.walletglance.category.domain.usecase.GetCategoriesGroupedUseCase
 import com.ataglance.walletglance.core.domain.date.DateTimeState
 import com.ataglance.walletglance.core.utils.isNumberWithDecimalOptionalDot
 import com.ataglance.walletglance.record.domain.usecase.DeleteRecordUseCase
@@ -35,7 +35,7 @@ class RecordCreationViewModel(
     private val getRecordDraftUseCase: GetRecordDraftUseCase,
     private val getLastUsedRecordCategoryUseCase: GetLastUsedRecordCategoryUseCase,
     private val accountRepository: AccountRepository,
-    private val getCategoriesUseCase: GetCategoriesUseCase
+    private val getCategoriesGroupedUseCase: GetCategoriesGroupedUseCase
 ) : ViewModel() {
 
     private val _accounts = MutableStateFlow<List<Account>>(emptyList())
@@ -277,7 +277,7 @@ class RecordCreationViewModel(
             val accounts = accountRepository.getAllAccounts()
             _accounts.update { accounts }
 
-            val categories = getCategoriesUseCase.getGrouped()
+            val categories = getCategoriesGroupedUseCase.get()
             _groupedCategoriesByType.update { categories }
 
             val categoryWithSub = getLastUsedRecordCategoryUseCase.execute(

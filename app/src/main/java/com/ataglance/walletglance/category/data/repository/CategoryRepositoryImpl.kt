@@ -7,9 +7,14 @@ import com.ataglance.walletglance.category.data.mapper.toDataModel
 import com.ataglance.walletglance.category.data.mapper.toEntity
 import com.ataglance.walletglance.category.data.model.CategoryDataModel
 import com.ataglance.walletglance.category.data.remote.source.CategoryRemoteDataSource
+import com.ataglance.walletglance.category.domain.model.Category
+import com.ataglance.walletglance.category.domain.repository.CategoryRepository
+import com.ataglance.walletglance.category.mapper.toDataModel
+import com.ataglance.walletglance.category.mapper.toDomainModel
 import com.ataglance.walletglance.core.data.model.DataSyncHelper
 import com.ataglance.walletglance.core.data.model.TableName
 import com.glanci.category.shared.dto.CategoryQueryDto
+import com.glanci.request.shared.SimpleResult
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onStart
@@ -21,7 +26,7 @@ class CategoryRepositoryImpl(
 ) : CategoryRepository {
 
     private suspend fun synchronizeCategories() {
-        syncHelper.synchronizeData(
+        syncHelper.synchronizeDataSafe(
             tableName = TableName.Category,
             localTimestampGetter = { localSource.getUpdateTime() },
             remoteTimestampGetter = { token -> remoteSource.getUpdateTime(token = token) },
@@ -44,11 +49,18 @@ class CategoryRepositoryImpl(
             entityDeletedPredicate = { it.deleted },
             entityToCommandDtoMapper = CategoryEntity::toCommandDto,
             queryDtoToEntityMapper = CategoryQueryDto::toEntity
-        )
+        ). also { result ->
+            when (result) {
+                is SimpleResult.Success -> println("Categories synchronized successfully.")
+                is SimpleResult.Error -> println("Error synchronizing categories: ${result.error}")
+            }
+        }
     }
 
-    override suspend fun upsertCategories(categories: List<CategoryDataModel>) {
-        syncHelper.upsertData(
+    override suspend fun upsertCategories(categories: List<Category>) {
+        val categories = categories.map { it.toDataModel() }
+
+        syncHelper.upsertDataSafe(
             tableName = TableName.Category,
             data = categories,
             localTimestampGetter = { localSource.getUpdateTime() },
@@ -75,14 +87,22 @@ class CategoryRepositoryImpl(
             dataModelToEntityMapper = CategoryDataModel::toEntity,
             entityToCommandDtoMapper = CategoryEntity::toCommandDto,
             queryDtoToEntityMapper = CategoryQueryDto::toEntity
-        )
+        ).also { result ->
+            when (result) {
+                is SimpleResult.Success -> println("Categories synchronized successfully.")
+                is SimpleResult.Error -> println("Error synchronizing categories: ${result.error}")
+            }
+        }
     }
 
     override suspend fun deleteAndUpsertCategories(
-        toDelete: List<CategoryDataModel>,
-        toUpsert: List<CategoryDataModel>
+        toDelete: List<Category>,
+        toUpsert: List<Category>
     ) {
-        syncHelper.deleteAndUpsertData(
+        val toDelete = toDelete.map { it.toDataModel() }
+        val toUpsert = toUpsert.map { it.toDataModel() }
+
+        syncHelper.deleteAndUpsertDataSafe(
             tableName = TableName.Category,
             toDelete = toDelete,
             toUpsert = toUpsert,
@@ -119,30 +139,37 @@ class CategoryRepositoryImpl(
             dataModelToEntityMapper = CategoryDataModel::toEntity,
             entityToCommandDtoMapper = CategoryEntity::toCommandDto,
             queryDtoToEntityMapper = CategoryQueryDto::toEntity
-        )
+        ).also { result ->
+            when (result) {
+                is SimpleResult.Success -> println("Categories deleted and upserted successfully.")
+                is SimpleResult.Error -> println("Error deleting and upserting categories: ${result.error}")
+            }
+        }
     }
 
     override suspend fun deleteAllCategoriesLocally() {
         localSource.deleteAllCategories()
     }
 
-    override fun getAllCategoriesAsFlow(): Flow<List<CategoryDataModel>> {
+    override fun getAllCategoriesAsFlow(): Flow<List<Category>> {
         return localSource
             .getAllCategoriesAsFlow()
             .onStart { synchronizeCategories() }
             .map { categories ->
-                categories.map { it.toDataModel() }
+                categories.mapNotNull { it.toDataModel().toDomainModel() }
             }
     }
 
-    override suspend fun getAllCategories(): List<CategoryDataModel> {
+    override suspend fun getAllCategories(): List<Category> {
         synchronizeCategories()
-        return localSource.getAllCategories().map { it.toDataModel() }
+        return localSource.getAllCategories().mapNotNull { it.toDataModel().toDomainModel() }
     }
 
-    override suspend fun getCategoriesByType(type: Char): List<CategoryDataModel> {
+    override suspend fun getCategoriesByType(type: Char): List<Category> {
         synchronizeCategories()
-        return localSource.getCategoriesByType(type = type).map { it.toDataModel() }
+        return localSource.getCategoriesByType(type = type).mapNotNull {
+            it.toDataModel().toDomainModel()
+        }
     }
 
 }
