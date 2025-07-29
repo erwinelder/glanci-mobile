@@ -45,6 +45,13 @@ sealed interface ResultData<out D, out E : DataError> {
         }
     }
 
+    fun toSimpleResult(): SimpleResult<E> {
+        return when (this) {
+            is Success -> SimpleResult.Success()
+            is Error -> SimpleResult.Error(this.error)
+        }
+    }
+
 }
 
 inline fun <D, E : DataError> ResultData<D, E>.getDataOrReturn(onReturn: (E) -> Nothing): D {

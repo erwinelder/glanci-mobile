@@ -1,9 +1,12 @@
 package com.ataglance.walletglance.account.data.remote.source
 
-import android.util.Log
 import com.glanci.account.shared.dto.AccountCommandDto
 import com.glanci.account.shared.dto.AccountQueryDto
 import com.glanci.account.shared.service.AccountService
+import com.glanci.request.shared.ResultData
+import com.glanci.request.shared.SimpleResult
+import com.glanci.request.shared.error.AccountDataError
+import com.glanci.request.shared.error.DataError
 import kotlinx.rpc.krpc.ktor.client.KtorRpcClient
 import kotlinx.rpc.withService
 
@@ -14,52 +17,35 @@ class AccountRemoteDataSourceImpl(
     constructor(client: KtorRpcClient) : this(service = client.withService<AccountService>())
 
 
-    override suspend fun getUpdateTime(token: String): Long? {
+    override suspend fun getUpdateTime(token: String): ResultData<Long, DataError> {
         return runCatching {
-            service.getUpdateTime(token = token).getDataOrNull()
-        }.getOrNull().also { timestamp ->
-            if (timestamp != null) {
-                Log.d("AccountRemoteDataSourceImpl", "getUpdateTime:" +
-                        "received update time $timestamp")
-            } else {
-                Log.w("AccountRemoteDataSourceImpl", "getUpdateTime:" +
-                        "no update time received")
-            }
-        }
+            service.getUpdateTime(token = token)
+        }.getOrDefault(
+            defaultValue = ResultData.Error(error = AccountDataError.AccountError)
+        )
     }
 
     override suspend fun synchronizeAccounts(
         accounts: List<AccountCommandDto>,
         timestamp: Long,
         token: String
-    ): Boolean {
-        val result = runCatching {
-            service.saveAccounts(accounts = accounts, timestamp = timestamp, token = token).isSuccess()
-        }.also { result ->
-            if (result.isSuccess) {
-                Log.d("AccountRemoteDataSourceImpl", "synchronizeAccounts: " +
-                        "synchronized ${accounts.size} accounts at timestamp $timestamp")
-            } else {
-                Log.e("AccountRemoteDataSourceImpl", "synchronizeAccounts: " +
-                        "failed to synchronize ${accounts.size} accounts at timestamp $timestamp")
-            }
-        }
-
-        return result.getOrNull() ?: false
+    ): SimpleResult<DataError> {
+        return runCatching {
+            service.saveAccounts(accounts = accounts, timestamp = timestamp, token = token)
+        }.getOrDefault(
+            defaultValue = SimpleResult.Error(error = AccountDataError.AccountError)
+        )
     }
 
     override suspend fun getAccountsAfterTimestamp(
         timestamp: Long,
         token: String
-    ): List<AccountQueryDto>? {
+    ): ResultData<List<AccountQueryDto>, DataError> {
         return runCatching {
-            service.getAccountsAfterTimestamp(timestamp = timestamp, token = token).getDataOrNull()
-        }.getOrNull().also { accounts ->
-            accounts?.forEach {
-                Log.d("AccountRemoteDataSourceImpl", "getAccountsAfterTimestamp:" +
-                        "received account: id = ${it.id}, name = ${it.name}")
-            }
-        }
+            service.getAccountsAfterTimestamp(timestamp = timestamp, token = token)
+        }.getOrDefault(
+            defaultValue = ResultData.Error(error = AccountDataError.AccountError)
+        )
     }
 
     override suspend fun synchronizeAccountsAndGetAfterTimestamp(
@@ -67,23 +53,17 @@ class AccountRemoteDataSourceImpl(
         timestamp: Long,
         localTimestamp: Long,
         token: String
-    ): List<AccountQueryDto>? {
+    ): ResultData<List<AccountQueryDto>, DataError> {
         return runCatching {
             service.saveAccountsAndGetAfterTimestamp(
                 accounts = accounts,
                 timestamp = timestamp,
                 localTimestamp = localTimestamp,
                 token = token
-            ).getDataOrNull()
-        }.getOrNull().also { accounts ->
-            Log.d("AccountRemoteDataSourceImpl", "synchronizeAccountsAndGetAfterTimestamp:" +
-                    "synchronized ${accounts?.size} accounts at timestamp $timestamp" +
-                    " with local timestamp $localTimestamp")
-            accounts?.forEach {
-                Log.d("AccountRemoteDataSourceImpl", "synchronizeAccountsAndGetAfterTimestamp:" +
-                        "received account: id = ${it.id}, name = ${it.name}")
-            }
-        }
+            )
+        }.getOrDefault(
+            defaultValue = ResultData.Error(error = AccountDataError.AccountError)
+        )
     }
 
 }

@@ -14,6 +14,7 @@ import com.ataglance.walletglance.account.mapper.toDomainModel
 import com.ataglance.walletglance.core.data.model.DataSyncHelper
 import com.ataglance.walletglance.core.data.model.TableName
 import com.glanci.account.shared.dto.AccountQueryDto
+import com.glanci.request.shared.SimpleResult
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onStart
@@ -25,7 +26,7 @@ class AccountRepositoryImpl(
 ) : AccountRepository {
 
     private suspend fun synchronizeAccounts() {
-        syncHelper.synchronizeData(
+        syncHelper.synchronizeDataSafe(
             tableName = TableName.Account,
             localTimestampGetter = { localSource.getUpdateTime() },
             remoteTimestampGetter = { token -> remoteSource.getUpdateTime(token = token) },
@@ -48,13 +49,18 @@ class AccountRepositoryImpl(
             entityDeletedPredicate = { it.deleted },
             entityToCommandDtoMapper = AccountEntity::toCommandDto,
             queryDtoToEntityMapper = AccountQueryDto::toEntity
-        )
+        ).also { result ->
+            when (result) {
+                is SimpleResult.Success -> println("Accounts synchronized successfully.")
+                is SimpleResult.Error -> println("Error synchronizing accounts: ${result.error}")
+            }
+        }
     }
 
     override suspend fun upsertAccounts(accounts: List<Account>) {
         val accounts = accounts.map { it.toDataModel() }
 
-        syncHelper.upsertData(
+        syncHelper.upsertDataSafe(
             tableName = TableName.Account,
             data = accounts,
             localTimestampGetter = { localSource.getUpdateTime() },
@@ -81,7 +87,12 @@ class AccountRepositoryImpl(
             dataModelToEntityMapper = AccountDataModel::toEntity,
             entityToCommandDtoMapper = AccountEntity::toCommandDto,
             queryDtoToEntityMapper = AccountQueryDto::toEntity
-        )
+        ).also { result ->
+            when (result) {
+                is SimpleResult.Success -> println("Accounts upserted successfully.")
+                is SimpleResult.Error -> println("Error upserting accounts: ${result.error}")
+            }
+        }
     }
 
     override suspend fun deleteAndUpsertAccounts(
@@ -91,7 +102,7 @@ class AccountRepositoryImpl(
         val toDelete = toDelete.map { it.toDataModel() }
         val toUpsert = toUpsert.map { it.toDataModel() }
 
-        syncHelper.deleteAndUpsertData(
+        syncHelper.deleteAndUpsertDataSafe(
             tableName = TableName.Account,
             toDelete = toDelete,
             toUpsert = toUpsert,
@@ -128,7 +139,12 @@ class AccountRepositoryImpl(
             dataModelToEntityMapper = AccountDataModel::toEntity,
             entityToCommandDtoMapper = AccountEntity::toCommandDto,
             queryDtoToEntityMapper = AccountQueryDto::toEntity
-        )
+        ).also { result ->
+            when (result) {
+                is SimpleResult.Success -> println("Accounts deleted and upserted successfully.")
+                is SimpleResult.Error -> println("Error deleting and upserting accounts: ${result.error}")
+            }
+        }
     }
 
     override suspend fun deleteAllAccountsLocally() {
