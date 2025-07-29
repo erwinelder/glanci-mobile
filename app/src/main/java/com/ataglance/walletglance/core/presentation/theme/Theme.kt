@@ -1,5 +1,6 @@
 package com.ataglance.walletglance.core.presentation.theme
 
+import androidx.activity.compose.LocalActivity
 import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.foundation.isSystemInDarkTheme
@@ -13,6 +14,7 @@ import androidx.compose.runtime.ReadOnlyComposable
 import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.unit.dp
+import androidx.core.view.WindowInsetsControllerCompat
 import com.ataglance.walletglance.core.domain.app.AppTheme
 import com.ataglance.walletglance.core.domain.app.WindowType
 
@@ -38,11 +40,7 @@ fun GlanciTheme(
     content: @Composable () -> Unit
 ) {
     val appTheme = if (useDeviceTheme) {
-        if (!isDeviceIsDarkTheme) {
-            chosenLightTheme
-        } else {
-            chosenDarkTheme
-        }
+        if (isDeviceIsDarkTheme) chosenDarkTheme else chosenLightTheme
     } else {
         lastChosenTheme
     }
@@ -57,6 +55,9 @@ fun GlanciTheme(
         boxWithConstraintsScope.maxWidth < 840.dp -> WindowType.Medium
         else -> WindowType.Expanded
     }
+
+    LocalActivity.current?.window?.let { WindowInsetsControllerCompat(it, it.decorView) }
+        ?.isAppearanceLightStatusBars = appTheme == AppTheme.LightDefault
 
     CompositionLocalProvider(
         LocalAppTheme provides appTheme,

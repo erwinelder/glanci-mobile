@@ -18,7 +18,7 @@
         android:localeConfig="@xml/locales_config"
         android:theme="@style/Theme.AppCompat.NoActionBar"
         android:windowSoftInputMode="adjustResize"
-        tools:targetApi="34">
+        tools:targetApi="36">
         <activity
             android:name=".core.presentation.MainActivity"
             android:exported="true"
