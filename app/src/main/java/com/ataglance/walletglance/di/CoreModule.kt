@@ -88,7 +88,7 @@ val coreModule = module {
             getStartDestinationsBySetupStageUseCase = get(),
             getLanguagePreferenceUseCase = get(),
 
-            accountRepository = get(),
+            getAccountsUseCase = get(),
             getWidgetsUseCase = get()
         )
     }

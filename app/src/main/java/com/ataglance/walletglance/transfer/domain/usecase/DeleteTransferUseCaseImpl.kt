@@ -1,26 +1,21 @@
 package com.ataglance.walletglance.transfer.domain.usecase
 
-import com.ataglance.walletglance.account.domain.repository.AccountRepository
+import com.ataglance.walletglance.account.domain.usecase.RollbackTransferToAccountsUseCase
 import com.ataglance.walletglance.transfer.data.repository.TransferRepository
+import com.ataglance.walletglance.transfer.mapper.toDataModel
+import com.ataglance.walletglance.transfer.mapper.toDomainModel
 
 class DeleteTransferUseCaseImpl(
     private val transferRepository: TransferRepository,
-    private val accountRepository: AccountRepository
+    private val rollbackTransferToAccountsUseCase: RollbackTransferToAccountsUseCase
 ) : DeleteTransferUseCase {
 
     override suspend fun execute(transferId: Long) {
-        val transfer = transferRepository.getTransfer(id = transferId) ?: return
+        val transfer = transferRepository.getTransfer(id = transferId)?.toDomainModel() ?: return
 
-        val senderAccount = accountRepository.getAccount(id = transfer.senderAccountId)
-            ?.addToBalance(amount = transfer.senderAmount)
-            ?: return
-        val receiverAccount = accountRepository.getAccount(id = transfer.receiverAccountId)
-            ?.subtractFromBalance(amount = transfer.receiverAmount)
-            ?: return
-        val accounts = listOf(senderAccount, receiverAccount)
+        rollbackTransferToAccountsUseCase.execute(transfer = transfer).also { if (!it) return }
 
-        accountRepository.upsertAccounts(accounts = accounts)
-        transferRepository.deleteTransfer(transfer = transfer)
+        transferRepository.deleteTransfer(transfer = transfer.toDataModel())
     }
 
 }

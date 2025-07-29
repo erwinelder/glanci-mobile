@@ -20,7 +20,7 @@ val transactionModule = module {
     single<TransformAccountTransactionsToRecords> {
         TransformAccountTransactionsToRecordsImpl(
             getTransfersByAccountsUseCase = get(),
-            saveRecordsUseCase = get()
+            recordRepository = get()
         )
     }
 
@@ -50,7 +50,7 @@ val transactionModule = module {
             activeDateRange = parameters.get(),
             resourceManager = get(),
             defaultCollectionName = parameters.get(),
-            accountRepository = get(),
+            getAccountsUseCase = get(),
             getCategoriesGroupedUseCase = get(),
             getCategoryCollectionsUseCase = get(),
             getTransactionsInDateRangeUseCase = get()
@@ -62,7 +62,7 @@ val transactionModule = module {
             activeAccount = parameters.getOrNull(),
             activeDateRange = parameters.get(),
             resourceManager = get(),
-            accountRepository = get(),
+            getAccountsUseCase = get(),
             getCategoriesGroupedUseCase = get(),
             getTransactionsInDateRangeUseCase = get()
         )

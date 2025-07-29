@@ -1,7 +1,7 @@
 package com.ataglance.walletglance.record.domain.usecase
 
 import com.ataglance.walletglance.core.domain.date.TimestampRange
-import com.ataglance.walletglance.record.data.repository.RecordRepository
+import com.ataglance.walletglance.record.domain.repository.RecordRepository
 
 class GetRecordsTotalExpensesInDateRangeImpl(
     private val recordRepository: RecordRepository

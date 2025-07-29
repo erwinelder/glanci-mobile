@@ -11,7 +11,12 @@ import com.ataglance.walletglance.record.data.mapper.toDataModelWithItems
 import com.ataglance.walletglance.record.data.mapper.toEntityWithItems
 import com.ataglance.walletglance.record.data.model.RecordWithItemsDataModel
 import com.ataglance.walletglance.record.data.remote.source.RecordRemoteDataSource
+import com.ataglance.walletglance.record.domain.repository.RecordRepository
+import com.ataglance.walletglance.record.mapper.toDataModelWithItems
+import com.ataglance.walletglance.record.mapper.toDomainModelWithItems
+import com.ataglance.walletglance.transaction.domain.model.RecordWithItems
 import com.glanci.record.shared.dto.RecordWithItemsQueryDto
+import com.glanci.request.shared.SimpleResult
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onStart
@@ -23,7 +28,7 @@ class RecordRepositoryImpl(
 ) : RecordRepository {
 
     private suspend fun synchronizeRecords() {
-        syncHelper.synchronizeData(
+        syncHelper.synchronizeDataSafe(
             tableName = TableName.Record,
             localTimestampGetter = { localSource.getUpdateTime() },
             remoteTimestampGetter = { token -> remoteSource.getUpdateTime(token = token) },
@@ -48,15 +53,22 @@ class RecordRepositoryImpl(
             entityDeletedPredicate = { it.deleted },
             entityToCommandDtoMapper = RecordEntityWithItems::toCommandDtoWithItems,
             queryDtoToEntityMapper = RecordWithItemsQueryDto::toEntityWithItems
-        )
+        ).also { result ->
+            when (result) {
+                is SimpleResult.Success -> println("Records synchronized successfully.")
+                is SimpleResult.Error -> println("Error synchronizing records: ${result.error}")
+            }
+        }
     }
 
-    override suspend fun upsertRecordWithItems(recordWithItems: RecordWithItemsDataModel) {
+    override suspend fun upsertRecordWithItems(recordWithItems: RecordWithItems) {
         upsertRecordsWithItems(recordsWithItems = recordWithItems.asList())
     }
 
-    override suspend fun upsertRecordsWithItems(recordsWithItems: List<RecordWithItemsDataModel>) {
-        syncHelper.upsertData(
+    override suspend fun upsertRecordsWithItems(recordsWithItems: List<RecordWithItems>) {
+        val recordsWithItems = recordsWithItems.map { it.toDataModelWithItems() }
+
+        syncHelper.upsertDataSafe(
             tableName = TableName.Record,
             data = recordsWithItems,
             localTimestampGetter = { localSource.getUpdateTime() },
@@ -85,11 +97,18 @@ class RecordRepositoryImpl(
             dataModelToEntityMapper = RecordWithItemsDataModel::toEntityWithItems,
             entityToCommandDtoMapper = RecordEntityWithItems::toCommandDtoWithItems,
             queryDtoToEntityMapper = RecordWithItemsQueryDto::toEntityWithItems
-        )
+        ).also { result ->
+            when (result) {
+                is SimpleResult.Success -> println("Records with items upserted successfully.")
+                is SimpleResult.Error -> println("Error upserting records with items: ${result.error}")
+            }
+        }
     }
 
-    override suspend fun deleteRecordWithItems(recordWithItems: RecordWithItemsDataModel) {
-        syncHelper.deleteData(
+    override suspend fun deleteRecordWithItems(recordWithItems: RecordWithItems) {
+        val recordWithItems = recordWithItems.toDataModelWithItems()
+
+        syncHelper.deleteDataSafe(
             tableName = TableName.Record,
             data = recordWithItems.asList(),
             localTimestampGetter = { localSource.getUpdateTime() },
@@ -130,14 +149,22 @@ class RecordRepositoryImpl(
             dataModelToCommandDtoMapper = RecordWithItemsDataModel::toCommandDtoWithItems,
             entityToCommandDtoMapper = RecordEntityWithItems::toCommandDtoWithItems,
             queryDtoToEntityMapper = RecordWithItemsQueryDto::toEntityWithItems
-        )
+        ).also { result ->
+            when (result) {
+                is SimpleResult.Success -> println("Record with items deleted successfully.")
+                is SimpleResult.Error -> println("Error deleting record with items: ${result.error}")
+            }
+        }
     }
 
     override suspend fun deleteAndUpsertRecordWithItems(
-        recordWithItemsToDelete: RecordWithItemsDataModel,
-        recordWithItemsToUpsert: RecordWithItemsDataModel
+        recordWithItemsToDelete: RecordWithItems,
+        recordWithItemsToUpsert: RecordWithItems
     ) {
-        syncHelper.deleteAndUpsertData(
+        val recordWithItemsToDelete = recordWithItemsToDelete.toDataModelWithItems()
+        val recordWithItemsToUpsert = recordWithItemsToUpsert.toDataModelWithItems()
+
+        syncHelper.deleteAndUpsertDataSafe(
             tableName = TableName.Record,
             toDelete = recordWithItemsToDelete.asList(),
             toUpsert = recordWithItemsToUpsert.asList(),
@@ -176,42 +203,50 @@ class RecordRepositoryImpl(
             dataModelToEntityMapper = RecordWithItemsDataModel::toEntityWithItems,
             entityToCommandDtoMapper = RecordEntityWithItems::toCommandDtoWithItems,
             queryDtoToEntityMapper = RecordWithItemsQueryDto::toEntityWithItems
-        )
+        ).also { result ->
+            when (result) {
+                is SimpleResult.Success -> println("Record with items deleted and upserted successfully.")
+                is SimpleResult.Error -> println("Error deleting and upserting record with items: ${result.error}")
+            }
+        }
     }
 
-    override suspend fun getRecordWithItems(id: Long): RecordWithItemsDataModel? {
+    override suspend fun getRecordWithItems(id: Long): RecordWithItems? {
         synchronizeRecords()
-        return localSource.getRecordWithItems(id = id)?.toDataModelWithItems()
+        return localSource.getRecordWithItems(id = id)
+            ?.toDataModelWithItems()
+            ?.toDomainModelWithItems()
     }
 
     override suspend fun getLastRecordWithItemsByTypeAndAccount(
         type: Char,
         accountId: Int
-    ): RecordWithItemsDataModel? {
+    ): RecordWithItems? {
         synchronizeRecords()
         return localSource
             .getLastRecordWithItemsByTypeAndAccount(type = type, accountId = accountId)
             ?.toDataModelWithItems()
+            ?.toDomainModelWithItems()
     }
 
     override fun getRecordsWithItemsInDateRangeAsFlow(
         from: Long,
         to: Long
-    ): Flow<List<RecordWithItemsDataModel>> {
+    ): Flow<List<RecordWithItems>> {
         return localSource.getRecordsWithItemsInDateRangeAsFlow(from = from, to = to)
             .onStart { synchronizeRecords() }
             .map { recordsWithItems ->
-                recordsWithItems.map { it.toDataModelWithItems() }
+                recordsWithItems.mapNotNull { it.toDataModelWithItems().toDomainModelWithItems() }
             }
     }
 
     override suspend fun getRecordsWithItemsInDateRange(
         from: Long,
         to: Long
-    ): List<RecordWithItemsDataModel> {
+    ): List<RecordWithItems> {
         synchronizeRecords()
         return localSource.getRecordsWithItemsInDateRange(from = from, to = to)
-            .map { it.toDataModelWithItems() }
+            .mapNotNull { it.toDataModelWithItems().toDomainModelWithItems() }
     }
 
     override suspend fun getTotalExpensesInDateRangeByAccountsAndCategory(

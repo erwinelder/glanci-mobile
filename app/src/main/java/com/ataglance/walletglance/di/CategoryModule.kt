@@ -6,6 +6,8 @@ import com.ataglance.walletglance.category.data.remote.source.CategoryRemoteData
 import com.ataglance.walletglance.category.data.remote.source.CategoryRemoteDataSourceImpl
 import com.ataglance.walletglance.category.data.repository.CategoryRepositoryImpl
 import com.ataglance.walletglance.category.domain.repository.CategoryRepository
+import com.ataglance.walletglance.category.domain.usecase.GetAllCategoriesUseCase
+import com.ataglance.walletglance.category.domain.usecase.GetAllCategoriesUseCaseImpl
 import com.ataglance.walletglance.category.domain.usecase.GetCategoriesGroupedUseCase
 import com.ataglance.walletglance.category.domain.usecase.GetCategoriesGroupedUseCaseImpl
 import com.ataglance.walletglance.category.domain.usecase.GetExpenseCategoriesGroupedUseCase
@@ -52,6 +54,10 @@ val categoryModule = module {
 
     single<TranslateCategoriesUseCase> {
         TranslateCategoriesUseCaseImpl(categoryRepository = get())
+    }
+
+    single<GetAllCategoriesUseCase> {
+        GetAllCategoriesUseCaseImpl(categoryRepository = get())
     }
 
     single<GetCategoriesGroupedUseCase> {

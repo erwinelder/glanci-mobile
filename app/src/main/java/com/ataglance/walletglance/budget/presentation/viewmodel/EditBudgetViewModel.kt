@@ -2,8 +2,8 @@ package com.ataglance.walletglance.budget.presentation.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.ataglance.walletglance.account.domain.repository.AccountRepository
 import com.ataglance.walletglance.account.domain.model.Account
+import com.ataglance.walletglance.account.domain.usecase.GetAccountsUseCase
 import com.ataglance.walletglance.budget.domain.model.Budget
 import com.ataglance.walletglance.budget.mapper.budget.toDraft
 import com.ataglance.walletglance.budget.presentation.model.BudgetDraft
@@ -19,7 +19,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class EditBudgetViewModel(
-    private val accountRepository: AccountRepository,
+    private val getAccountsUseCase: GetAccountsUseCase,
     private val getCategoriesGroupedUseCase: GetCategoriesGroupedUseCase
 ) : ViewModel() {
 
@@ -108,7 +108,7 @@ class EditBudgetViewModel(
 
     init {
         viewModelScope.launch {
-            accountRepository.getAllAccounts().let { accounts = it }
+            getAccountsUseCase.get().let { accounts = it }
             getCategoriesGroupedUseCase.get().let { groupedCategoriesByType = it }
         }
     }

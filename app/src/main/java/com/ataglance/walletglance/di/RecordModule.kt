@@ -4,7 +4,7 @@ import com.ataglance.walletglance.record.data.local.source.RecordLocalDataSource
 import com.ataglance.walletglance.record.data.local.source.getRecordLocalDataSource
 import com.ataglance.walletglance.record.data.remote.source.RecordRemoteDataSource
 import com.ataglance.walletglance.record.data.remote.source.RecordRemoteDataSourceImpl
-import com.ataglance.walletglance.record.data.repository.RecordRepository
+import com.ataglance.walletglance.record.domain.repository.RecordRepository
 import com.ataglance.walletglance.record.data.repository.RecordRepositoryImpl
 import com.ataglance.walletglance.record.domain.usecase.DeleteRecordUseCase
 import com.ataglance.walletglance.record.domain.usecase.DeleteRecordUseCaseImpl
@@ -20,8 +20,6 @@ import com.ataglance.walletglance.record.domain.usecase.GetRecordsTotalExpensesI
 import com.ataglance.walletglance.record.domain.usecase.GetRecordsTotalExpensesInDateRangeImpl
 import com.ataglance.walletglance.record.domain.usecase.SaveRecordUseCase
 import com.ataglance.walletglance.record.domain.usecase.SaveRecordUseCaseImpl
-import com.ataglance.walletglance.record.domain.usecase.SaveRecordsUseCase
-import com.ataglance.walletglance.record.domain.usecase.SaveRecordsUseCaseImpl
 import com.ataglance.walletglance.record.presentation.viewmodel.RecordCreationViewModel
 import org.koin.core.module.dsl.viewModel
 import org.koin.core.parameter.parametersOf
@@ -58,7 +56,7 @@ val recordModule = module {
     single<DeleteRecordUseCase> {
         DeleteRecordUseCaseImpl(
             recordRepository = get(),
-            accountRepository = get()
+            rollbackRecordToAccountUseCase = get()
         )
     }
 
@@ -66,12 +64,9 @@ val recordModule = module {
         SaveRecordUseCaseImpl(
             recordRepository = get(),
             getRecordUseCase = get(),
-            accountRepository = get()
+            applyNewRecordToAccountUseCase = get(),
+            applyEditedRecordToAccountsUseCase = get()
         )
-    }
-
-    single<SaveRecordsUseCase> {
-        SaveRecordsUseCaseImpl(recordRepository = get())
     }
 
     single<GetRecordUseCase> {
@@ -81,7 +76,7 @@ val recordModule = module {
     single<GetRecordDraftUseCase> {
         GetRecordDraftUseCaseImpl(
             getRecordUseCase = get(),
-            accountRepository = get(),
+            getAccountsUseCase = get(),
             getCategoriesGroupedUseCase = get()
         )
     }
@@ -111,7 +106,7 @@ val recordModule = module {
             saveRecordUseCase = get(),
             getRecordDraftUseCase = get(),
             getLastUsedRecordCategoryUseCase = get(),
-            accountRepository = get(),
+            getAccountsUseCase = get(),
             getCategoriesGroupedUseCase = get()
         )
     }

@@ -2,8 +2,8 @@ package com.ataglance.walletglance.transfer.presentation.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.ataglance.walletglance.account.domain.repository.AccountRepository
 import com.ataglance.walletglance.account.domain.model.Account
+import com.ataglance.walletglance.account.domain.usecase.GetAccountsUseCase
 import com.ataglance.walletglance.account.domain.utils.getOtherFrom
 import com.ataglance.walletglance.core.domain.date.DateTimeState
 import com.ataglance.walletglance.core.utils.isPositiveNumberWithDecimal
@@ -23,7 +23,7 @@ class TransferCreationViewModel(
     private val saveTransferUseCase: SaveTransferUseCase,
     private val deleteTransferUseCase: DeleteTransferUseCase,
     private val getTransferDraftUseCase: GetTransferDraftUseCase,
-    private val accountRepository: AccountRepository
+    private val getAccountsUseCase: GetAccountsUseCase
 ) : ViewModel() {
 
     private var accounts: List<Account> = listOf()
@@ -142,7 +142,7 @@ class TransferCreationViewModel(
 
     init {
         viewModelScope.launch {
-            accounts = accountRepository.getAllAccounts()
+            accounts = getAccountsUseCase.get()
 
             val transferDraft = getTransferDraftUseCase.execute(
                 transferId = transferId,

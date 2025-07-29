@@ -2,8 +2,8 @@ package com.ataglance.walletglance.record.presentation.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.ataglance.walletglance.account.domain.repository.AccountRepository
 import com.ataglance.walletglance.account.domain.model.Account
+import com.ataglance.walletglance.account.domain.usecase.GetAccountsUseCase
 import com.ataglance.walletglance.category.domain.model.CategoryType
 import com.ataglance.walletglance.category.domain.model.CategoryWithSub
 import com.ataglance.walletglance.category.domain.model.CategoryWithSubByType
@@ -34,7 +34,7 @@ class RecordCreationViewModel(
     private val saveRecordUseCase: SaveRecordUseCase,
     private val getRecordDraftUseCase: GetRecordDraftUseCase,
     private val getLastUsedRecordCategoryUseCase: GetLastUsedRecordCategoryUseCase,
-    private val accountRepository: AccountRepository,
+    private val getAccountsUseCase: GetAccountsUseCase,
     private val getCategoriesGroupedUseCase: GetCategoriesGroupedUseCase
 ) : ViewModel() {
 
@@ -274,7 +274,7 @@ class RecordCreationViewModel(
 
     init {
         viewModelScope.launch {
-            val accounts = accountRepository.getAllAccounts()
+            val accounts = getAccountsUseCase.get()
             _accounts.update { accounts }
 
             val categories = getCategoriesGroupedUseCase.get()

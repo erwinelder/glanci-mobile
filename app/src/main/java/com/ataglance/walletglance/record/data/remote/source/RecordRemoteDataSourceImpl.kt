@@ -1,9 +1,12 @@
 package com.ataglance.walletglance.record.data.remote.source
 
-import android.util.Log
 import com.glanci.record.shared.dto.RecordWithItemsCommandDto
 import com.glanci.record.shared.dto.RecordWithItemsQueryDto
 import com.glanci.record.shared.service.RecordService
+import com.glanci.request.shared.ResultData
+import com.glanci.request.shared.SimpleResult
+import com.glanci.request.shared.error.DataError
+import com.glanci.request.shared.error.RecordDataError
 import kotlinx.rpc.krpc.ktor.client.KtorRpcClient
 import kotlinx.rpc.withService
 
@@ -14,52 +17,37 @@ class RecordRemoteDataSourceImpl(
     constructor(client: KtorRpcClient) : this(service = client.withService<RecordService>())
 
 
-    override suspend fun getUpdateTime(token: String): Long? {
+    override suspend fun getUpdateTime(token: String): ResultData<Long, DataError> {
         return runCatching {
             service.getUpdateTime(token = token)
-        }.getOrNull().also { timestamp ->
-            if (timestamp != null) {
-                Log.d("RecordRemoteDataSourceImpl", "getUpdateTime:" +
-                        "received update time $timestamp")
-            } else {
-                Log.w("RecordRemoteDataSourceImpl", "getUpdateTime:" +
-                        "no update time received")
-            }
-        }
+        }.getOrDefault(
+            defaultValue = ResultData.Error(error = RecordDataError.RecordError)
+        )
     }
 
     override suspend fun synchronizeRecordsWithItems(
         recordsWithItems: List<RecordWithItemsCommandDto>,
         timestamp: Long,
         token: String
-    ): Boolean {
+    ): SimpleResult<DataError> {
         return runCatching {
             service.saveRecordsWithItems(
                 recordsWithItems = recordsWithItems, timestamp = timestamp, token = token
             )
-        }.isSuccess.also { success ->
-            if (success) {
-                Log.d("RecordRemoteDataSourceImpl", "synchronizeRecordsWithItems: " +
-                        "synchronized ${recordsWithItems.size} records at timestamp $timestamp")
-            } else {
-                Log.e("RecordRemoteDataSourceImpl", "synchronizeRecordsWithItems: " +
-                        "failed to synchronize ${recordsWithItems.size} records at timestamp $timestamp")
-            }
-        }
+        }.getOrDefault(
+            defaultValue = SimpleResult.Error(error = RecordDataError.RecordError)
+        )
     }
 
     override suspend fun getRecordsWithItemsAfterTimestamp(
         timestamp: Long,
         token: String
-    ): List<RecordWithItemsQueryDto>? {
+    ): ResultData<List<RecordWithItemsQueryDto>, DataError> {
         return runCatching {
             service.getRecordsWithItemsAfterTimestamp(timestamp = timestamp, token = token)
-        }.getOrNull().also { recordsWithItems ->
-            recordsWithItems?.forEach {
-                Log.d("RecordRemoteDataSourceImpl", "getRecordsWithItemsAfterTimestamp:" +
-                        "received record with items: recordId = ${it.recordId}, items count: ${it.items.size}")
-            }
-        }
+        }.getOrDefault(
+            defaultValue = ResultData.Error(error = RecordDataError.RecordError)
+        )
     }
 
     override suspend fun synchronizeRecordsWithItemsAndGetAfterTimestamp(
@@ -67,7 +55,7 @@ class RecordRemoteDataSourceImpl(
         timestamp: Long,
         localTimestamp: Long,
         token: String
-    ): List<RecordWithItemsQueryDto>? {
+    ): ResultData<List<RecordWithItemsQueryDto>, DataError> {
         return runCatching {
             service.saveRecordsWithItemsAndGetAfterTimestamp(
                 recordsWithItems = recordsWithItems,
@@ -75,15 +63,9 @@ class RecordRemoteDataSourceImpl(
                 localTimestamp = localTimestamp,
                 token = token
             )
-        }.getOrNull().also { recordsWithItems ->
-            Log.d("RecordRemoteDataSourceImpl", "synchronizeRecordsWithItemsAndGetAfterTimestamp:" +
-                    "synchronized ${recordsWithItems?.size ?: 0} records at timestamp $timestamp" +
-                    " with local timestamp $localTimestamp")
-            recordsWithItems?.forEach {
-                Log.d("RecordRemoteDataSourceImpl", "synchronizeRecordsWithItemsAndGetAfterTimestamp:" +
-                        "received record with items: recordId = ${it.recordId}, items count: ${it.items.size}")
-            }
-        }
+        }.getOrDefault(
+            defaultValue = ResultData.Error(error = RecordDataError.RecordError)
+        )
     }
 
 }

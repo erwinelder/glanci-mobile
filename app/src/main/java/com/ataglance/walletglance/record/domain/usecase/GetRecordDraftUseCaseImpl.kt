@@ -1,7 +1,7 @@
 package com.ataglance.walletglance.record.domain.usecase
 
-import com.ataglance.walletglance.account.domain.repository.AccountRepository
 import com.ataglance.walletglance.account.domain.model.Account
+import com.ataglance.walletglance.account.domain.usecase.GetAccountsUseCase
 import com.ataglance.walletglance.account.domain.utils.findById
 import com.ataglance.walletglance.category.domain.model.CategoryWithSub
 import com.ataglance.walletglance.category.domain.model.GroupedCategoriesByType
@@ -11,7 +11,7 @@ import com.ataglance.walletglance.record.presentation.model.RecordDraftWithItems
 
 class GetRecordDraftUseCaseImpl(
     private val getRecordUseCase: GetRecordUseCase,
-    private val accountRepository: AccountRepository,
+    private val getAccountsUseCase: GetAccountsUseCase,
     private val getCategoriesGroupedUseCase: GetCategoriesGroupedUseCase
 ) : GetRecordDraftUseCase {
 
@@ -22,11 +22,11 @@ class GetRecordDraftUseCaseImpl(
         categoryWithSub: CategoryWithSub?,
         categories: GroupedCategoriesByType?
     ): RecordDraftWithItems {
-        val accounts = accounts ?: accountRepository.getAllAccounts()
+        val accounts = accounts ?: getAccountsUseCase.get()
         val categories = categories ?: getCategoriesGroupedUseCase.get()
 
         return id
-            ?.let { getRecordUseCase.get(id = id) }
+            ?.let { getRecordUseCase.execute(id = id) }
             ?.toDraftWithItems(accounts = accounts, categories = categories)
             ?: RecordDraftWithItems.asNew(
                 account = accountId?.let { accounts.findById(accountId) },

@@ -4,6 +4,6 @@ import com.ataglance.walletglance.transaction.domain.model.RecordWithItems
 
 interface GetRecordUseCase {
 
-    suspend fun get(id: Long): RecordWithItems?
+    suspend fun execute(id: Long): RecordWithItems?
 
 }

@@ -4,8 +4,7 @@ import com.ataglance.walletglance.category.domain.model.CategoryType
 import com.ataglance.walletglance.category.domain.model.CategoryWithSub
 import com.ataglance.walletglance.category.domain.model.GroupedCategoriesByType
 import com.ataglance.walletglance.category.domain.usecase.GetCategoriesGroupedUseCase
-import com.ataglance.walletglance.record.data.repository.RecordRepository
-import com.ataglance.walletglance.record.mapper.toDomainModelWithItems
+import com.ataglance.walletglance.record.domain.repository.RecordRepository
 
 class GetLastUsedRecordCategoryUseCaseImpl(
     private val getCategoriesGroupedUseCase: GetCategoriesGroupedUseCase,
@@ -21,11 +20,9 @@ class GetLastUsedRecordCategoryUseCaseImpl(
 
         val recordItem = accountId
             ?.let {
-                recordRepository
-                    .getLastRecordWithItemsByTypeAndAccount(
-                        type = type.asChar(), accountId = accountId
-                    )
-                    ?.toDomainModelWithItems()
+                recordRepository.getLastRecordWithItemsByTypeAndAccount(
+                    type = type.asChar(), accountId = accountId
+                )
             }
             ?.items?.firstOrNull()
 

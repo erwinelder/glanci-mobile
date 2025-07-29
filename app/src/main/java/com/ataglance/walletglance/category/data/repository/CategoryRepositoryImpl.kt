@@ -49,7 +49,7 @@ class CategoryRepositoryImpl(
             entityDeletedPredicate = { it.deleted },
             entityToCommandDtoMapper = CategoryEntity::toCommandDto,
             queryDtoToEntityMapper = CategoryQueryDto::toEntity
-        ). also { result ->
+        ).also { result ->
             when (result) {
                 is SimpleResult.Success -> println("Categories synchronized successfully.")
                 is SimpleResult.Error -> println("Error synchronizing categories: ${result.error}")
@@ -89,8 +89,8 @@ class CategoryRepositoryImpl(
             queryDtoToEntityMapper = CategoryQueryDto::toEntity
         ).also { result ->
             when (result) {
-                is SimpleResult.Success -> println("Categories synchronized successfully.")
-                is SimpleResult.Error -> println("Error synchronizing categories: ${result.error}")
+                is SimpleResult.Success -> println("Categories upserted successfully.")
+                is SimpleResult.Error -> println("Error upserting categories: ${result.error}")
             }
         }
     }

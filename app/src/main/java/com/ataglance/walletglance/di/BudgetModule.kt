@@ -89,7 +89,7 @@ val budgetModule = module {
         GetEmptyBudgetsUseCaseImpl(
             budgetRepository = get(),
             getExpenseCategoriesGroupedUseCase = get(),
-            accountRepository = get()
+            getAccountsUseCase = get()
         )
     }
 
@@ -120,7 +120,7 @@ val budgetModule = module {
     viewModel { parameters ->
         BudgetStatisticsViewModel(
             budgetId = parameters.get(),
-            accountRepository = get(),
+            getAccountsUseCase = get(),
             getEmptyBudgetsUseCase = get(),
             getTotalExpensesInDateRangesUseCase = get(),
             resourceManager = get { parametersOf(parameters.get<String>()) }
@@ -151,7 +151,7 @@ val budgetModule = module {
 
     viewModel {
         EditBudgetViewModel(
-            accountRepository = get(),
+            getAccountsUseCase = get(),
             getCategoriesGroupedUseCase = get()
         )
     }

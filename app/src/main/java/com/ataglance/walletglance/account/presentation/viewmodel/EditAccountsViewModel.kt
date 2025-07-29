@@ -2,8 +2,8 @@ package com.ataglance.walletglance.account.presentation.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.ataglance.walletglance.account.domain.repository.AccountRepository
 import com.ataglance.walletglance.account.domain.model.Account
+import com.ataglance.walletglance.account.domain.usecase.GetAccountsUseCase
 import com.ataglance.walletglance.account.domain.usecase.SaveAccountsAndDeleteRestUseCase
 import com.ataglance.walletglance.account.domain.utils.fixOrderNums
 import com.ataglance.walletglance.core.utils.deleteItemAndMoveOrderNum
@@ -18,7 +18,7 @@ import kotlinx.coroutines.launch
 
 class EditAccountsViewModel(
     private val saveAccountsAndDeleteRestUseCase: SaveAccountsAndDeleteRestUseCase,
-    private val accountRepository: AccountRepository
+    private val getAccountsUseCase: GetAccountsUseCase
 ) : ViewModel() {
 
     private val _accounts = MutableStateFlow<List<Account>>(emptyList())
@@ -91,7 +91,7 @@ class EditAccountsViewModel(
 
     init {
         viewModelScope.launch {
-            val accounts = accountRepository.getAllAccounts().takeIf { it.isNotEmpty() }
+            val accounts = getAccountsUseCase.get().takeIf { it.isNotEmpty() }
                 ?: listOf(Account(id = 1, orderNum = 1))
             _accounts.update { accounts }
         }

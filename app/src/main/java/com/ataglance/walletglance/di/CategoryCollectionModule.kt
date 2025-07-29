@@ -58,7 +58,7 @@ val categoryCollectionModule = module {
         EditCategoryCollectionsViewModel(
             saveCategoryCollectionsUseCase = get(),
             getCategoryCollectionsUseCase = get(),
-            categoryRepository = get()
+            getAllCategoriesUseCase = get()
         )
     }
 

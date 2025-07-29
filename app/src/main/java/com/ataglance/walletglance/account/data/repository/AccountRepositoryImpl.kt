@@ -156,13 +156,6 @@ class AccountRepositoryImpl(
         return localSource.getAccount(id = id)?.toDataModel()?.toDomainModel()
     }
 
-    override suspend fun getAccounts(ids: List<Int>): List<Account> {
-        synchronizeAccounts()
-        return localSource
-            .getAccounts(ids = ids)
-            .map { it.toDataModel().toDomainModel() }
-    }
-
     override fun getAllAccountsAsFlow(): Flow<List<Account>> {
         return localSource
             .getAllAccountsAsFlow()

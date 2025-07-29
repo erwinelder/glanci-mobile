@@ -2,7 +2,7 @@ package com.ataglance.walletglance.budget.presentation.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.ataglance.walletglance.account.domain.repository.AccountRepository
+import com.ataglance.walletglance.account.domain.usecase.GetAccountsUseCase
 import com.ataglance.walletglance.account.domain.utils.filterByBudgetAccounts
 import com.ataglance.walletglance.budget.domain.usecase.GetEmptyBudgetsUseCase
 import com.ataglance.walletglance.budget.presentation.model.BudgetStatisticsScreenUiState
@@ -17,7 +17,7 @@ import kotlinx.coroutines.launch
 
 class BudgetStatisticsViewModel(
     budgetId: Int,
-    private val accountRepository: AccountRepository,
+    private val getAccountsUseCase: GetAccountsUseCase,
     private val getEmptyBudgetsUseCase: GetEmptyBudgetsUseCase,
     private val getTotalExpensesInDateRangesUseCase: GetTotalExpensesInDateRangesUseCase,
     private val resourceManager: ResourceManager
@@ -29,7 +29,7 @@ class BudgetStatisticsViewModel(
 
     init {
         viewModelScope.launch {
-            val accounts = accountRepository.getAllAccounts()
+            val accounts = getAccountsUseCase.get()
             val budget = getEmptyBudgetsUseCase.get(id = budgetId, accounts = accounts)
             budget?.category ?: return@launch
 

@@ -3,7 +3,7 @@ package com.ataglance.walletglance.core.presentation.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ataglance.walletglance.account.domain.model.AccountsAndActiveOne
-import com.ataglance.walletglance.account.domain.repository.AccountRepository
+import com.ataglance.walletglance.account.domain.usecase.GetAccountsUseCase
 import com.ataglance.walletglance.account.domain.utils.findById
 import com.ataglance.walletglance.core.domain.app.AppConfiguration
 import com.ataglance.walletglance.core.domain.date.DateRangeEnum
@@ -33,7 +33,7 @@ class AppViewModel(
     getStartDestinationsBySetupStageUseCase: GetStartDestinationsBySetupStageUseCase,
     getLanguagePreferenceUseCase: GetLanguagePreferenceUseCase,
 
-    private val accountRepository: AccountRepository,
+    private val getAccountsUseCase: GetAccountsUseCase,
     private val getWidgetsUseCase: GetWidgetsUseCase
 ) : ViewModel() {
 
@@ -85,7 +85,7 @@ class AppViewModel(
 
     private fun fetchAccounts() {
         viewModelScope.launch {
-            accountRepository.getAllAccountsAsFlow().collectLatest { accounts ->
+            getAccountsUseCase.getAsFlow().collectLatest { accounts ->
                 _accountsAndActiveOne.update {
                     AccountsAndActiveOne.fromAccounts(
                         accounts = accounts,

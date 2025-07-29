@@ -1,7 +1,7 @@
 package com.ataglance.walletglance.transfer.domain.usecase
 
-import com.ataglance.walletglance.account.domain.repository.AccountRepository
 import com.ataglance.walletglance.account.domain.model.Account
+import com.ataglance.walletglance.account.domain.usecase.GetAccountsUseCase
 import com.ataglance.walletglance.account.domain.utils.findById
 import com.ataglance.walletglance.account.domain.utils.getOtherFrom
 import com.ataglance.walletglance.transfer.mapper.toDraft
@@ -9,7 +9,7 @@ import com.ataglance.walletglance.transfer.presentation.model.TransferDraft
 
 class GetTransferDraftUseCaseImpl(
     private val getTransferUseCase: GetTransferUseCase,
-    private val accountRepository: AccountRepository
+    private val getAccountsUseCase: GetAccountsUseCase
 ) : GetTransferDraftUseCase {
 
     override suspend fun execute(
@@ -17,7 +17,7 @@ class GetTransferDraftUseCaseImpl(
         accountId: Int?,
         accounts: List<Account>?
     ): TransferDraft {
-        val accounts = accounts ?: accountRepository.getAllAccounts()
+        val accounts = accounts ?: getAccountsUseCase.get()
 
         return transferId
             ?.let { getTransferUseCase.get(id = transferId) }

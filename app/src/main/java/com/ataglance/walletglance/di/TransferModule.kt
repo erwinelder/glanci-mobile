@@ -56,14 +56,15 @@ val transferModule = module {
     single<DeleteTransferUseCase> {
         DeleteTransferUseCaseImpl(
             transferRepository = get(),
-            accountRepository = get()
+            rollbackTransferToAccountsUseCase = get()
         )
     }
 
     single<SaveTransferUseCase> {
         SaveTransferUseCaseImpl(
             transferRepository = get(),
-            accountRepository = get()
+            applyNewTransferToAccountsUseCase = get(),
+            applyEditedTransferToAccountsUseCase = get()
         )
     }
 
@@ -74,7 +75,7 @@ val transferModule = module {
     single<GetTransferDraftUseCase> {
         GetTransferDraftUseCaseImpl(
             getTransferUseCase = get(),
-            accountRepository = get()
+            getAccountsUseCase = get()
         )
     }
 
@@ -99,7 +100,7 @@ val transferModule = module {
             saveTransferUseCase = get(),
             deleteTransferUseCase = get(),
             getTransferDraftUseCase = get(),
-            accountRepository = get()
+            getAccountsUseCase = get()
         )
     }
 
