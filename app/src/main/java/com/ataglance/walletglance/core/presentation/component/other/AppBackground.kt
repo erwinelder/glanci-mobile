@@ -13,18 +13,20 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import com.ataglance.walletglance.R
 import com.ataglance.walletglance.core.domain.app.AppTheme
+import com.ataglance.walletglance.core.presentation.theme.CurrAppTheme
 
 @Composable
-fun AppBackground(appTheme: AppTheme?) {
+fun AppBackground(
+    appTheme: AppTheme? = CurrAppTheme
+) {
     AnimatedContent(
         targetState = appTheme,
-        label = "App background",
         transitionSpec = {
             fadeIn() togetherWith fadeOut()
         }
     ) { targetAppTheme ->
-        targetAppTheme?.let {
-            val imageAndDescription = when (it) {
+        if (targetAppTheme != null) {
+            val imageAndDescription = when (targetAppTheme) {
                 AppTheme.LightDefault -> R.drawable.main_background_light to
                         "application light background"
                 AppTheme.DarkDefault -> R.drawable.main_background_dark to
@@ -36,6 +38,8 @@ fun AppBackground(appTheme: AppTheme?) {
                 contentScale = ContentScale.FillBounds,
                 modifier = Modifier.fillMaxSize()
             )
-        } ?: Box(modifier = Modifier.fillMaxSize())
+        } else {
+            Box(modifier = Modifier.fillMaxSize())
+        }
     }
 }

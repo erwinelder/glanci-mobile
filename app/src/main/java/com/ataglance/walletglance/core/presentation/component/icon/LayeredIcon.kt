@@ -32,7 +32,7 @@ import com.ataglance.walletglance.R
 import com.ataglance.walletglance.core.domain.app.AppTheme
 import com.ataglance.walletglance.core.presentation.component.button.SmallPrimaryButton
 import com.ataglance.walletglance.core.presentation.preview.PreviewContainer
-import com.ataglance.walletglance.core.presentation.model.LayeredIconLayerState
+import com.ataglance.walletglance.core.presentation.model.icon.LayeredIconLayerState
 import com.ataglance.walletglance.core.presentation.theme.CurrAppTheme
 import com.ataglance.walletglance.core.presentation.theme.GlanciColors
 

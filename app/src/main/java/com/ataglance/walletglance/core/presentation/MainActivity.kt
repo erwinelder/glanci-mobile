@@ -10,7 +10,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.lifecycle.compose.LocalLifecycleOwner
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.ataglance.walletglance.auth.domain.usecase.auth.CheckTokenValidityUseCase
@@ -19,10 +18,9 @@ import com.ataglance.walletglance.billing.domain.model.BillingSubscriptionManage
 import com.ataglance.walletglance.core.domain.navigation.MainScreens
 import com.ataglance.walletglance.core.presentation.component.GlanciAppComponent
 import com.ataglance.walletglance.core.utils.extractOobCode
-import com.ataglance.walletglance.request.domain.model.result.SimpleResult
-import com.ataglance.walletglance.request.domain.model.result.error.AuthError
+import com.ataglance.walletglance.core.domain.result.SimpleResult
+import com.ataglance.walletglance.core.domain.result.error.AuthError
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.launch
 import org.koin.core.context.GlobalContext
 
 class MainActivity : AppCompatActivity() {
@@ -31,7 +29,6 @@ class MainActivity : AppCompatActivity() {
     private lateinit var billingSubscriptionManager: BillingSubscriptionManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
-//        setupSplashScreen()
 
         billingSubscriptionManager = GlobalContext.get().get()
 
@@ -67,14 +64,6 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    /*private fun setupSplashScreen() {
-        installSplashScreen().apply {
-            setKeepOnScreenCondition {
-                appViewModel.appConfiguration.value.appTheme == null
-            }
-        }
-    }*/
-
     override fun onNewIntent(intent: Intent) {
         super.onNewIntent(intent)
         handleDeepLink(intent)
@@ -85,22 +74,16 @@ class MainActivity : AppCompatActivity() {
 
         when (val mode = uri.getQueryParameter("mode")) {
             "verifyEmail" -> {
-                lifecycleScope.launch {
-                    uri.extractOobCode()?.let(::processVerifyEmailLink)
-                        ?: Log.e("Email verification link", "No oobCode found in the deep link")
-                }
+                uri.extractOobCode()?.let(::processVerifyEmailLink)
+                    ?: Log.e("Email verification link", "No oobCode found in the deep link")
             }
             "verifyAndChangeEmail" -> {
-                lifecycleScope.launch {
-                    uri.extractOobCode()?.let(::processVerifyAndChangeEmailLink)
-                        ?: Log.e("Email verification link", "No oobCode found in the deep link")
-                }
+                uri.extractOobCode()?.let(::processVerifyAndChangeEmailLink)
+                    ?: Log.e("Email verification link", "No oobCode found in the deep link")
             }
             "resetPassword" -> {
-                lifecycleScope.launch {
-                    uri.extractOobCode()?.let(::processResetPasswordLink)
-                        ?: Log.e("Reset password link", "No oobCode found in the deep link")
-                }
+                uri.extractOobCode()?.let(::processResetPasswordLink)
+                    ?: Log.e("Reset password link", "No oobCode found in the deep link")
             }
             else -> Log.e("Deep link", "Unknown deep link mode or action: $mode")
         }
@@ -173,4 +156,5 @@ class MainActivity : AppCompatActivity() {
         super.onDestroy()
         Log.d(ContentValues.TAG, "onDestroy called")
     }
+
 }

@@ -5,8 +5,8 @@ import com.ataglance.walletglance.auth.domain.model.user.UserContext
 import com.ataglance.walletglance.auth.domain.repository.AuthRepository
 import com.ataglance.walletglance.auth.domain.usecase.user.GetUserProfileLocalTimestampUseCase
 import com.ataglance.walletglance.core.data.local.preferences.SecureStorage
-import com.ataglance.walletglance.request.domain.model.result.SimpleResult
-import com.ataglance.walletglance.request.domain.model.result.error.AuthError
+import com.ataglance.walletglance.core.domain.result.SimpleResult
+import com.ataglance.walletglance.core.domain.result.error.AuthError
 import com.ataglance.walletglance.settings.domain.usecase.language.GetLanguagePreferenceUseCase
 import com.ataglance.walletglance.settings.domain.usecase.language.SaveLanguageLocallyUseCase
 import com.ataglance.walletglance.settings.domain.usecase.language.SaveLanguageRemotelyUseCase

@@ -5,7 +5,7 @@ import androidx.compose.runtime.Composable
 
 @Composable
 fun StartAnimatedContainer(
-    visible: Boolean,
+    visible: Boolean = true,
     delayMillis: Int = 0,
     content: @Composable () -> Unit
 ) {

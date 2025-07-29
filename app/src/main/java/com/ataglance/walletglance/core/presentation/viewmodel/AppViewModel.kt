@@ -6,7 +6,6 @@ import com.ataglance.walletglance.account.domain.model.AccountsAndActiveOne
 import com.ataglance.walletglance.account.domain.repository.AccountRepository
 import com.ataglance.walletglance.account.domain.utils.findById
 import com.ataglance.walletglance.core.domain.app.AppConfiguration
-import com.ataglance.walletglance.core.domain.app.AppTheme
 import com.ataglance.walletglance.core.domain.date.DateRangeEnum
 import com.ataglance.walletglance.core.domain.date.DateRangeWithEnum
 import com.ataglance.walletglance.core.domain.date.TimestampRange
@@ -17,12 +16,12 @@ import com.ataglance.walletglance.personalization.domain.usecase.widgets.GetWidg
 import com.ataglance.walletglance.settings.domain.model.AppThemeConfiguration
 import com.ataglance.walletglance.settings.domain.usecase.ChangeAppSetupStageUseCase
 import com.ataglance.walletglance.settings.domain.usecase.GetStartDestinationsBySetupStageUseCase
-import com.ataglance.walletglance.settings.domain.usecase.language.ApplyLanguageToSystemUseCase
 import com.ataglance.walletglance.settings.domain.usecase.language.GetLanguagePreferenceUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
@@ -30,17 +29,15 @@ import kotlinx.coroutines.launch
 
 class AppViewModel(
     private val getAppThemeConfigurationUseCase: GetAppThemeConfigurationUseCase,
-    private val applyLanguageToSystemUseCase: ApplyLanguageToSystemUseCase,
-    private val getLanguagePreferenceUseCase: GetLanguagePreferenceUseCase,
     private val changeAppSetupStageUseCase: ChangeAppSetupStageUseCase,
     getStartDestinationsBySetupStageUseCase: GetStartDestinationsBySetupStageUseCase,
+    getLanguagePreferenceUseCase: GetLanguagePreferenceUseCase,
 
     private val accountRepository: AccountRepository,
     private val getWidgetsUseCase: GetWidgetsUseCase
 ) : ViewModel() {
 
     init {
-        applyAppLanguage()
         viewModelScope.launch {
             changeAppSetupStageUseCase.updateSetupStageInNeeded()
         }
@@ -55,44 +52,28 @@ class AppViewModel(
 
     private fun fetchAppThemeConfiguration() {
         viewModelScope.launch {
-            getAppThemeConfigurationUseCase.getFlow().collect { themeConfiguration ->
+            getAppThemeConfigurationUseCase.getFlow().collectLatest { themeConfiguration ->
                 _appThemeConfiguration.update { themeConfiguration }
             }
         }
     }
 
 
-    private val _appTheme: MutableStateFlow<AppTheme?> = MutableStateFlow(null)
-
-    fun setAppTheme(appTheme: AppTheme) {
-        _appTheme.update { appTheme }
-    }
-
-
     val appConfiguration = combine(
         getStartDestinationsBySetupStageUseCase.getFlow(),
-        getLanguagePreferenceUseCase.getFlow(),
-        _appTheme
-    ) { startDestinations, language, appTheme ->
+        getLanguagePreferenceUseCase.getFlow()
+    ) { startDestinations, language ->
         AppConfiguration(
             isSetUp = startDestinations.first == MainScreens.Home,
             mainStartDestination = startDestinations.first,
             settingsStartDestination = startDestinations.second,
-            langCode = language,
-            appTheme = appTheme
+            langCode = language
         )
     }.stateIn(
         scope = viewModelScope,
-        started = SharingStarted.WhileSubscribed(5_000),
+        started = SharingStarted.WhileSubscribed(5000),
         initialValue = AppConfiguration()
     )
-
-    private fun applyAppLanguage() {
-        viewModelScope.launch {
-            val langCode = getLanguagePreferenceUseCase.get()
-            applyLanguageToSystemUseCase.execute(langCode)
-        }
-    }
 
     suspend fun finishSetup() {
         changeAppSetupStageUseCase.finishSetup()
@@ -104,7 +85,7 @@ class AppViewModel(
 
     private fun fetchAccounts() {
         viewModelScope.launch {
-            accountRepository.getAllAccountsAsFlow().collect { accounts ->
+            accountRepository.getAllAccountsAsFlow().collectLatest { accounts ->
                 _accountsAndActiveOne.update {
                     AccountsAndActiveOne.fromAccounts(
                         accounts = accounts,
@@ -159,9 +140,7 @@ class AppViewModel(
     }
 
     fun selectCustomDateRange(pastDateMillis: Long?, futureDateMillis: Long?) {
-        if (pastDateMillis == null || futureDateMillis == null) {
-            return
-        }
+        if (pastDateMillis == null || futureDateMillis == null) return
 
         _dateRangeWithEnum.update {
             DateRangeWithEnum(
@@ -178,7 +157,7 @@ class AppViewModel(
 
     private fun fetchWidgets() {
         viewModelScope.launch {
-            getWidgetsUseCase.getAsFlow().collect { widgets ->
+            getWidgetsUseCase.getAsFlow().collectLatest { widgets ->
                 _widgetNames.update { widgets }
             }
         }

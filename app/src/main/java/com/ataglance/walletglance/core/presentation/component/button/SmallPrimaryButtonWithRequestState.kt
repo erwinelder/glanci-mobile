@@ -35,8 +35,8 @@ import com.ataglance.walletglance.core.presentation.modifier.bounceClickEffect
 import com.ataglance.walletglance.core.presentation.preview.PreviewContainer
 import com.ataglance.walletglance.core.presentation.theme.GlanciColors
 import com.ataglance.walletglance.core.presentation.theme.Manrope
-import com.ataglance.walletglance.request.presentation.model.RequestErrorState
-import com.ataglance.walletglance.request.presentation.model.ResultState.MessageState
+import com.ataglance.walletglance.core.presentation.model.request.RequestErrorState
+import com.ataglance.walletglance.core.presentation.model.result.ResultState.MessageState
 
 @Composable
 fun SmallPrimaryButtonWithRequestState(

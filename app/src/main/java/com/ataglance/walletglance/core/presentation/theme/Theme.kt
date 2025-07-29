@@ -33,7 +33,6 @@ fun GlanciTheme(
     chosenDarkTheme: AppTheme = AppTheme.DarkDefault,
     lastChosenTheme: AppTheme = AppTheme.LightDefault,
     isDeviceIsDarkTheme: Boolean = isSystemInDarkTheme(),
-    setAppTheme: (AppTheme) -> Unit = {},
     boxWithConstraintsScope: BoxWithConstraintsScope,
     sharedTransitionScope: SharedTransitionScope,
     content: @Composable () -> Unit
@@ -47,8 +46,6 @@ fun GlanciTheme(
     } else {
         lastChosenTheme
     }
-
-    setAppTheme(appTheme)
 
     val glanciColors = when (appTheme) {
         AppTheme.LightDefault -> GlanciPalette.LightDefault

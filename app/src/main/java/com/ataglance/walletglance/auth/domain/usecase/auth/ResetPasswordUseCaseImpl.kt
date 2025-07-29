@@ -1,9 +1,9 @@
 package com.ataglance.walletglance.auth.domain.usecase.auth
 
 import com.ataglance.walletglance.auth.domain.repository.AuthRepository
-import com.ataglance.walletglance.request.domain.model.result.Result
-import com.ataglance.walletglance.request.domain.model.result.error.AuthError
-import com.ataglance.walletglance.request.domain.model.result.success.AuthSuccess
+import com.ataglance.walletglance.core.domain.result.Result
+import com.ataglance.walletglance.core.domain.result.error.AuthError
+import com.ataglance.walletglance.core.domain.result.success.AuthSuccess
 
 class ResetPasswordUseCaseImpl(
     private val authRepository: AuthRepository

@@ -7,6 +7,5 @@ data class AppConfiguration(
     val isSetUp: Boolean = false,
     val mainStartDestination: MainScreens = MainScreens.Home,
     val settingsStartDestination: SettingsScreens = SettingsScreens.Start,
-    val langCode: String = AppLanguage.English.languageCode,
-    val appTheme: AppTheme? = null
+    val langCode: String = AppLanguage.English.languageCode
 )

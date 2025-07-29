@@ -55,7 +55,6 @@ fun AppNavHost(
         ) {
             HomeScreenWrapper(
                 screenPadding = screenPadding,
-                isAppThemeSetUp = appConfiguration.appTheme != null,
                 accountsAndActiveOne = appUiState.accountsAndActiveOne,
                 onTopBarAccountClick = appViewModel::applyActiveAccount,
                 dateRangeWithEnum = appUiState.dateRangeWithEnum,

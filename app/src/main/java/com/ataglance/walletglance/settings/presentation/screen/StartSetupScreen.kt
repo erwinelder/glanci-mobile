@@ -36,9 +36,9 @@ import androidx.compose.ui.unit.sp
 import com.ataglance.walletglance.R
 import com.ataglance.walletglance.core.domain.app.AppTheme
 import com.ataglance.walletglance.core.presentation.animation.StartAnimatedContainer
-import com.ataglance.walletglance.core.presentation.preview.PreviewWithMainScaffoldContainer
 import com.ataglance.walletglance.core.presentation.modifier.bounceClickEffect
 import com.ataglance.walletglance.core.presentation.navigation.SetBackHandler
+import com.ataglance.walletglance.core.presentation.preview.PreviewWithMainScaffoldContainer
 import com.ataglance.walletglance.core.presentation.theme.GlanciColors
 import com.ataglance.walletglance.core.presentation.theme.Manrope
 import com.ataglance.walletglance.core.presentation.theme.NotoSans
@@ -47,7 +47,6 @@ import com.ataglance.walletglance.core.presentation.utils.plus
 @Composable
 fun StartSetupScreen(
     screenPadding: PaddingValues = PaddingValues(),
-    isAppThemeSetUp: Boolean,
     onManualSetupButton: () -> Unit
 ) {
     SetBackHandler()
@@ -60,7 +59,7 @@ fun StartSetupScreen(
                 screenPadding + PaddingValues(top = 12.dp, bottom = 48.dp)
             )
     ) {
-        StartAnimatedContainer(isAppThemeSetUp, 200) {
+        StartAnimatedContainer(delayMillis = 200) {
             Text(
                 text = stringResource(R.string.app_name),
                 color = GlanciColors.onSurface,
@@ -71,7 +70,7 @@ fun StartSetupScreen(
             )
         }
         Spacer(modifier = Modifier.weight(1f))
-        StartAnimatedContainer(isAppThemeSetUp) {
+        StartAnimatedContainer {
             Text(
                 text = stringResource(R.string.hello) + "!",
                 color = GlanciColors.onSurface,
@@ -85,7 +84,7 @@ fun StartSetupScreen(
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
-            StartAnimatedContainer(isAppThemeSetUp, 100) {
+            StartAnimatedContainer(delayMillis = 100) {
                 StartButton(onManualSetupButton)
             }
         }
@@ -151,7 +150,6 @@ fun StartSetupScreenPreview(
 ) {
     PreviewWithMainScaffoldContainer(appTheme = appTheme) {
         StartSetupScreen(
-            isAppThemeSetUp = true,
             onManualSetupButton = {}
         )
     }

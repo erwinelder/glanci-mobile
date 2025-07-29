@@ -1,8 +1,8 @@
 package com.ataglance.walletglance.settings.domain.usecase.language
 
 import com.ataglance.walletglance.auth.domain.repository.AuthRepository
-import com.ataglance.walletglance.request.domain.model.result.SimpleResult
-import com.ataglance.walletglance.request.domain.model.result.error.AuthError
+import com.ataglance.walletglance.core.domain.result.SimpleResult
+import com.ataglance.walletglance.core.domain.result.error.AuthError
 
 class SaveLanguageRemotelyUseCaseImpl(
     private val authRepository: AuthRepository

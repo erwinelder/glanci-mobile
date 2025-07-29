@@ -12,7 +12,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.graphics.Color
 import com.ataglance.walletglance.core.presentation.component.text.Title
-import com.ataglance.walletglance.core.presentation.model.IconPathsRes
+import com.ataglance.walletglance.core.presentation.model.icon.IconPathsRes
 import com.ataglance.walletglance.core.presentation.model.RotatingGradientAnimState
 import com.ataglance.walletglance.core.presentation.theme.GlanciColors
 

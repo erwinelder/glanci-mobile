@@ -35,7 +35,6 @@ fun GlanciAppComponent(
                     chosenLightTheme = themeConfiguration.chosenLightTheme,
                     chosenDarkTheme = themeConfiguration.chosenDarkTheme,
                     lastChosenTheme = themeConfiguration.lastChosenTheme,
-                    setAppTheme = appViewModel::setAppTheme,
                     boxWithConstraintsScope = this@BoxWithConstraints,
                     sharedTransitionScope = this@SharedTransitionLayout
                 ) {
@@ -44,7 +43,7 @@ fun GlanciAppComponent(
                             .fillMaxSize()
                             .background(GlanciColors.background)
                     ) {
-                        AppBackground(appTheme = appConfiguration.appTheme)
+                        AppBackground()
                         MainAppContent(
                             appConfiguration = appConfiguration,
                             navController = navController,

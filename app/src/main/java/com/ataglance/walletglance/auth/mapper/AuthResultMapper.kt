@@ -4,9 +4,9 @@ import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import com.ataglance.walletglance.R
 import com.glanci.request.shared.error.AuthDataError
-import com.ataglance.walletglance.request.domain.model.result.error.AuthError
-import com.ataglance.walletglance.request.domain.model.result.success.AuthSuccess
-import com.ataglance.walletglance.request.presentation.model.ResultState
+import com.ataglance.walletglance.core.domain.result.error.AuthError
+import com.ataglance.walletglance.core.domain.result.success.AuthSuccess
+import com.ataglance.walletglance.core.presentation.model.result.ResultState
 
 
 fun AuthDataError.toDomainError(): AuthError {

@@ -32,7 +32,6 @@ fun NavGraphBuilder.settingsGraph(
         composable<SettingsScreens.Start> {
             StartSetupScreen(
                 screenPadding = screenPadding,
-                isAppThemeSetUp = appConfiguration.appTheme != null,
                 onManualSetupButton = {
                     navViewModel.navigateToScreen(
                         navController = navController, screen = SettingsScreens.Language

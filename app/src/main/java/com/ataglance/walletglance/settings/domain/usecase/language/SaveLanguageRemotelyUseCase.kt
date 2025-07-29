@@ -1,7 +1,7 @@
 package com.ataglance.walletglance.settings.domain.usecase.language
 
-import com.ataglance.walletglance.request.domain.model.result.SimpleResult
-import com.ataglance.walletglance.request.domain.model.result.error.AuthError
+import com.ataglance.walletglance.core.domain.result.SimpleResult
+import com.ataglance.walletglance.core.domain.result.error.AuthError
 
 interface SaveLanguageRemotelyUseCase {
 

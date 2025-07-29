@@ -84,10 +84,9 @@ val coreModule = module {
     viewModel {
         AppViewModel(
             getAppThemeConfigurationUseCase = get(),
-            applyLanguageToSystemUseCase = get(),
-            getLanguagePreferenceUseCase = get(),
             changeAppSetupStageUseCase = get(),
             getStartDestinationsBySetupStageUseCase = get(),
+            getLanguagePreferenceUseCase = get(),
 
             accountRepository = get(),
             getWidgetsUseCase = get()

@@ -9,10 +9,10 @@ import com.ataglance.walletglance.category.domain.usecase.TranslateCategoriesUse
 import com.ataglance.walletglance.category.presentation.model.DefaultCategoriesPackage
 import com.ataglance.walletglance.core.presentation.model.ResourceManager
 import com.ataglance.walletglance.core.utils.getCurrentTimestamp
-import com.ataglance.walletglance.request.domain.model.result.SimpleResult
-import com.ataglance.walletglance.request.domain.model.result.error.AuthError
-import com.ataglance.walletglance.request.presentation.model.RequestErrorState
-import com.ataglance.walletglance.request.presentation.model.ResultState.ButtonState
+import com.ataglance.walletglance.core.domain.result.SimpleResult
+import com.ataglance.walletglance.core.domain.result.error.AuthError
+import com.ataglance.walletglance.core.presentation.model.request.RequestErrorState
+import com.ataglance.walletglance.core.presentation.model.result.ResultState.ButtonState
 import com.ataglance.walletglance.settings.domain.usecase.language.SaveLanguageLocallyUseCase
 import com.ataglance.walletglance.settings.domain.usecase.language.SaveLanguageRemotelyUseCase
 import kotlinx.coroutines.flow.MutableStateFlow

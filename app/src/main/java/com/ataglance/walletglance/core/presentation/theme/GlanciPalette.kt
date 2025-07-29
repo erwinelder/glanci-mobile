@@ -19,7 +19,7 @@ import com.ataglance.walletglance.core.presentation.component.button.SmallPrimar
 import com.ataglance.walletglance.core.presentation.component.button.SmallSecondaryButton
 import com.ataglance.walletglance.core.presentation.component.container.glassSurface.GlassSurface
 import com.ataglance.walletglance.core.presentation.component.icon.RotatingGradientIcon
-import com.ataglance.walletglance.core.presentation.model.IconPathsRes
+import com.ataglance.walletglance.core.presentation.model.icon.IconPathsRes
 import com.ataglance.walletglance.core.presentation.model.RotatingGradientAnimState
 import com.ataglance.walletglance.core.presentation.preview.PreviewContainer
 

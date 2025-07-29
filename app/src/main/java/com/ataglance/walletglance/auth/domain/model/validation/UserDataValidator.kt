@@ -1,7 +1,7 @@
 package com.ataglance.walletglance.auth.domain.model.validation
 
 import com.ataglance.walletglance.core.utils.asList
-import com.ataglance.walletglance.request.domain.model.validation.ValidationResult
+import com.ataglance.walletglance.core.domain.validation.ValidationResult
 
 typealias UserDataValidationResult = ValidationResult<UserDataValidation>
 

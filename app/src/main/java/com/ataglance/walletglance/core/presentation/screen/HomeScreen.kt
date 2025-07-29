@@ -71,7 +71,6 @@ import org.koin.compose.viewmodel.koinViewModel
 @Composable
 fun HomeScreenWrapper(
     screenPadding: PaddingValues,
-    isAppThemeSetUp: Boolean,
     accountsAndActiveOne: AccountsAndActiveOne,
     onTopBarAccountClick: (Int) -> Unit,
     dateRangeWithEnum: DateRangeWithEnum,
@@ -86,7 +85,6 @@ fun HomeScreenWrapper(
 
     HomeScreen(
         screenPadding = screenPadding,
-        isAppThemeSetUp = isAppThemeSetUp,
         accountsAndActiveOne = accountsAndActiveOne,
         onTopBarAccountClick = onTopBarAccountClick,
         dateRangeWithEnum = dateRangeWithEnum,
@@ -173,7 +171,6 @@ fun HomeScreenWrapper(
 @Composable
 fun HomeScreen(
     screenPadding: PaddingValues,
-    isAppThemeSetUp: Boolean,
     accountsAndActiveOne: AccountsAndActiveOne,
     onTopBarAccountClick: (Int) -> Unit,
     dateRangeWithEnum: DateRangeWithEnum,
@@ -193,7 +190,7 @@ fun HomeScreen(
 ) {
     Scaffold(
         topBar = {
-            StartAnimatedContainer(visible = isAppThemeSetUp) {
+            StartAnimatedContainer {
                 AppMainTopBar(
                     accountList = accountsAndActiveOne.accounts,
                     currentDateRangeEnum = dateRangeWithEnum.enum,
@@ -211,7 +208,6 @@ fun HomeScreen(
             scaffoldPadding = scaffoldHomeScreenPadding.plusBottomPadding(
                 padding = screenPadding.calculateBottomPadding()
             ),
-            isAppThemeSetUp = isAppThemeSetUp,
             accountsAndActiveOne = accountsAndActiveOne,
             widgetNames = widgetNames,
             onMakeRecord = onMakeRecord,
@@ -230,7 +226,6 @@ fun HomeScreen(
 @Composable
 private fun CompactLayout(
     scaffoldPadding: PaddingValues,
-    isAppThemeSetUp: Boolean,
     accountsAndActiveOne: AccountsAndActiveOne,
     widgetNames: List<WidgetName>,
     onMakeRecord: () -> Unit,
@@ -257,24 +252,17 @@ private fun CompactLayout(
             modifier = Modifier.fillMaxSize()
         ) {
             item {
-                StartAnimatedContainer(
-                    visible = isAppThemeSetUp,
-                    delayMillis = 50,
-                    content = greetingsWidget
-                )
+                StartAnimatedContainer(delayMillis = 50, content = greetingsWidget)
             }
             item {
                 StartAnimatedContainer(
-                    visible = isAppThemeSetUp && accountsAndActiveOne.activeAccount != null,
+                    visible = accountsAndActiveOne.activeAccount != null,
                     delayMillis = 100,
                     content = accountWidget
                 )
             }
             item {
-                StartAnimatedContainer(
-                    visible = isAppThemeSetUp,
-                    delayMillis = 150
-                ) {
+                StartAnimatedContainer(delayMillis = 150) {
                     TransactionCreationWidget(
                         onMakeRecord = onMakeRecord,
                         onMakeTransfer = onMakeTransfer
@@ -282,7 +270,7 @@ private fun CompactLayout(
                 }
             }
             itemsIndexed(items = widgetNames) { index, widgetName ->
-                StartAnimatedContainer(visible = isAppThemeSetUp, delayMillis = (index + 4) * 50) {
+                StartAnimatedContainer(delayMillis = (index + 4) * 50) {
                     when (widgetName) {
                         WidgetName.ChosenBudgets -> chosenBudgetsWidget()
                         WidgetName.TotalForPeriod -> expensesIncomeWidget()
@@ -600,7 +588,6 @@ fun HomeScreenPreview(
     ) { screenPadding ->
         HomeScreen(
             screenPadding = screenPadding,
-            isAppThemeSetUp = true,
             accountsAndActiveOne = accountsAndActiveOne,
             onTopBarAccountClick = {},
             dateRangeWithEnum = dateRangeWithEnum,

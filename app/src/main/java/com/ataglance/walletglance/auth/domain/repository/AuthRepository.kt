@@ -3,9 +3,9 @@ package com.ataglance.walletglance.auth.domain.repository
 import com.ataglance.walletglance.auth.domain.model.CurrentAppVersion
 import com.ataglance.walletglance.auth.domain.model.user.User
 import com.ataglance.walletglance.auth.domain.model.user.UserWithToken
-import com.ataglance.walletglance.request.domain.model.result.ResultData
-import com.ataglance.walletglance.request.domain.model.result.SimpleResult
-import com.ataglance.walletglance.request.domain.model.result.error.AuthError
+import com.ataglance.walletglance.core.domain.result.ResultData
+import com.ataglance.walletglance.core.domain.result.SimpleResult
+import com.ataglance.walletglance.core.domain.result.error.AuthError
 
 interface AuthRepository {
 

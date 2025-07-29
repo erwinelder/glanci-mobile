@@ -32,7 +32,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.ataglance.walletglance.core.domain.app.AppTheme
 import com.ataglance.walletglance.core.presentation.component.button.SmallPrimaryButton
-import com.ataglance.walletglance.core.presentation.model.IconPathsRes
+import com.ataglance.walletglance.core.presentation.model.icon.IconPathsRes
 import com.ataglance.walletglance.core.presentation.model.RotatingGradientAnimState
 import com.ataglance.walletglance.core.presentation.preview.PreviewColumnContainer
 import com.ataglance.walletglance.core.presentation.theme.GlanciColors
