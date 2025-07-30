@@ -5,8 +5,8 @@ import androidx.lifecycle.viewModelScope
 import com.ataglance.walletglance.account.domain.usecase.GetAccountsUseCase
 import com.ataglance.walletglance.budget.domain.usecase.GetBudgetsUseCase
 import com.ataglance.walletglance.budget.domain.usecase.SaveBudgetsAndDeleteRestUseCase
-import com.ataglance.walletglance.budget.mapper.budget.toBudgetWithIds
-import com.ataglance.walletglance.budget.mapper.budget.toUiState
+import com.ataglance.walletglance.budget.mapper.toBudgetWithIds
+import com.ataglance.walletglance.budget.mapper.toUiState
 import com.ataglance.walletglance.budget.presentation.mapper.toUiState
 import com.ataglance.walletglance.budget.presentation.model.BudgetDraft
 import com.ataglance.walletglance.budget.presentation.model.GroupedBudgetsItemUiState

@@ -2,7 +2,6 @@ package com.ataglance.walletglance.budget.data.repository
 
 import com.ataglance.walletglance.budget.data.local.model.BudgetOnWidgetEntity
 import com.ataglance.walletglance.budget.data.local.source.BudgetOnWidgetLocalDataSource
-import com.ataglance.walletglance.budget.data.mapper.budgetOnWidget.toDataModel
 import com.ataglance.walletglance.budget.data.mapper.budgetOnWidget.toDto
 import com.ataglance.walletglance.budget.data.mapper.budgetOnWidget.toEntity
 import com.ataglance.walletglance.budget.data.model.BudgetOnWidgetDataModel
@@ -21,7 +20,7 @@ class BudgetOnWidgetRepositoryImpl(
 ) : BudgetOnWidgetRepository {
 
     private suspend fun synchronizeBudgetsOnWidget() {
-        syncHelper.synchronizeData(
+        syncHelper.synchronizeDataSafe(
             tableName = TableName.BudgetOnWidget,
             localTimestampGetter = { localSource.getUpdateTime() },
             remoteTimestampGetter = { token -> remoteSource.getUpdateTime(token = token) },
@@ -48,10 +47,13 @@ class BudgetOnWidgetRepositoryImpl(
     }
 
     override suspend fun deleteAndUpsertBudgetsOnWidget(
-        toDelete: List<BudgetOnWidgetDataModel>,
-        toUpsert: List<BudgetOnWidgetDataModel>
+        toDelete: List<Int>,
+        toUpsert: List<Int>
     ) {
-        syncHelper.deleteAndUpsertData(
+        val toDelete = toDelete.map { BudgetOnWidgetDataModel(budgetId = it) }
+        val toUpsert = toUpsert.map { BudgetOnWidgetDataModel(budgetId = it) }
+
+        syncHelper.deleteAndUpsertDataSafe(
             tableName = TableName.BudgetOnWidget,
             toDelete = toDelete,
             toUpsert = toUpsert,
@@ -92,18 +94,18 @@ class BudgetOnWidgetRepositoryImpl(
         )
     }
 
-    override fun getAllBudgetsOnWidgetAsFlow(): Flow<List<BudgetOnWidgetDataModel>> {
+    override fun getAllBudgetsOnWidgetAsFlow(): Flow<List<Int>> {
         return localSource
             .getAllBudgetsOnWidgetAsFlow()
             .onStart { synchronizeBudgetsOnWidget() }
             .map { budgets ->
-                budgets.map { it.toDataModel() }
+                budgets.map { it.budgetId }
             }
     }
 
-    override suspend fun getAllBudgetsOnWidget(): List<BudgetOnWidgetDataModel> {
+    override suspend fun getAllBudgetsOnWidget(): List<Int> {
         synchronizeBudgetsOnWidget()
-        return localSource.getAllBudgetsOnWidget().map { it.toDataModel() }
+        return localSource.getAllBudgetsOnWidget().map { it.budgetId }
     }
 
 }

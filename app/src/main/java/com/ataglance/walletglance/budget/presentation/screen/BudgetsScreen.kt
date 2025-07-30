@@ -20,7 +20,7 @@ import com.ataglance.walletglance.budget.domain.model.Budget
 import com.ataglance.walletglance.budget.domain.model.BudgetWithIds
 import com.ataglance.walletglance.budget.domain.model.GroupedBudgets
 import com.ataglance.walletglance.budget.domain.model.GroupedFilledBudgets
-import com.ataglance.walletglance.budget.mapper.budget.toUiState
+import com.ataglance.walletglance.budget.mapper.toUiState
 import com.ataglance.walletglance.budget.presentation.component.GroupedFilledBudgetsComponent
 import com.ataglance.walletglance.budget.presentation.model.FilledBudgetUiState
 import com.ataglance.walletglance.budget.presentation.model.GroupedFilledBudgetsItemUiState

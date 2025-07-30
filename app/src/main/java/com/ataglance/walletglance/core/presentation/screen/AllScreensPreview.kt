@@ -28,8 +28,8 @@ import com.ataglance.walletglance.budget.data.model.BudgetAccountAssociationData
 import com.ataglance.walletglance.budget.data.model.BudgetDataModel
 import com.ataglance.walletglance.budget.data.model.BudgetWithAssociationsDataModel
 import com.ataglance.walletglance.budget.domain.mapper.toFilledBudget
-import com.ataglance.walletglance.budget.mapper.budget.toBudgetWithIds
-import com.ataglance.walletglance.budget.mapper.budget.toUiState
+import com.ataglance.walletglance.budget.mapper.toBudgetWithIds
+import com.ataglance.walletglance.budget.mapper.toUiState
 import com.ataglance.walletglance.budget.presentation.component.widget.ChosenBudgetsWidgetPreview
 import com.ataglance.walletglance.budget.presentation.screen.BudgetStatisticsScreenPreview
 import com.ataglance.walletglance.budget.presentation.screen.BudgetsScreenPreview

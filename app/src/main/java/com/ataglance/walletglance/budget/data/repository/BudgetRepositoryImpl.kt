@@ -10,9 +10,9 @@ import com.ataglance.walletglance.budget.data.model.BudgetWithAssociationsDataMo
 import com.ataglance.walletglance.budget.data.remote.source.BudgetRemoteDataSource
 import com.ataglance.walletglance.budget.domain.model.Budget
 import com.ataglance.walletglance.budget.domain.model.BudgetWithIds
-import com.ataglance.walletglance.budget.mapper.budget.toBudgetWithIds
-import com.ataglance.walletglance.budget.mapper.budget.toDataModelWithAssociations
-import com.ataglance.walletglance.budget.mapper.budget.toDomainModel
+import com.ataglance.walletglance.budget.mapper.toBudgetWithIds
+import com.ataglance.walletglance.budget.mapper.toDataModelWithAssociations
+import com.ataglance.walletglance.budget.mapper.toDomainModel
 import com.ataglance.walletglance.core.data.model.DataSyncHelper
 import com.ataglance.walletglance.core.data.model.TableName
 import com.glanci.budget.shared.dto.BudgetWithAssociationsDto

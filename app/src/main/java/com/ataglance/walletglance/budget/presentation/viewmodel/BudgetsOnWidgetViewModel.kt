@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ataglance.walletglance.account.domain.usecase.GetAccountsUseCase
 import com.ataglance.walletglance.budget.domain.usecase.GetBudgetsOnWidgetUseCase
-import com.ataglance.walletglance.budget.mapper.budget.toUiState
+import com.ataglance.walletglance.budget.mapper.toUiState
 import com.ataglance.walletglance.budget.presentation.model.FilledBudgetUiState
 import com.ataglance.walletglance.category.domain.usecase.GetExpenseCategoriesGroupedUseCase
 import kotlinx.coroutines.flow.MutableStateFlow

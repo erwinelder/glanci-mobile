@@ -26,8 +26,8 @@ import com.ataglance.walletglance.budget.domain.usecase.GetGroupedFilledBudgetsU
 import com.ataglance.walletglance.budget.domain.usecase.GetGroupedFilledBudgetsUseCaseImpl
 import com.ataglance.walletglance.budget.domain.usecase.SaveBudgetsAndDeleteRestUseCase
 import com.ataglance.walletglance.budget.domain.usecase.SaveBudgetsAndDeleteRestUseCaseImpl
-import com.ataglance.walletglance.budget.domain.usecase.SaveBudgetsOnWidgetUseCase
-import com.ataglance.walletglance.budget.domain.usecase.SaveBudgetsOnWidgetUseCaseImpl
+import com.ataglance.walletglance.budget.domain.usecase.SaveBudgetsOnWidgetAndDeleteRestUseCase
+import com.ataglance.walletglance.budget.domain.usecase.SaveBudgetsOnWidgetAndDeleteRestUseCaseImpl
 import com.ataglance.walletglance.budget.presentation.viewmodel.BudgetStatisticsViewModel
 import com.ataglance.walletglance.budget.presentation.viewmodel.BudgetsOnWidgetSettingsViewModel
 import com.ataglance.walletglance.budget.presentation.viewmodel.BudgetsOnWidgetViewModel
@@ -82,8 +82,8 @@ val budgetModule = module {
         SaveBudgetsAndDeleteRestUseCaseImpl(budgetRepository = get())
     }
 
-    single<SaveBudgetsOnWidgetUseCase> {
-        SaveBudgetsOnWidgetUseCaseImpl(budgetOnWidgetRepository = get())
+    single<SaveBudgetsOnWidgetAndDeleteRestUseCase> {
+        SaveBudgetsOnWidgetAndDeleteRestUseCaseImpl(budgetOnWidgetRepository = get())
     }
 
     single<GetBudgetUseCase> {
@@ -148,7 +148,7 @@ val budgetModule = module {
 
     viewModel {
         BudgetsOnWidgetSettingsViewModel(
-            saveBudgetsOnWidgetUseCase = get(),
+            saveBudgetsOnWidgetAndDeleteRestUseCase = get(),
             getBudgetIdsOnWidgetUseCase = get(),
             getGroupedBudgetsUseCase = get(),
             getAccountsUseCase = get(),

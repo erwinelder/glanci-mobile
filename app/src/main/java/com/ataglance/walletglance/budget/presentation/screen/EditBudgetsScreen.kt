@@ -16,7 +16,7 @@ import com.ataglance.walletglance.R
 import com.ataglance.walletglance.account.domain.model.Account
 import com.ataglance.walletglance.budget.domain.model.Budget
 import com.ataglance.walletglance.budget.domain.model.BudgetWithIds
-import com.ataglance.walletglance.budget.mapper.budget.toUiState
+import com.ataglance.walletglance.budget.mapper.toUiState
 import com.ataglance.walletglance.budget.presentation.component.GroupedBudgetsComponent
 import com.ataglance.walletglance.budget.presentation.model.BudgetUiState
 import com.ataglance.walletglance.budget.presentation.model.GroupedBudgetsItemUiState

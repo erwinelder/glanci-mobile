@@ -6,8 +6,8 @@ import com.ataglance.walletglance.account.domain.model.Account
 import com.ataglance.walletglance.account.domain.usecase.GetAccountsUseCase
 import com.ataglance.walletglance.budget.domain.usecase.GetBudgetIdsOnWidgetUseCase
 import com.ataglance.walletglance.budget.domain.usecase.GetGroupedBudgetsUseCase
-import com.ataglance.walletglance.budget.domain.usecase.SaveBudgetsOnWidgetUseCase
-import com.ataglance.walletglance.budget.mapper.budget.toUiState
+import com.ataglance.walletglance.budget.domain.usecase.SaveBudgetsOnWidgetAndDeleteRestUseCase
+import com.ataglance.walletglance.budget.mapper.toUiState
 import com.ataglance.walletglance.budget.presentation.model.GroupedBudgetsUiState
 import com.ataglance.walletglance.category.domain.model.GroupedCategories
 import com.ataglance.walletglance.category.domain.usecase.GetExpenseCategoriesGroupedUseCase
@@ -24,7 +24,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class BudgetsOnWidgetSettingsViewModel(
-    private val saveBudgetsOnWidgetUseCase: SaveBudgetsOnWidgetUseCase,
+    private val saveBudgetsOnWidgetAndDeleteRestUseCase: SaveBudgetsOnWidgetAndDeleteRestUseCase,
     private val getBudgetIdsOnWidgetUseCase: GetBudgetIdsOnWidgetUseCase,
     private val getGroupedBudgetsUseCase: GetGroupedBudgetsUseCase,
     private val getAccountsUseCase: GetAccountsUseCase,
@@ -88,7 +88,7 @@ class BudgetsOnWidgetSettingsViewModel(
 
     fun saveCurrentBudgetsOnWidget() {
         viewModelScope.launch {
-            saveBudgetsOnWidgetUseCase.execute(budgetsIds = _checkedBudgetIds.value)
+            saveBudgetsOnWidgetAndDeleteRestUseCase.execute(budgetIds = _checkedBudgetIds.value)
         }
     }
 

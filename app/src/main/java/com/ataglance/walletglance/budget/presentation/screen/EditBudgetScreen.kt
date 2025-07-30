@@ -34,8 +34,8 @@ import com.ataglance.walletglance.account.domain.model.Account
 import com.ataglance.walletglance.account.domain.model.color.AccountColors
 import com.ataglance.walletglance.account.presentation.component.AccountNameWithCurrencyComposable
 import com.ataglance.walletglance.budget.data.model.BudgetWithAssociationsDataModel
-import com.ataglance.walletglance.budget.mapper.budget.toBudgetWithIds
-import com.ataglance.walletglance.budget.mapper.budget.toUiState
+import com.ataglance.walletglance.budget.mapper.toBudgetWithIds
+import com.ataglance.walletglance.budget.mapper.toUiState
 import com.ataglance.walletglance.budget.presentation.mapper.toDraft
 import com.ataglance.walletglance.budget.presentation.model.BudgetDraft
 import com.ataglance.walletglance.budget.presentation.viewmodel.EditBudgetViewModel

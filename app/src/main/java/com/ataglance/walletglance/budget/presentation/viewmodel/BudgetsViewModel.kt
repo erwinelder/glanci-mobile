@@ -5,7 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.ataglance.walletglance.account.domain.model.Account
 import com.ataglance.walletglance.account.domain.usecase.GetAccountsUseCase
 import com.ataglance.walletglance.budget.domain.usecase.GetGroupedFilledBudgetsUseCase
-import com.ataglance.walletglance.budget.mapper.budget.toUiState
+import com.ataglance.walletglance.budget.mapper.toUiState
 import com.ataglance.walletglance.budget.presentation.model.GroupedFilledBudgetsItemUiState
 import com.ataglance.walletglance.category.domain.model.GroupedCategories
 import com.ataglance.walletglance.category.domain.usecase.GetExpenseCategoriesGroupedUseCase
