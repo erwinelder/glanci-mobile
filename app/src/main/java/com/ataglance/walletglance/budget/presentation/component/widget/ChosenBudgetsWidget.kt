@@ -13,19 +13,19 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.ataglance.walletglance.R
-import com.ataglance.walletglance.budget.domain.model.Budget
-import com.ataglance.walletglance.budget.presentation.component.BudgetWithStatsOnGlassComponent
+import com.ataglance.walletglance.budget.presentation.component.FilledBudgetOnGlassComponent
+import com.ataglance.walletglance.budget.presentation.model.FilledBudgetUiState
 import com.ataglance.walletglance.budget.presentation.viewmodel.BudgetsOnWidgetViewModel
 import com.ataglance.walletglance.category.domain.model.DefaultCategoriesPackage
 import com.ataglance.walletglance.core.domain.app.AppTheme
 import com.ataglance.walletglance.core.domain.date.RepeatingPeriod
 import com.ataglance.walletglance.core.presentation.component.container.MessageContainer
-import com.ataglance.walletglance.core.presentation.preview.PreviewContainer
 import com.ataglance.walletglance.core.presentation.component.widget.component.WidgetAdjustButton
 import com.ataglance.walletglance.core.presentation.component.widget.component.WidgetViewAllButton
 import com.ataglance.walletglance.core.presentation.component.widget.container.WidgetContainer
 import com.ataglance.walletglance.core.presentation.model.ResourceManager
 import com.ataglance.walletglance.core.presentation.model.ResourceManagerImpl
+import com.ataglance.walletglance.core.presentation.preview.PreviewContainer
 import com.ataglance.walletglance.core.utils.toTimestampRange
 import org.koin.compose.koinInject
 import org.koin.compose.viewmodel.koinViewModel
@@ -52,7 +52,7 @@ fun ChosenBudgetsWidgetWrapper(
 
 @Composable
 fun ChosenBudgetsWidget(
-    budgets: List<Budget>,
+    budgets: List<FilledBudgetUiState>,
     resourceManager: ResourceManager,
     onAdjustWidget: () -> Unit,
     onNavigateToBudgetsScreen: () -> Unit,
@@ -72,7 +72,7 @@ fun ChosenBudgetsWidget(
             ) {
                 if (chosenBudgets.isNotEmpty()) {
                     chosenBudgets.forEach { budget ->
-                        BudgetWithStatsOnGlassComponent(
+                        FilledBudgetOnGlassComponent(
                             budget = budget,
                             showDateRangeLabels = true,
                             resourceManager = resourceManager
@@ -101,34 +101,32 @@ fun ChosenBudgetsWidgetPreview(
     val groupedCategoriesByType = DefaultCategoriesPackage(context = LocalContext.current)
         .getDefaultCategories()
     val budgets = listOf(
-        Budget(
+        FilledBudgetUiState(
             id = 1,
-            priorityNum = 1.0,
-            amountLimit = 4000.0,
-            usedAmount = 2250.0,
+            name = groupedCategoriesByType.expense[0].category.name,
+            amountLimit = "4 000.00",
+            usedAmount = "2 250.00",
             usedPercentage = 56.25f,
             category = groupedCategoriesByType.expense[0].category,
-            name = groupedCategoriesByType.expense[0].category.name,
-            repeatingPeriod = RepeatingPeriod.Monthly,
-            dateRange = RepeatingPeriod.Monthly.toTimestampRange(),
-            currentTimeWithinRangeGraphPercentage = .5f,
+            priorityNum = 1.0,
             currency = "USD",
-            linkedAccountIds = listOf(1)
+            accountIds = listOf(1),
+            dateRange = RepeatingPeriod.Monthly.toTimestampRange(),
+            currentTimeWithinRangeGraphPercentage = .5f
         ),
-        Budget(
+        FilledBudgetUiState(
             id = 2,
-            priorityNum = 2.0,
-            amountLimit = 6000.0,
-            usedAmount = 2250.0,
+            name = groupedCategoriesByType.expense[1].category.name,
+            amountLimit = "6 000.00",
+            usedAmount = "2 250.00",
             usedPercentage = 36.25f,
             category = groupedCategoriesByType.expense[1].category,
-            name = groupedCategoriesByType.expense[1].category.name,
-            repeatingPeriod = RepeatingPeriod.Monthly,
-            dateRange = RepeatingPeriod.Monthly.toTimestampRange(),
-            currentTimeWithinRangeGraphPercentage = .5f,
+            priorityNum = 2.0,
             currency = "USD",
-            linkedAccountIds = listOf(1)
-        ),
+            accountIds = listOf(1),
+            dateRange = RepeatingPeriod.Monthly.toTimestampRange(),
+            currentTimeWithinRangeGraphPercentage = .5f
+        )
     )
 
     PreviewContainer(appTheme = appTheme) {

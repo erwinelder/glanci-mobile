@@ -9,6 +9,11 @@ import com.ataglance.walletglance.core.data.local.dao.LocalUpdateTimeDao
 import com.ataglance.walletglance.core.data.local.database.AppDatabase
 import com.ataglance.walletglance.core.data.model.TableName
 import com.ataglance.walletglance.core.utils.excludeItems
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.map
 
 class BudgetLocalDataSourceImpl(
     private val budgetDao: BudgetLocalDao,
@@ -83,6 +88,26 @@ class BudgetLocalDataSourceImpl(
         val associations = budgetDao.getBudgetAccountAssociations(budgetId = budgetId)
 
         return BudgetEntityWithAssociations(budget = budget, associations = associations)
+    }
+
+    @OptIn(ExperimentalCoroutinesApi::class)
+    override fun getBudgetsWithAssociationsByIdsAsFlow(
+        budgetIds: List<Int>
+    ): Flow<List<BudgetEntityWithAssociations>> {
+        return budgetDao.getBudgetsAsFlow(ids = budgetIds).flatMapLatest { budgets ->
+            budgetDao.getBudgetAccountAssociationsAsFlow(budgetIds = budgets.map { it.id }).map {
+                budgets.zipWithAssociations(associations = it)
+            }
+        }
+    }
+
+    override fun getAllBudgetsWithAssociationsAsFlow(): Flow<List<BudgetEntityWithAssociations>> {
+        return combine(
+            budgetDao.getAllBudgetsAsFlow(),
+            budgetDao.getAllBudgetAccountAssociationsAsFlow()
+        ) { budgets, associations ->
+            budgets.zipWithAssociations(associations = associations)
+        }
     }
 
     override suspend fun getAllBudgetsWithAssociations(): List<BudgetEntityWithAssociations> {

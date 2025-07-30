@@ -1,8 +1,11 @@
 package com.ataglance.walletglance.budget.data.remote.source
 
-import android.util.Log
 import com.glanci.budget.shared.dto.BudgetWithAssociationsDto
 import com.glanci.budget.shared.service.BudgetService
+import com.glanci.request.shared.ResultData
+import com.glanci.request.shared.SimpleResult
+import com.glanci.request.shared.error.BudgetDataError
+import com.glanci.request.shared.error.DataError
 import kotlinx.rpc.krpc.ktor.client.KtorRpcClient
 import kotlinx.rpc.withService
 
@@ -13,54 +16,39 @@ class BudgetRemoteDataSourceImpl(
     constructor(client: KtorRpcClient) : this(service = client.withService<BudgetService>())
 
 
-    override suspend fun getUpdateTime(token: String): Long? {
+    override suspend fun getUpdateTime(token: String): ResultData<Long, DataError> {
         return runCatching {
             service.getUpdateTime(token = token)
-        }.getOrNull().also { timestamp ->
-            if (timestamp != null) {
-                Log.d("BudgetRemoteDataSourceImpl", "getUpdateTime:" +
-                        "received update time $timestamp")
-            } else {
-                Log.w("BudgetRemoteDataSourceImpl", "getUpdateTime:" +
-                        "no update time received")
-            }
-        }
+        }.getOrDefault(
+            defaultValue = ResultData.Error(error = BudgetDataError.BudgetError)
+        )
     }
 
     override suspend fun synchronizeBudgetsWithAssociations(
         budgets: List<BudgetWithAssociationsDto>,
         timestamp: Long,
         token: String
-    ): Boolean {
+    ): SimpleResult<DataError> {
         return runCatching {
             service.saveBudgetsWithAssociations(
                 budgets = budgets,
                 timestamp = timestamp,
                 token = token
             )
-        }.isSuccess.also { success ->
-            if (success) {
-                Log.d("BudgetRemoteDataSourceImpl", "synchronizeBudgetsWithAssociations: " +
-                        "synchronized ${budgets.size} budgets at timestamp $timestamp")
-            } else {
-                Log.e("BudgetRemoteDataSourceImpl", "synchronizeBudgetsWithAssociations: " +
-                        "failed to synchronize ${budgets.size} budgets at timestamp $timestamp")
-            }
-        }
+        }.getOrDefault(
+            defaultValue = SimpleResult.Error(error = BudgetDataError.BudgetError)
+        )
     }
 
     override suspend fun getBudgetsWithAssociationsAfterTimestamp(
         timestamp: Long,
         token: String
-    ): List<BudgetWithAssociationsDto>? {
+    ): ResultData<List<BudgetWithAssociationsDto>, DataError> {
         return runCatching {
             service.getBudgetsWithAssociationsAfterTimestamp(timestamp = timestamp, token = token)
-        }.getOrNull().also { budgets ->
-            budgets?.forEach {
-                Log.d("BudgetRemoteDataSourceImpl", "getBudgetsWithAssociationsAfterTimestamp:" +
-                        "received budget: id = ${it.budget.id}")
-            }
-        }
+        }.getOrDefault(
+            defaultValue = ResultData.Error(error = BudgetDataError.BudgetError)
+        )
     }
 
     override suspend fun synchronizeBudgetsWithAssociationsAndGetAfterTimestamp(
@@ -68,7 +56,7 @@ class BudgetRemoteDataSourceImpl(
         timestamp: Long,
         localTimestamp: Long,
         token: String
-    ): List<BudgetWithAssociationsDto>? {
+    ): ResultData<List<BudgetWithAssociationsDto>, DataError> {
         return runCatching {
             service.saveBudgetsWithAssociationsAndGetAfterTimestamp(
                 budgets = budgets,
@@ -76,15 +64,9 @@ class BudgetRemoteDataSourceImpl(
                 localTimestamp = localTimestamp,
                 token = token
             )
-        }.getOrNull().also { budgets ->
-            Log.d("BudgetRemoteDataSourceImpl", "synchronizeBudgetsWithAssociationsAndGetAfterTimestamp:" +
-                    "synchronized ${budgets?.size ?: 0} budgets at timestamp $timestamp" +
-                    " with local timestamp $localTimestamp")
-            budgets?.forEach {
-                Log.d("BudgetRemoteDataSourceImpl", "synchronizeBudgetsWithAssociationsAndGetAfterTimestamp:" +
-                        "received budget: id = ${it.budget.id}")
-            }
-        }
+        }.getOrDefault(
+            defaultValue = ResultData.Error(error = BudgetDataError.BudgetError)
+        )
     }
 
 }

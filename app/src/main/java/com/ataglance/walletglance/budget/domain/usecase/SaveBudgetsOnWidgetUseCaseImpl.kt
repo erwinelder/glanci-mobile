@@ -6,6 +6,7 @@ import com.ataglance.walletglance.budget.mapper.budgetOnWidget.toBudgetOnWidgetD
 class SaveBudgetsOnWidgetUseCaseImpl(
     private val budgetOnWidgetRepository: BudgetOnWidgetRepository
 ) : SaveBudgetsOnWidgetUseCase {
+
     override suspend fun execute(budgetsIds: List<Int>) {
         val budgets = budgetsIds.toBudgetOnWidgetDataModels()
         val currBudgets = budgetOnWidgetRepository.getAllBudgetsOnWidget()
@@ -21,4 +22,5 @@ class SaveBudgetsOnWidgetUseCaseImpl(
             toDelete = budgetsToDelete, toUpsert = budgetsToUpsert
         )
     }
+
 }

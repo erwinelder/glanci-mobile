@@ -37,8 +37,8 @@ import com.ataglance.walletglance.R
 import com.ataglance.walletglance.account.domain.model.Account
 import com.ataglance.walletglance.account.domain.model.color.AccountColors
 import com.ataglance.walletglance.account.presentation.component.AccountsFlowRow
-import com.ataglance.walletglance.budget.domain.model.Budget
 import com.ataglance.walletglance.budget.presentation.model.BudgetStatisticsScreenUiState
+import com.ataglance.walletglance.budget.presentation.model.BudgetUiState
 import com.ataglance.walletglance.budget.presentation.viewmodel.BudgetStatisticsViewModel
 import com.ataglance.walletglance.category.domain.model.DefaultCategoriesPackage
 import com.ataglance.walletglance.category.domain.model.GroupedCategoriesByType
@@ -47,22 +47,20 @@ import com.ataglance.walletglance.core.domain.app.AppConfiguration
 import com.ataglance.walletglance.core.domain.app.AppTheme
 import com.ataglance.walletglance.core.domain.app.DrawableResByTheme
 import com.ataglance.walletglance.core.domain.date.RepeatingPeriod
-import com.ataglance.walletglance.core.utils.getPrevDateRanges
 import com.ataglance.walletglance.core.domain.date.getSpendingInRecentStringRes
 import com.ataglance.walletglance.core.domain.navigation.MainScreens
 import com.ataglance.walletglance.core.domain.statistics.ColumnChartUiState
 import com.ataglance.walletglance.core.domain.statistics.TotalAmountInRange
 import com.ataglance.walletglance.core.presentation.component.chart.ColumnChartComponent
 import com.ataglance.walletglance.core.presentation.component.chart.SingleValuePieChartComponent
-import com.ataglance.walletglance.core.presentation.component.container.MessageContainer
-import com.ataglance.walletglance.core.presentation.preview.PreviewContainer
 import com.ataglance.walletglance.core.presentation.component.screenContainer.ScreenContainerWithTopBackNavButton
 import com.ataglance.walletglance.core.presentation.model.ResourceManagerImpl
+import com.ataglance.walletglance.core.presentation.preview.PreviewContainer
 import com.ataglance.walletglance.core.presentation.theme.CurrAppTheme
 import com.ataglance.walletglance.core.presentation.theme.GlanciColors
 import com.ataglance.walletglance.core.presentation.theme.Manrope
 import com.ataglance.walletglance.core.utils.formatWithSpaces
-import com.ataglance.walletglance.core.utils.toTimestampRange
+import com.ataglance.walletglance.core.utils.getPrevDateRanges
 import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.parameter.parametersOf
 
@@ -105,31 +103,21 @@ fun BudgetStatisticsScreen(
         backNavButtonImageRes = backNavButtonImageRes,
         onBackNavButtonClick = onNavigateBack
     ) {
-        if (uiState.budget != null) {
-            Column(
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.SpaceBetween,
-                modifier = Modifier
-                    .fillMaxWidth(1f)
-                    .weight(1f)
-            ) {
-                BudgetStatisticsScreenContent(
-                    budget = uiState.budget,
-                    columnChartUiState = uiState.columnChartUiState,
-                    budgetAccounts = uiState.accounts
-                )
-            }
-        } else {
-            MessageContainer(message = stringResource(R.string.budget_not_found))
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.SpaceBetween,
+            modifier = Modifier
+                .fillMaxWidth(1f)
+                .weight(1f)
+        ) {
+            BudgetStatisticsScreenContent(uiState = uiState)
         }
     }
 }
 
 @Composable
 private fun BudgetStatisticsScreenContent(
-    budget: Budget,
-    columnChartUiState: ColumnChartUiState,
-    budgetAccounts: List<Account>
+    uiState: BudgetStatisticsScreenUiState
 ) {
     val nestedScrollInterop = rememberNestedScrollInteropConnection()
     val verticalGap = 16.dp
@@ -149,11 +137,11 @@ private fun BudgetStatisticsScreenContent(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
-                budget.category?.let {
+                uiState.category?.let {
                     CategoryBigIconComponent(category = it)
                 }
                 Text(
-                    text = budget.name,
+                    text = uiState.budgetName,
                     color = GlanciColors.onSurface,
                     fontSize = 26.sp,
                     fontFamily = Manrope,
@@ -163,7 +151,7 @@ private fun BudgetStatisticsScreenContent(
                 Text(
                     text = stringResource(
                         R.string.amount_currency_spending_limit,
-                        budget.amountLimit.formatWithSpaces(), budget.currency
+                        uiState.amountLimit.formatWithSpaces(), uiState.currency
                     ),
                     color = GlanciColors.onSurface,
                     fontSize = 20.sp,
@@ -172,21 +160,25 @@ private fun BudgetStatisticsScreenContent(
                     textAlign = TextAlign.Center,
                     modifier = Modifier.padding(bottom = 4.dp)
                 )
-                AccountsFlowRow(accountList = budgetAccounts, maxLines = 5)
+                AccountsFlowRow(accountList = uiState.accounts, maxLines = 5)
             }
         }
         item { Spacer(modifier = Modifier.height(verticalGap)) }
         item {
             ColumnChartComponent(
-                uiState = columnChartUiState,
-                columnsColor = budget.category?.getColorByTheme(CurrAppTheme)?.lighter,
+                uiState = uiState.columnChartUiState,
+                columnsColor = uiState.category?.getColorByTheme(CurrAppTheme)?.lighter,
                 title = stringResource(
-                    id = budget.repeatingPeriod.getSpendingInRecentStringRes(), budget.currency
+                    id = uiState.repeatingPeriod.getSpendingInRecentStringRes(), uiState.currency
                 ),
                 bottomNote = "Average spending: " +
-                        columnChartUiState.averageValue.formatWithSpaces(budget.currency)
+                        uiState.columnChartUiState.averageValue.formatWithSpaces(uiState.currency)
             ) { totalAmountByPeriod ->
-                StatisticByPeriodDetailsPopupContent(budget, totalAmountByPeriod)
+                StatisticByPeriodDetailsPopupContent(
+                    amountLimit = uiState.amountLimit,
+                    totalAmount = totalAmountByPeriod,
+                    currency = uiState.currency
+                )
             }
         }
         item { Spacer(modifier = Modifier.height(verticalGap)) }
@@ -194,9 +186,13 @@ private fun BudgetStatisticsScreenContent(
 }
 
 @Composable
-private fun StatisticByPeriodDetailsPopupContent(budget: Budget, totalAmount: Double) {
-    val usedPercentage by remember(budget, totalAmount) {
-        derivedStateOf { 100 / budget.amountLimit * totalAmount }
+private fun StatisticByPeriodDetailsPopupContent(
+    amountLimit: Double,
+    totalAmount: Double,
+    currency: String
+) {
+    val usedPercentage by remember(amountLimit, totalAmount) {
+        derivedStateOf { 100 / amountLimit * totalAmount }
     }
     val pieChartPercentage by remember(usedPercentage) {
         derivedStateOf { (3.6 * usedPercentage).toFloat() }
@@ -242,7 +238,7 @@ private fun StatisticByPeriodDetailsPopupContent(budget: Budget, totalAmount: Do
                     fontFamily = Manrope,
                 )
                 Text(
-                    text = "(${totalAmount.formatWithSpaces(budget.currency)})",
+                    text = "(${totalAmount.formatWithSpaces(currency)})",
                     color = GlanciColors.onSurface,
                     fontSize = 18.sp,
                     fontFamily = Manrope,
@@ -263,7 +259,7 @@ fun BudgetStatisticsScreenPreview(
     groupedCategoriesByType: GroupedCategoriesByType = DefaultCategoriesPackage(
         LocalContext.current
     ).getDefaultCategories(),
-    accountList: List<Account> = listOf(
+    accounts: List<Account> = listOf(
         Account(
             id = 1,
             orderNum = 1,
@@ -283,19 +279,15 @@ fun BudgetStatisticsScreenPreview(
             isActive = false
         ),
     ),
-    budget: Budget = Budget(
+    budget: BudgetUiState = BudgetUiState(
         id = 1,
         priorityNum = 1.0,
-        amountLimit = 4000.0,
-        usedAmount = 2500.0,
-        usedPercentage = 62.5F,
+        amountLimit = "4 000.00",
         category = groupedCategoriesByType.expense[0].category,
         name = groupedCategoriesByType.expense[0].category.name,
         repeatingPeriod = RepeatingPeriod.Monthly,
-        dateRange = RepeatingPeriod.Monthly.toTimestampRange(),
-        currentTimeWithinRangeGraphPercentage = .5f,
         currency = "USD",
-        linkedAccountIds = listOf(1, 2)
+        accountIds = listOf(1, 2)
     ),
     totalAmounts: List<Double> = (0..5).map { 5000.0 / (it + 1) }
 ) {
@@ -320,9 +312,14 @@ fun BudgetStatisticsScreenPreview(
         BudgetStatisticsScreen(
             onNavigateBack = {},
             uiState = BudgetStatisticsScreenUiState(
-                budget = budget,
-                columnChartUiState = columnChartUiState,
-                accounts = accountList
+                id = budget.id,
+                amountLimit = budget.amountLimit.filter { it != ' ' }.toDouble(),
+                category = budget.category,
+                budgetName = budget.name,
+                repeatingPeriod = budget.repeatingPeriod,
+                currency = budget.currency,
+                accounts = accounts,
+                columnChartUiState = columnChartUiState
             )
         )
     }

@@ -2,6 +2,7 @@ package com.ataglance.walletglance.budget.data.local.source
 
 import com.ataglance.walletglance.budget.data.local.model.BudgetEntity
 import com.ataglance.walletglance.budget.data.local.model.BudgetEntityWithAssociations
+import kotlinx.coroutines.flow.Flow
 
 interface BudgetLocalDataSource {
 
@@ -31,6 +32,10 @@ interface BudgetLocalDataSource {
     ): List<BudgetEntityWithAssociations>
 
     suspend fun getBudgetWithAssociations(budgetId: Int): BudgetEntityWithAssociations?
+
+    fun getBudgetsWithAssociationsByIdsAsFlow(budgetIds: List<Int>): Flow<List<BudgetEntityWithAssociations>>
+
+    fun getAllBudgetsWithAssociationsAsFlow(): Flow<List<BudgetEntityWithAssociations>>
 
     suspend fun getAllBudgetsWithAssociations(): List<BudgetEntityWithAssociations>
 

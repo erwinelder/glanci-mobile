@@ -22,10 +22,10 @@ import com.ataglance.walletglance.account.domain.model.AccountsAndActiveOne
 import com.ataglance.walletglance.account.domain.model.color.AccountColors
 import com.ataglance.walletglance.account.presentation.component.AccountWidget
 import com.ataglance.walletglance.account.presentation.component.AccountWidgetWrapper
-import com.ataglance.walletglance.budget.domain.model.Budget
 import com.ataglance.walletglance.budget.presentation.component.container.BudgetsOnWidgetSettingsBottomSheet
 import com.ataglance.walletglance.budget.presentation.component.widget.ChosenBudgetsWidget
 import com.ataglance.walletglance.budget.presentation.component.widget.ChosenBudgetsWidgetWrapper
+import com.ataglance.walletglance.budget.presentation.model.FilledBudgetUiState
 import com.ataglance.walletglance.budget.presentation.viewmodel.BudgetsOnWidgetSettingsViewModel
 import com.ataglance.walletglance.category.domain.model.CategoryType
 import com.ataglance.walletglance.category.domain.model.DefaultCategoriesPackage
@@ -545,20 +545,19 @@ fun HomeScreenPreview(
             )
         ),
     ),
-    budgetsOnWidget: List<Budget> = listOf(
-        Budget(
+    budgetsOnWidget: List<FilledBudgetUiState> = listOf(
+        FilledBudgetUiState(
             id = 1,
-            priorityNum = 1.0,
-            amountLimit = 4000.0,
-            usedAmount = 2250.0,
+            name = groupedCategoriesByType.expense[0].category.name,
+            amountLimit = "4 000.00",
+            usedAmount = "2 250.00",
             usedPercentage = 56.25f,
             category = groupedCategoriesByType.expense[0].category,
-            name = groupedCategoriesByType.expense[0].category.name,
-            repeatingPeriod = RepeatingPeriod.Monthly,
-            dateRange = RepeatingPeriod.Monthly.toTimestampRange(),
-            currentTimeWithinRangeGraphPercentage = .5f,
+            priorityNum = 1.0,
             currency = accountsAndActiveOne.activeAccount?.currency ?: "",
-            linkedAccountIds = listOf(1)
+            accountIds = listOf(1),
+            dateRange = RepeatingPeriod.Monthly.toTimestampRange(),
+            currentTimeWithinRangeGraphPercentage = .5f
         )
     )
 ) {

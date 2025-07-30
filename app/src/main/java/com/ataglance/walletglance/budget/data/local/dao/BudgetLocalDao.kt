@@ -7,6 +7,7 @@ import androidx.room.Transaction
 import androidx.room.Upsert
 import com.ataglance.walletglance.budget.data.local.model.BudgetAccountAssociationEntity
 import com.ataglance.walletglance.budget.data.local.model.BudgetEntity
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface BudgetLocalDao {
@@ -23,6 +24,12 @@ interface BudgetLocalDao {
     @Query("SELECT * FROM budget WHERE id = :id AND deleted = 0")
     suspend fun getBudget(id: Int): BudgetEntity?
 
+    @Query("SELECT * FROM budget WHERE id IN (:ids) AND deleted = 0")
+    fun getBudgetsAsFlow(ids: List<Int>): Flow<List<BudgetEntity>>
+
+    @Query("SELECT * FROM budget WHERE deleted = 0")
+    fun getAllBudgetsAsFlow(): Flow<List<BudgetEntity>>
+
     @Query("SELECT * FROM budget WHERE deleted = 0")
     suspend fun getAllBudgets(): List<BudgetEntity>
 
@@ -37,7 +44,13 @@ interface BudgetLocalDao {
     suspend fun getBudgetAccountAssociations(budgetId: Int): List<BudgetAccountAssociationEntity>
 
     @Query("SELECT * FROM budget_account_association WHERE budgetId IN (:budgetIds)")
+    fun getBudgetAccountAssociationsAsFlow(budgetIds: List<Int>): Flow<List<BudgetAccountAssociationEntity>>
+
+    @Query("SELECT * FROM budget_account_association WHERE budgetId IN (:budgetIds)")
     suspend fun getBudgetAccountAssociations(budgetIds: List<Int>): List<BudgetAccountAssociationEntity>
+
+    @Query("SELECT * FROM budget_account_association")
+    fun getAllBudgetAccountAssociationsAsFlow(): Flow<List<BudgetAccountAssociationEntity>>
 
     @Query("SELECT * FROM budget_account_association")
     suspend fun getAllBudgetAccountAssociations(): List<BudgetAccountAssociationEntity>

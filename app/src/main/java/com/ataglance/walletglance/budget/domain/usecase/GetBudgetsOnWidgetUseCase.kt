@@ -1,8 +1,10 @@
 package com.ataglance.walletglance.budget.domain.usecase
 
-import com.ataglance.walletglance.budget.domain.model.Budget
+import com.ataglance.walletglance.budget.domain.model.FilledBudget
 import kotlinx.coroutines.flow.Flow
 
 interface GetBudgetsOnWidgetUseCase {
-    fun getAsFlow(): Flow<List<Budget>>
+
+    fun getAsFlow(): Flow<List<FilledBudget>>
+
 }

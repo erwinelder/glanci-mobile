@@ -6,13 +6,20 @@ import com.ataglance.walletglance.budget.data.mapper.budget.toDataModel
 import com.ataglance.walletglance.budget.data.mapper.budget.toDataModelWithAssociations
 import com.ataglance.walletglance.budget.data.mapper.budget.toDtoWithAssociations
 import com.ataglance.walletglance.budget.data.mapper.budget.toEntityWithAssociations
-import com.ataglance.walletglance.budget.data.mapper.budget.withAssociations
-import com.ataglance.walletglance.budget.data.model.BudgetDataModel
 import com.ataglance.walletglance.budget.data.model.BudgetWithAssociationsDataModel
 import com.ataglance.walletglance.budget.data.remote.source.BudgetRemoteDataSource
+import com.ataglance.walletglance.budget.domain.model.Budget
+import com.ataglance.walletglance.budget.domain.model.BudgetWithIds
+import com.ataglance.walletglance.budget.mapper.budget.toBudgetWithIds
+import com.ataglance.walletglance.budget.mapper.budget.toDataModelWithAssociations
+import com.ataglance.walletglance.budget.mapper.budget.toDomainModel
 import com.ataglance.walletglance.core.data.model.DataSyncHelper
 import com.ataglance.walletglance.core.data.model.TableName
 import com.glanci.budget.shared.dto.BudgetWithAssociationsDto
+import com.glanci.request.shared.SimpleResult
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.onStart
 
 class BudgetRepositoryImpl(
     private val localSource: BudgetLocalDataSource,
@@ -21,7 +28,7 @@ class BudgetRepositoryImpl(
 ) : BudgetRepository {
 
     private suspend fun synchronizeBudgetsWithAssociations() {
-        syncHelper.synchronizeData(
+        syncHelper.synchronizeDataSafe(
             tableName = TableName.Account,
             localTimestampGetter = { localSource.getUpdateTime() },
             remoteTimestampGetter = { token -> remoteSource.getUpdateTime(token = token) },
@@ -46,16 +53,24 @@ class BudgetRepositoryImpl(
             entityDeletedPredicate = { it.deleted },
             entityToCommandDtoMapper = BudgetEntityWithAssociations::toDtoWithAssociations,
             queryDtoToEntityMapper = BudgetWithAssociationsDto::toEntityWithAssociations,
-        )
+        ).also { result ->
+            when (result) {
+                is SimpleResult.Success -> println("Budgets with associations synchronized successfully.")
+                is SimpleResult.Error -> println("Error synchronizing budgets with associations: ${result.error}")
+            }
+        }
     }
 
-    override suspend fun deleteAndUpsertBudgetsWithAssociations(
-        toDelete: List<BudgetDataModel>,
-        toUpsert: List<BudgetWithAssociationsDataModel>
+    override suspend fun deleteAndUpsertBudgetsWithAccountIds(
+        toDelete: List<Budget>,
+        toUpsert: List<BudgetWithIds>
     ) {
-        syncHelper.deleteAndUpsertData(
+        val toDelete = toDelete.map { it.toDataModelWithAssociations() }
+        val toUpsert = toUpsert.map { it.toDataModelWithAssociations() }
+
+        syncHelper.deleteAndUpsertDataSafe(
             tableName = TableName.Budget,
-            toDelete = toDelete.map { it.withAssociations() },
+            toDelete = toDelete,
             toUpsert = toUpsert,
             localTimestampGetter = { localSource.getUpdateTime() },
             remoteTimestampGetter = { token -> remoteSource.getUpdateTime(token = token) },
@@ -93,25 +108,53 @@ class BudgetRepositoryImpl(
             dataModelToEntityMapper = BudgetWithAssociationsDataModel::toEntityWithAssociations,
             entityToCommandDtoMapper = BudgetEntityWithAssociations::toDtoWithAssociations,
             queryDtoToEntityMapper = BudgetWithAssociationsDto::toEntityWithAssociations
-        )
+        ).also { result ->
+            when (result) {
+                is SimpleResult.Success -> println("Budgets with associations deleted and upserted successfully.")
+                is SimpleResult.Error -> println("Error deleting and upserting budgets with associations: ${result.error}")
+            }
+        }
     }
 
-    override suspend fun getAllBudgets(): List<BudgetDataModel> {
-        synchronizeBudgetsWithAssociations()
-        return localSource.getAllBudgets().map { it.toDataModel() }
-    }
-
-    override suspend fun getBudgetWithAssociations(
-        budgetId: Int
-    ): BudgetWithAssociationsDataModel? {
+    override suspend fun getBudgetWithAccountIds(budgetId: Int): BudgetWithIds? {
         synchronizeBudgetsWithAssociations()
         return localSource.getBudgetWithAssociations(budgetId = budgetId)
             ?.toDataModelWithAssociations()
+            ?.toBudgetWithIds()
     }
 
-    override suspend fun getAllBudgetsWithAssociations(): List<BudgetWithAssociationsDataModel> {
+    override fun getBudgetWithAccountIdsByIdsAsFlow(
+        budgetIds: List<Int>
+    ): Flow<List<BudgetWithIds>> {
+        return localSource.getBudgetsWithAssociationsByIdsAsFlow(budgetIds = budgetIds)
+            .onStart { synchronizeBudgetsWithAssociations() }
+            .map { budgetsWithAssociations ->
+                budgetsWithAssociations.mapNotNull {
+                    it.toDataModelWithAssociations().toBudgetWithIds()
+                }
+            }
+    }
+
+    override suspend fun getAllBudgets(): List<Budget> {
         synchronizeBudgetsWithAssociations()
-        return localSource.getAllBudgetsWithAssociations().map { it.toDataModelWithAssociations() }
+        return localSource.getAllBudgets().mapNotNull { it.toDataModel().toDomainModel() }
+    }
+
+    override fun getAllBudgetsWithAccountIdsAsFlow(): Flow<List<BudgetWithIds>> {
+        return localSource.getAllBudgetsWithAssociationsAsFlow()
+            .onStart { synchronizeBudgetsWithAssociations() }
+            .map { budgetsWithAssociations ->
+                budgetsWithAssociations.mapNotNull {
+                    it.toDataModelWithAssociations().toBudgetWithIds()
+                }
+            }
+    }
+
+    override suspend fun getAllBudgetsWithAccountIds(): List<BudgetWithIds> {
+        synchronizeBudgetsWithAssociations()
+        return localSource.getAllBudgetsWithAssociations().mapNotNull {
+            it.toDataModelWithAssociations().toBudgetWithIds()
+        }
     }
 
 }

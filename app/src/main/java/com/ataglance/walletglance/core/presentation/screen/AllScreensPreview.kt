@@ -27,8 +27,9 @@ import com.ataglance.walletglance.auth.presentation.screen.SignUpScreenPreview
 import com.ataglance.walletglance.budget.data.model.BudgetAccountAssociationDataModel
 import com.ataglance.walletglance.budget.data.model.BudgetDataModel
 import com.ataglance.walletglance.budget.data.model.BudgetWithAssociationsDataModel
-import com.ataglance.walletglance.budget.domain.utils.fillUsedAmountsByTransactions
-import com.ataglance.walletglance.budget.mapper.budget.toDomainModel
+import com.ataglance.walletglance.budget.domain.mapper.toFilledBudget
+import com.ataglance.walletglance.budget.mapper.budget.toBudgetWithIds
+import com.ataglance.walletglance.budget.mapper.budget.toUiState
 import com.ataglance.walletglance.budget.presentation.component.widget.ChosenBudgetsWidgetPreview
 import com.ataglance.walletglance.budget.presentation.screen.BudgetStatisticsScreenPreview
 import com.ataglance.walletglance.budget.presentation.screen.BudgetsScreenPreview
@@ -482,8 +483,8 @@ private fun HomeScreenPreview_() {
     val defaultCategoriesPackage = DefaultCategoriesPackage(LocalContext.current)
         .getDefaultCategories()
     val budgetsOnWidget = budgetDataModelsWithAssociations.mapNotNull { budget ->
-        budget.toDomainModel(
-            groupedCategoriesList = defaultCategoriesPackage.expense,
+        budget.toBudgetWithIds()?.toFilledBudget(transactions = transactions)?.toUiState(
+            categories = defaultCategoriesPackage.expense,
             accounts = accountsAndActiveOne.accounts
         )
     }
@@ -493,9 +494,7 @@ private fun HomeScreenPreview_() {
         accountsAndActiveOne = accountsAndActiveOne,
         dateRangeWithEnum = dateRangeWithEnum,
         isCustomDateRangeWindowOpened = isCustomDateRangeWindowOpened,
-        budgetsOnWidget = budgetsOnWidget
-            .fillUsedAmountsByTransactions(transactions = transactions)
-            .take(1),
+        budgetsOnWidget = budgetsOnWidget.take(1),
         widgetNames = listOf(
             WidgetName.TotalForPeriod,
             WidgetName.ChosenBudgets,
@@ -566,7 +565,6 @@ private fun CategoryStatisticsScreenPreview_() {
 private fun BudgetsScreenPreview_() {
     BudgetsScreenPreview(
         appTheme = appTheme,
-        budgetDataModelsWithAssociations = budgetDataModelsWithAssociations,
         accounts = accountsAndActiveOne.accounts,
         transactions = transactions
     )
@@ -583,14 +581,14 @@ private fun BudgetStatisticsScreenPreview_() {
     val defaultCategories = DefaultCategoriesPackage(LocalContext.current).getDefaultCategories()
     val budget = budgetDataModelsWithAssociations
         .mapNotNull {
-            it.toDomainModel(groupedCategoriesList = defaultCategories.expense, accounts = accounts)
-        }
-        .fillUsedAmountsByTransactions(transactions = transactions)[0]
+            it.toBudgetWithIds()
+                ?.toUiState(categories = defaultCategories.expense, accounts = accounts)
+        }[0]
 
     BudgetStatisticsScreenPreview(
         appTheme = appTheme,
         groupedCategoriesByType = defaultCategories,
-        accountList = accountsAndActiveOne.accounts.let { listOf(it[0], it[3]) },
+        accounts = accountsAndActiveOne.accounts.let { listOf(it[0], it[3]) },
         budget = budget,
         totalAmounts = listOf(4800.0, 5000.0, 4500.0, 5200.0, 4600.0),
     )
@@ -747,7 +745,6 @@ private fun EditBudgetsScreenPreview_() {
     EditBudgetsScreenPreview(
         appTheme = appTheme,
         isAppSetUp = isAppSetUp,
-        budgetDataModelsWithAssociations = budgetDataModelsWithAssociations,
         accounts = accountsAndActiveOne.accounts
     )
 }

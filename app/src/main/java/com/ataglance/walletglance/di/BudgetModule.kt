@@ -14,16 +14,20 @@ import com.ataglance.walletglance.budget.data.repository.BudgetRepository
 import com.ataglance.walletglance.budget.data.repository.BudgetRepositoryImpl
 import com.ataglance.walletglance.budget.domain.usecase.GetBudgetIdsOnWidgetUseCase
 import com.ataglance.walletglance.budget.domain.usecase.GetBudgetIdsOnWidgetUseCaseImpl
+import com.ataglance.walletglance.budget.domain.usecase.GetBudgetUseCase
+import com.ataglance.walletglance.budget.domain.usecase.GetBudgetUseCaseImpl
 import com.ataglance.walletglance.budget.domain.usecase.GetBudgetsOnWidgetUseCase
 import com.ataglance.walletglance.budget.domain.usecase.GetBudgetsOnWidgetUseCaseImpl
-import com.ataglance.walletglance.budget.domain.usecase.GetEmptyBudgetsUseCase
-import com.ataglance.walletglance.budget.domain.usecase.GetEmptyBudgetsUseCaseImpl
-import com.ataglance.walletglance.budget.domain.usecase.GetFilledBudgetsByTypeUseCase
-import com.ataglance.walletglance.budget.domain.usecase.GetFilledBudgetsByTypeUseCaseImpl
+import com.ataglance.walletglance.budget.domain.usecase.GetBudgetsUseCase
+import com.ataglance.walletglance.budget.domain.usecase.GetBudgetsUseCaseImpl
+import com.ataglance.walletglance.budget.domain.usecase.GetGroupedBudgetsUseCase
+import com.ataglance.walletglance.budget.domain.usecase.GetGroupedBudgetsUseCaseImpl
+import com.ataglance.walletglance.budget.domain.usecase.GetGroupedFilledBudgetsUseCase
+import com.ataglance.walletglance.budget.domain.usecase.GetGroupedFilledBudgetsUseCaseImpl
+import com.ataglance.walletglance.budget.domain.usecase.SaveBudgetsAndDeleteRestUseCase
+import com.ataglance.walletglance.budget.domain.usecase.SaveBudgetsAndDeleteRestUseCaseImpl
 import com.ataglance.walletglance.budget.domain.usecase.SaveBudgetsOnWidgetUseCase
 import com.ataglance.walletglance.budget.domain.usecase.SaveBudgetsOnWidgetUseCaseImpl
-import com.ataglance.walletglance.budget.domain.usecase.SaveBudgetsUseCase
-import com.ataglance.walletglance.budget.domain.usecase.SaveBudgetsUseCaseImpl
 import com.ataglance.walletglance.budget.presentation.viewmodel.BudgetStatisticsViewModel
 import com.ataglance.walletglance.budget.presentation.viewmodel.BudgetsOnWidgetSettingsViewModel
 import com.ataglance.walletglance.budget.presentation.viewmodel.BudgetsOnWidgetViewModel
@@ -74,27 +78,31 @@ val budgetModule = module {
 
     /* ---------- Use Cases ---------- */
 
-    single<SaveBudgetsUseCase> {
-        SaveBudgetsUseCaseImpl(budgetRepository = get())
-    }
-
-    single<GetFilledBudgetsByTypeUseCase> {
-        GetFilledBudgetsByTypeUseCaseImpl(
-            getEmptyBudgetsUseCase = get(),
-            getTransactionsInDateRangeUseCase = get()
-        )
-    }
-
-    single<GetEmptyBudgetsUseCase> {
-        GetEmptyBudgetsUseCaseImpl(
-            budgetRepository = get(),
-            getExpenseCategoriesGroupedUseCase = get(),
-            getAccountsUseCase = get()
-        )
+    single<SaveBudgetsAndDeleteRestUseCase> {
+        SaveBudgetsAndDeleteRestUseCaseImpl(budgetRepository = get())
     }
 
     single<SaveBudgetsOnWidgetUseCase> {
         SaveBudgetsOnWidgetUseCaseImpl(budgetOnWidgetRepository = get())
+    }
+
+    single<GetBudgetUseCase> {
+        GetBudgetUseCaseImpl(budgetRepository = get())
+    }
+
+    single<GetBudgetsUseCase> {
+        GetBudgetsUseCaseImpl(budgetsRepository = get())
+    }
+
+    single<GetGroupedBudgetsUseCase> {
+        GetGroupedBudgetsUseCaseImpl(budgetRepository = get())
+    }
+
+    single<GetGroupedFilledBudgetsUseCase> {
+        GetGroupedFilledBudgetsUseCaseImpl(
+            budgetRepository = get(),
+            getTransactionsInDateRangeUseCase = get()
+        )
     }
 
     single<GetBudgetIdsOnWidgetUseCase> {
@@ -103,7 +111,7 @@ val budgetModule = module {
 
     single<GetBudgetsOnWidgetUseCase> {
         GetBudgetsOnWidgetUseCaseImpl(
-            getEmptyBudgetsUseCase = get(),
+            budgetRepository = get(),
             getBudgetIdsOnWidgetUseCase = get(),
             getTransactionsInDateRangeUseCase = get()
         )
@@ -113,7 +121,9 @@ val budgetModule = module {
 
     viewModel {
         BudgetsViewModel(
-            getFilledBudgetsByTypeUseCase = get()
+            getGroupedFilledBudgetsUseCase = get(),
+            getAccountsUseCase = get(),
+            getExpenseCategoriesGroupedUseCase = get()
         )
     }
 
@@ -121,7 +131,8 @@ val budgetModule = module {
         BudgetStatisticsViewModel(
             budgetId = parameters.get(),
             getAccountsUseCase = get(),
-            getEmptyBudgetsUseCase = get(),
+            getExpenseCategoriesGroupedUseCase = get(),
+            getBudgetUseCase = get(),
             getTotalExpensesInDateRangesUseCase = get(),
             resourceManager = get { parametersOf(parameters.get<String>()) }
         )
@@ -129,7 +140,9 @@ val budgetModule = module {
 
     viewModel {
         BudgetsOnWidgetViewModel(
-            getBudgetsOnWidgetUseCase = get()
+            getBudgetsOnWidgetUseCase = get(),
+            getAccountsUseCase = get(),
+            getExpenseCategoriesGroupedUseCase = get()
         )
     }
 
@@ -137,14 +150,18 @@ val budgetModule = module {
         BudgetsOnWidgetSettingsViewModel(
             saveBudgetsOnWidgetUseCase = get(),
             getBudgetIdsOnWidgetUseCase = get(),
-            getFilledBudgetsByTypeUseCase = get()
+            getGroupedBudgetsUseCase = get(),
+            getAccountsUseCase = get(),
+            getExpenseCategoriesGroupedUseCase = get()
         )
     }
 
     viewModel {
         EditBudgetsViewModel(
-            saveBudgetsUseCase = get(),
-            getFilledBudgetsByTypeUseCase = get(),
+            getAccountsUseCase = get(),
+            getExpenseCategoriesGroupedUseCase = get(),
+            getBudgetsUseCase = get(),
+            saveBudgetsAndDeleteRestUseCase = get(),
             changeAppSetupStageUseCase = get()
         )
     }

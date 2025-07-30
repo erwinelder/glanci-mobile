@@ -9,17 +9,17 @@ import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.ataglance.walletglance.R
-import com.ataglance.walletglance.budget.domain.model.Budget
+import com.ataglance.walletglance.budget.presentation.model.BudgetUiState
 import com.ataglance.walletglance.budget.presentation.screen.EditBudgetsScreenPreview
 import com.ataglance.walletglance.core.domain.app.AppTheme
 import com.ataglance.walletglance.core.presentation.theme.GlanciColors
 
 @Composable
-fun DefaultBudgetComponent(
-    budget: Budget,
-    onClick: (Budget) -> Unit
+fun BudgetComponent(
+    budget: BudgetUiState,
+    onClick: (BudgetUiState) -> Unit
 ) {
-    BasicDefaultBudgetComponent(
+    BasicBudgetComponent(
         budget = budget,
         onClick = onClick
     ) {
@@ -33,8 +33,9 @@ fun DefaultBudgetComponent(
 }
 
 
+
 @Preview(device = Devices.PIXEL_7_PRO)
 @Composable
-private fun DefaultBudgetComponentPreview() {
+private fun BudgetComponentPreview() {
     EditBudgetsScreenPreview(appTheme = AppTheme.LightDefault)
 }

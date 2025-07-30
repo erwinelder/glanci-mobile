@@ -4,9 +4,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ataglance.walletglance.account.domain.model.Account
 import com.ataglance.walletglance.account.domain.usecase.GetAccountsUseCase
-import com.ataglance.walletglance.budget.domain.model.Budget
-import com.ataglance.walletglance.budget.mapper.budget.toDraft
+import com.ataglance.walletglance.budget.presentation.mapper.toDraft
 import com.ataglance.walletglance.budget.presentation.model.BudgetDraft
+import com.ataglance.walletglance.budget.presentation.model.BudgetUiState
 import com.ataglance.walletglance.category.domain.model.CategoryType
 import com.ataglance.walletglance.category.domain.model.CategoryWithSub
 import com.ataglance.walletglance.category.domain.model.GroupedCategoriesByType
@@ -32,15 +32,16 @@ class EditBudgetViewModel(
     private val _budget = MutableStateFlow(BudgetDraft())
     val budget = _budget.asStateFlow()
 
-    fun applyBudget(budget: Budget?) {
-        val budgetDraft = budget?.toDraft(accounts = accounts) ?: let {
+    fun applyBudget(budget: BudgetUiState?) {
+        val budgetDraft = budget?.toDraft(accounts = accounts) ?: run {
             val categoryWithSubcategory = groupedCategoriesByType
                 .getFirstCategoryWithSubByType(CategoryType.Expense)
+            val priorityNum = categoryWithSubcategory?.groupParentAndSubcategoryOrderNums() ?: 0.0
             val category = categoryWithSubcategory?.category
 
             BudgetDraft(
                 isNew = true,
-                priorityNum = categoryWithSubcategory?.groupParentAndSubcategoryOrderNums() ?: 0.0,
+                priorityNum = priorityNum,
                 category = category,
                 name = category?.name ?: ""
             )

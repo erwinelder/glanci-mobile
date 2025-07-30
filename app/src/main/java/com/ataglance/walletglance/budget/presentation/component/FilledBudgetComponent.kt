@@ -22,13 +22,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.ataglance.walletglance.R
-import com.ataglance.walletglance.budget.domain.model.Budget
 import com.ataglance.walletglance.budget.presentation.component.widget.ChosenBudgetsWidgetPreview
+import com.ataglance.walletglance.budget.presentation.model.FilledBudgetUiState
 import com.ataglance.walletglance.budget.presentation.screen.BudgetsScreenPreview
 import com.ataglance.walletglance.category.presentation.component.CategoryIconComponent
 import com.ataglance.walletglance.core.domain.app.AppTheme
-import com.ataglance.walletglance.core.domain.date.TimestampRange
 import com.ataglance.walletglance.core.domain.date.RepeatingPeriod
+import com.ataglance.walletglance.core.domain.date.TimestampRange
 import com.ataglance.walletglance.core.presentation.component.chart.LineChartComponent
 import com.ataglance.walletglance.core.presentation.component.container.glassSurface.GlassSurface
 import com.ataglance.walletglance.core.presentation.component.container.glassSurface.GlassSurfaceOnGlassSurface
@@ -37,22 +37,21 @@ import com.ataglance.walletglance.core.presentation.modifier.bounceClickEffect
 import com.ataglance.walletglance.core.presentation.theme.CurrAppTheme
 import com.ataglance.walletglance.core.presentation.theme.GlanciColors
 import com.ataglance.walletglance.core.presentation.theme.Manrope
-import com.ataglance.walletglance.core.utils.formatWithSpaces
 import com.ataglance.walletglance.core.utils.toStringDateRange
 
 @Composable
-fun BudgetWithStatsGlassComponent(
-    budget: Budget,
+fun FilledBudgetGlassComponent(
+    budget: FilledBudgetUiState,
     showDateRangeLabels: Boolean = false,
     resourceManager: ResourceManager,
-    onClick: (Budget) -> Unit
+    onClick: (FilledBudgetUiState) -> Unit
 ) {
     GlassSurface(
         cornerSize = 26.dp,
         contentPadding = PaddingValues(20.dp, 16.dp),
         modifier = Modifier.bounceClickEffect(.98f) { onClick(budget) }
     ) {
-        BudgetWithStatsComponentContent(
+        FilledBudgetComponentContent(
             budget = budget,
             showDateRangeLabels = showDateRangeLabels,
             resourceManager = resourceManager
@@ -61,17 +60,17 @@ fun BudgetWithStatsGlassComponent(
 }
 
 @Composable
-fun BudgetWithStatsOnGlassComponent(
-    budget: Budget,
+fun FilledBudgetOnGlassComponent(
+    budget: FilledBudgetUiState,
     showDateRangeLabels: Boolean = false,
     resourceManager: ResourceManager,
-    onClick: (Budget) -> Unit
+    onClick: (FilledBudgetUiState) -> Unit
 ) {
     GlassSurfaceOnGlassSurface(
         onClick = { onClick(budget) },
         contentPadding = PaddingValues(horizontal = 20.dp, vertical = 16.dp)
     ) {
-        BudgetWithStatsComponentContent(
+        FilledBudgetComponentContent(
             budget = budget,
             showDateRangeLabels = showDateRangeLabels,
             resourceManager = resourceManager
@@ -81,8 +80,8 @@ fun BudgetWithStatsOnGlassComponent(
 
 
 @Composable
-private fun BudgetWithStatsComponentContent(
-    budget: Budget,
+private fun FilledBudgetComponentContent(
+    budget: FilledBudgetUiState,
     showDateRangeLabels: Boolean = false,
     resourceManager: ResourceManager
 ) {
@@ -93,9 +92,7 @@ private fun BudgetWithStatsComponentContent(
             horizontalArrangement = Arrangement.spacedBy(8.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            budget.category?.let {
-                CategoryIconComponent(category = it, cornerSize = 34)
-            }
+            CategoryIconComponent(category = budget.category, cornerSize = 34)
             Text(
                 text = budget.name,
                 color = GlanciColors.onSurface,
@@ -122,7 +119,7 @@ private fun BudgetWithStatsComponentContent(
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Text(
-                    text = budget.usedAmount.formatWithSpaces(),
+                    text = budget.usedAmount,
                     color = GlanciColors.onSurface,
                     fontSize = 18.sp,
                     fontFamily = Manrope,
@@ -135,7 +132,7 @@ private fun BudgetWithStatsComponentContent(
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
                     Text(
-                        text = budget.amountLimit.formatWithSpaces(),
+                        text = budget.amountLimit,
                         color = GlanciColors.onSurface,
                         fontSize = 18.sp,
                         fontFamily = Manrope,
@@ -151,25 +148,21 @@ private fun BudgetWithStatsComponentContent(
                     )
                 }
             }
-            budget.category?.let {
-                LineChartComponent(
-                    percentage = budget.usedPercentage / 100,
-                    brushColors = it.getLineChartColorsByTheme(CurrAppTheme),
-                    shadowColor = it.getIconSolidColorByTheme(CurrAppTheme)
-                )
-            }
+            LineChartComponent(
+                percentage = budget.usedPercentage,
+                brushColors = budget.category.getLineChartColorsByTheme(CurrAppTheme),
+                shadowColor = budget.category.getIconSolidColorByTheme(CurrAppTheme)
+            )
         }
         Column(
             verticalArrangement = Arrangement.spacedBy(4.dp)
         ) {
-            budget.category?.let {
-                LineChartComponent(
-                    percentage = budget.currentTimeWithinRangeGraphPercentage,
-                    brushColors = it.getLineChartColorsByTheme(CurrAppTheme),
-                    shadowColor = it.getIconSolidColorByTheme(CurrAppTheme),
-                    height = 6.dp
-                )
-            }
+            LineChartComponent(
+                percentage = budget.currentTimeWithinRangeGraphPercentage,
+                brushColors = budget.category.getLineChartColorsByTheme(CurrAppTheme),
+                shadowColor = budget.category.getIconSolidColorByTheme(CurrAppTheme),
+                height = 6.dp
+            )
             if (showDateRangeLabels) {
                 DateRangeLabels(
                     dateRange = budget.dateRange,
@@ -219,12 +212,12 @@ private fun DateRangeLabels(
 
 @Preview(device = Devices.PIXEL_7_PRO)
 @Composable
-private fun BudgetWithStatsGlassComponentPreview() {
+private fun FilledBudgetGlassComponentPreview() {
     BudgetsScreenPreview(appTheme = AppTheme.LightDefault)
 }
 
 @Preview(device = Devices.PIXEL_7_PRO)
 @Composable
-private fun BudgetWithStatsOnGlassComponentPreview() {
+private fun FilledBudgetOnGlassComponentPreview() {
     ChosenBudgetsWidgetPreview(appTheme = AppTheme.LightDefault)
 }

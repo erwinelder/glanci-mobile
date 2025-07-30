@@ -3,7 +3,6 @@ package com.ataglance.walletglance.categoryCollection.presentation.model
 import com.ataglance.walletglance.categoryCollection.domain.model.CategoryCollectionType
 import com.ataglance.walletglance.categoryCollection.domain.model.CategoryCollectionWithIds
 import com.ataglance.walletglance.categoryCollection.domain.model.CategoryCollectionsWithIdsByType
-import com.ataglance.walletglance.categoryCollection.domain.utils.toggle
 
 data class CategoryCollectionsUiState(
     val collections: List<CategoryCollectionWithIds> = emptyList(),

@@ -13,7 +13,6 @@ import com.ataglance.walletglance.category.presentation.model.GroupedCategorySta
 import com.ataglance.walletglance.categoryCollection.domain.model.CategoryCollectionType
 import com.ataglance.walletglance.categoryCollection.domain.model.CategoryCollectionsWithIdsByType
 import com.ataglance.walletglance.categoryCollection.domain.usecase.GetCategoryCollectionsGroupedUseCase
-import com.ataglance.walletglance.categoryCollection.domain.utils.toggleExpenseIncome
 import com.ataglance.walletglance.categoryCollection.presentation.model.CategoryCollectionsUiState
 import com.ataglance.walletglance.core.domain.date.TimestampRange
 import com.ataglance.walletglance.transaction.domain.usecase.GetTransactionsInDateRangeUseCase

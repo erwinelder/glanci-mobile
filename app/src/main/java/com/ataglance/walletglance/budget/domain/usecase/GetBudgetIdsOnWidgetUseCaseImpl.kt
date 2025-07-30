@@ -8,7 +8,9 @@ import kotlinx.coroutines.flow.map
 class GetBudgetIdsOnWidgetUseCaseImpl(
     private val budgetOnWidgetRepository: BudgetOnWidgetRepository
 ) : GetBudgetIdsOnWidgetUseCase {
+
     override fun getAsFlow(): Flow<List<Int>> {
         return budgetOnWidgetRepository.getAllBudgetsOnWidgetAsFlow().map { it.toIntList() }
     }
+
 }

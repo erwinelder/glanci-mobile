@@ -14,17 +14,16 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.ataglance.walletglance.R
-import com.ataglance.walletglance.budget.domain.model.Budget
+import com.ataglance.walletglance.budget.presentation.model.BudgetUiState
 import com.ataglance.walletglance.category.presentation.component.CategoryIconComponent
 import com.ataglance.walletglance.core.presentation.component.container.glassSurface.GlassSurfaceOnGlassSurface
 import com.ataglance.walletglance.core.presentation.theme.GlanciColors
 import com.ataglance.walletglance.core.presentation.theme.Manrope
-import com.ataglance.walletglance.core.utils.formatWithSpaces
 
 @Composable
-fun BasicDefaultBudgetComponent(
-    budget: Budget,
-    onClick: (Budget) -> Unit,
+fun BasicBudgetComponent(
+    budget: BudgetUiState,
+    onClick: (BudgetUiState) -> Unit,
     modifier: Modifier = Modifier,
     clickEnabled: Boolean = true,
     topRightComponent: @Composable (() -> Unit)? = null
@@ -43,9 +42,7 @@ fun BasicDefaultBudgetComponent(
                 horizontalArrangement = Arrangement.spacedBy(8.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                budget.category?.let {
-                    CategoryIconComponent(category = it)
-                }
+                CategoryIconComponent(category = budget.category)
                 Text(
                     text = budget.name,
                     color = GlanciColors.onSurface,
@@ -73,7 +70,7 @@ fun BasicDefaultBudgetComponent(
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
                     Text(
-                        text = budget.amountLimit.formatWithSpaces(),
+                        text = budget.amountLimit,
                         color = GlanciColors.onSurface,
                         fontSize = 18.sp,
                         fontFamily = Manrope,

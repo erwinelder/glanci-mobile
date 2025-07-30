@@ -16,13 +16,14 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import com.ataglance.walletglance.R
 import com.ataglance.walletglance.account.domain.model.Account
-import com.ataglance.walletglance.budget.data.model.BudgetWithAssociationsDataModel
 import com.ataglance.walletglance.budget.domain.model.Budget
-import com.ataglance.walletglance.budget.domain.model.BudgetsByType
-import com.ataglance.walletglance.budget.domain.utils.groupByType
-import com.ataglance.walletglance.budget.mapper.budget.toDomainModel
-import com.ataglance.walletglance.budget.presentation.component.BudgetListsByPeriodComponent
-import com.ataglance.walletglance.budget.presentation.component.BudgetWithStatsGlassComponent
+import com.ataglance.walletglance.budget.domain.model.BudgetWithIds
+import com.ataglance.walletglance.budget.domain.model.GroupedBudgets
+import com.ataglance.walletglance.budget.domain.model.GroupedFilledBudgets
+import com.ataglance.walletglance.budget.mapper.budget.toUiState
+import com.ataglance.walletglance.budget.presentation.component.GroupedFilledBudgetsComponent
+import com.ataglance.walletglance.budget.presentation.model.FilledBudgetUiState
+import com.ataglance.walletglance.budget.presentation.model.GroupedFilledBudgetsItemUiState
 import com.ataglance.walletglance.budget.presentation.viewmodel.BudgetsViewModel
 import com.ataglance.walletglance.category.domain.model.CategoryType
 import com.ataglance.walletglance.category.domain.model.DefaultCategoriesPackage
@@ -37,8 +38,7 @@ import com.ataglance.walletglance.core.presentation.model.ResourceManagerImpl
 import com.ataglance.walletglance.core.presentation.preview.PreviewWithMainScaffoldContainer
 import com.ataglance.walletglance.core.presentation.theme.CurrWindowType
 import com.ataglance.walletglance.core.presentation.utils.plus
-import com.ataglance.walletglance.core.utils.toTimestamp
-import com.ataglance.walletglance.core.utils.toTimestampRange
+import com.ataglance.walletglance.core.utils.getCurrentTimestamp
 import com.ataglance.walletglance.navigation.presentation.viewmodel.NavigationViewModel
 import com.ataglance.walletglance.transaction.domain.model.Record
 import com.ataglance.walletglance.transaction.domain.model.RecordItem
@@ -46,7 +46,6 @@ import com.ataglance.walletglance.transaction.domain.model.RecordWithItems
 import com.ataglance.walletglance.transaction.domain.model.Transaction
 import com.ataglance.walletglance.transaction.domain.model.Transfer
 import com.ataglance.walletglance.transaction.domain.model.TransferItem
-import kotlinx.datetime.LocalDateTime
 import org.koin.compose.koinInject
 import org.koin.compose.viewmodel.koinViewModel
 
@@ -59,11 +58,11 @@ fun BudgetsScreenWrapper(
     val resourceManager = koinInject<ResourceManager>()
     val viewModel = koinViewModel<BudgetsViewModel>()
 
-    val budgetsByType by viewModel.budgetsByType.collectAsStateWithLifecycle()
+    val groupedBudgetsItems by viewModel.groupedBudgetsItems.collectAsStateWithLifecycle()
 
     BudgetsScreen(
         screenPadding = screenPadding,
-        budgetsByType = budgetsByType,
+        groupedBudgetsItems = groupedBudgetsItems,
         resourceManager = resourceManager,
         onBudgetClick = { budget ->
             navViewModel.navigateToScreenMovingTowardsLeft(
@@ -76,28 +75,24 @@ fun BudgetsScreenWrapper(
 @Composable
 fun BudgetsScreen(
     screenPadding: PaddingValues = PaddingValues(),
-    budgetsByType: BudgetsByType,
+    groupedBudgetsItems: List<GroupedFilledBudgetsItemUiState>,
     resourceManager: ResourceManager,
-    onBudgetClick: (Budget) -> Unit
+    onBudgetClick: (FilledBudgetUiState) -> Unit
 ) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier.fillMaxSize()
     ) {
-        if (budgetsByType.areEmpty()) {
-            MessageContainer(
-                message = stringResource(R.string.you_have_no_budgets_yet)
+        if (groupedBudgetsItems.isNotEmpty()) {
+            GroupedFilledBudgetsComponent(
+                groupedBudgetsItems = groupedBudgetsItems,
+                resourceManager = resourceManager,
+                contentPadding = screenPadding + PaddingValues(vertical = 24.dp),
+                textDividerFilledWidth = FilledWidthByScreenType(.76f).get(CurrWindowType),
+                onBudgetClick = onBudgetClick
             )
         } else {
-            BudgetListsByPeriodComponent(
-                budgetsByType = budgetsByType,
-                contentPadding = screenPadding + PaddingValues(vertical = 24.dp),
-                textDividerFilledWidth = FilledWidthByScreenType(.76f).get(CurrWindowType)
-            ) { budget ->
-                BudgetWithStatsGlassComponent(
-                    budget = budget, resourceManager = resourceManager, onClick = onBudgetClick
-                )
-            }
+            MessageContainer(message = stringResource(R.string.you_have_no_budgets_yet))
         }
     }
 }
@@ -110,16 +105,15 @@ fun BudgetsScreenPreview(
     groupedCategoriesByType: GroupedCategoriesByType = DefaultCategoriesPackage(
         LocalContext.current
     ).getDefaultCategories(),
-    budgetDataModelsWithAssociations: List<BudgetWithAssociationsDataModel>? = null,
     accounts: List<Account> = listOf(
-        Account(id = 1, orderNum = 1, isActive = true),
-        Account(id = 2, orderNum = 2, isActive = false)
+        Account(id = 1, orderNum = 1, currency = "USD", isActive = true),
+        Account(id = 2, orderNum = 2, currency = "CZK", isActive = false)
     ),
     transactions: List<Transaction> = listOf(
         RecordWithItems(
             record = Record(
                 id = 1,
-                date = LocalDateTime(2024, 9, 24, 12, 0).toTimestamp(),
+                date = getCurrentTimestamp(),
                 type = CategoryType.Expense,
                 accountId = accounts[0].id,
                 includeInBudgets = true
@@ -147,7 +141,7 @@ fun BudgetsScreenPreview(
         ),
         Transfer(
             id = 1,
-            date = LocalDateTime(2024, 9, 23, 0, 0).toTimestamp(),
+            date = getCurrentTimestamp(),
             sender = TransferItem(
                 accountId = accounts[0].id,
                 amount = 3000.0,
@@ -163,7 +157,7 @@ fun BudgetsScreenPreview(
         RecordWithItems(
             record = Record(
                 id = 4,
-                date = LocalDateTime(2024, 9, 18, 0, 0).toTimestamp(),
+                date = getCurrentTimestamp(),
                 type = CategoryType.Expense,
                 accountId = accounts[0].id,
                 includeInBudgets = true
@@ -183,7 +177,7 @@ fun BudgetsScreenPreview(
         RecordWithItems(
             record = Record(
                 id = 5,
-                date = LocalDateTime(2024, 9, 15, 0, 0).toTimestamp(),
+                date = getCurrentTimestamp(),
                 type = CategoryType.Expense,
                 accountId = accounts[0].id,
                 includeInBudgets = true
@@ -203,7 +197,7 @@ fun BudgetsScreenPreview(
         RecordWithItems(
             record = Record(
                 id = 6,
-                date = LocalDateTime(2024, 9, 12, 0, 0).toTimestamp(),
+                date = getCurrentTimestamp(),
                 type = CategoryType.Expense,
                 accountId = accounts[0].id,
                 includeInBudgets = true
@@ -223,7 +217,7 @@ fun BudgetsScreenPreview(
         RecordWithItems(
             record = Record(
                 id = 7,
-                date = LocalDateTime(2024, 9, 4, 0, 0).toTimestamp(),
+                date = getCurrentTimestamp(),
                 type = CategoryType.Expense,
                 accountId = accounts[0].id,
                 includeInBudgets = true
@@ -243,7 +237,7 @@ fun BudgetsScreenPreview(
         RecordWithItems(
             record = Record(
                 id = 8,
-                date = LocalDateTime(2024, 9, 4, 0, 0).toTimestamp(),
+                date = getCurrentTimestamp(),
                 type = CategoryType.Income,
                 accountId = accounts[0].id,
                 includeInBudgets = true
@@ -263,7 +257,7 @@ fun BudgetsScreenPreview(
         RecordWithItems(
             record = Record(
                 id = 9,
-                date = LocalDateTime(2024, 9, 4, 0, 0).toTimestamp(),
+                date = getCurrentTimestamp(),
                 type = CategoryType.Expense,
                 accountId = accounts[0].id,
                 includeInBudgets = true
@@ -283,7 +277,7 @@ fun BudgetsScreenPreview(
         RecordWithItems(
             record = Record(
                 id = 10,
-                date = LocalDateTime(2024, 6, 4, 0, 0).toTimestamp(),
+                date = getCurrentTimestamp(),
                 type = CategoryType.Expense,
                 accountId = accounts[1].id,
                 includeInBudgets = true
@@ -303,7 +297,7 @@ fun BudgetsScreenPreview(
         RecordWithItems(
             record = Record(
                 id = 10,
-                date = LocalDateTime(2024, 9, 4, 0, 0).toTimestamp(),
+                date = getCurrentTimestamp(),
                 type = CategoryType.Expense,
                 accountId = accounts[0].id,
                 includeInBudgets = true
@@ -322,114 +316,73 @@ fun BudgetsScreenPreview(
         ),
     ),
 ) {
-    val budgetsByType = budgetDataModelsWithAssociations
-        ?.let { budgets ->
-            budgets.mapNotNull {
-                it.toDomainModel(
-                    groupedCategoriesList = groupedCategoriesByType.expense, accounts = accounts
-                )
-            }
-        }?.groupByType()?.fillUsedAmountsByTransactions(transactions = transactions)
-        ?: BudgetsByType(
-            daily = listOf(
-                Budget(
-                    id = 1,
-                    priorityNum = 1.0,
-                    amountLimit = 4000.0,
-                    usedAmount = 2500.0,
-                    usedPercentage = 62.5F,
-                    category = groupedCategoriesByType.expense[0].category,
-                    name = "Food & drinks",
-                    repeatingPeriod = RepeatingPeriod.Daily,
-                    dateRange = RepeatingPeriod.Daily.toTimestampRange(),
-                    currentTimeWithinRangeGraphPercentage = .5f,
-                    currency = "USD",
-                    linkedAccountIds = listOf(1, 2)
-                )
+    val budgets = listOf(
+        BudgetWithIds(
+            budget = Budget(
+                id = 1,
+                amountLimit = 4000.0,
+                categoryId = 1,
+                name = "Food & Drinks",
+                repeatingPeriod = RepeatingPeriod.Daily
             ),
-            weekly = listOf(
-                Budget(
-                    id = 2,
-                    priorityNum = 2.0,
-                    amountLimit = 4000.0,
-                    usedAmount = 1000.0,
-                    usedPercentage = 25F,
-                    category = groupedCategoriesByType.expense[1].category,
-                    name = "Housing",
-                    repeatingPeriod = RepeatingPeriod.Weekly,
-                    dateRange = RepeatingPeriod.Weekly.toTimestampRange(),
-                    currentTimeWithinRangeGraphPercentage = .5f,
-                    currency = "CZK",
-                    linkedAccountIds = listOf(3, 4)
-                )
+            accountIds = listOf(1)
+        ),
+        BudgetWithIds(
+            budget = Budget(
+                id = 2,
+                amountLimit = 6000.0,
+                categoryId = 2,
+                name = "Housing",
+                repeatingPeriod = RepeatingPeriod.Weekly
             ),
-            monthly = listOf(
-                Budget(
-                    id = 1,
-                    priorityNum = 1.0,
-                    amountLimit = 4000.0,
-                    usedAmount = 2500.0,
-                    usedPercentage = 62.5F,
-                    category = groupedCategoriesByType.expense[0].category,
-                    name = "Food & drinks",
-                    repeatingPeriod = RepeatingPeriod.Monthly,
-                    dateRange = RepeatingPeriod.Monthly.toTimestampRange(),
-                    currentTimeWithinRangeGraphPercentage = .5f,
-                    currency = "USD",
-                    linkedAccountIds = listOf(1, 2)
-                ),
-                Budget(
-                    id = 3,
-                    priorityNum = 3.0,
-                    amountLimit = 4000.0,
-                    usedAmount = 1000.0,
-                    usedPercentage = 25F,
-                    category = groupedCategoriesByType.expense[2].category,
-                    name = "Shopping",
-                    repeatingPeriod = RepeatingPeriod.Monthly,
-                    dateRange = RepeatingPeriod.Monthly.toTimestampRange(),
-                    currentTimeWithinRangeGraphPercentage = .5f,
-                    currency = "CZK",
-                    linkedAccountIds = listOf(3, 4)
-                )
+            accountIds = listOf(1)
+        ),
+        BudgetWithIds(
+            budget = Budget(
+                id = 3,
+                amountLimit = 10000.0,
+                categoryId = 1,
+                name = "Food & Drinks",
+                repeatingPeriod = RepeatingPeriod.Monthly
             ),
-            yearly = listOf(
-                Budget(
-                    id = 1,
-                    priorityNum = 1.0,
-                    amountLimit = 4000.0,
-                    usedAmount = 2500.0,
-                    usedPercentage = 62.5F,
-                    category = groupedCategoriesByType.expense[0].category,
-                    name = "Food & drinks",
-                    repeatingPeriod = RepeatingPeriod.Yearly,
-                    dateRange = RepeatingPeriod.Yearly.toTimestampRange(),
-                    currentTimeWithinRangeGraphPercentage = .5f,
-                    currency = "USD",
-                    linkedAccountIds = listOf(1, 2)
-                ),
-                Budget(
-                    id = 3,
-                    priorityNum = 3.0,
-                    amountLimit = 4000.0,
-                    usedAmount = 1000.0,
-                    usedPercentage = 25F,
-                    category = groupedCategoriesByType.expense[2].category,
-                    name = "Shopping",
-                    repeatingPeriod = RepeatingPeriod.Yearly,
-                    dateRange = RepeatingPeriod.Yearly.toTimestampRange(),
-                    currentTimeWithinRangeGraphPercentage = .5f,
-                    currency = "CZK",
-                    linkedAccountIds = listOf(3, 4)
-                )
-            )
+            accountIds = listOf(1)
+        ),
+        BudgetWithIds(
+            budget = Budget(
+                id = 4,
+                amountLimit = 1500.0,
+                categoryId = 3,
+                name = "Shopping",
+                repeatingPeriod = RepeatingPeriod.Monthly
+            ),
+            accountIds = listOf(1)
+        ),
+        BudgetWithIds(
+            budget = Budget(
+                id = 5,
+                amountLimit = 2500.0,
+                categoryId = 1,
+                name = "Food & Drinks",
+                repeatingPeriod = RepeatingPeriod.Yearly
+            ),
+            accountIds = listOf(1)
+        ),
+    )
+
+    val groupedBudgets = GroupedBudgets.fromBudgets(budgets = budgets)
+    val groupedBudgetsItems = GroupedFilledBudgets
+        .fromBudgetsAndTransactions(
+            groupedBudgets = groupedBudgets,
+            transactions = transactions
         )
+        .toUiState(categories = groupedCategoriesByType.expense, accounts = accounts)
+        .asItems()
 
     PreviewWithMainScaffoldContainer(appTheme = appTheme) { scaffoldPadding ->
         BudgetsScreen(
             screenPadding = scaffoldPadding,
-            budgetsByType = budgetsByType,
-            resourceManager = ResourceManagerImpl(LocalContext.current),
+            groupedBudgetsItems = groupedBudgetsItems,
+            resourceManager = ResourceManagerImpl(context = LocalContext.current),
             onBudgetClick = {}
         )
     }
