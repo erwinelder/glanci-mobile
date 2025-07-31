@@ -4,7 +4,7 @@ import com.ataglance.walletglance.navigation.data.local.source.NavigationButtonL
 import com.ataglance.walletglance.navigation.data.local.source.getNavigationButtonLocalDataSource
 import com.ataglance.walletglance.navigation.data.remote.source.NavigationButtonRemoteDataSource
 import com.ataglance.walletglance.navigation.data.remote.source.NavigationButtonRemoteDataSourceImpl
-import com.ataglance.walletglance.navigation.data.repository.NavigationButtonRepository
+import com.ataglance.walletglance.navigation.domain.repository.NavigationButtonRepository
 import com.ataglance.walletglance.navigation.data.repository.NavigationButtonRepositoryImpl
 import com.ataglance.walletglance.navigation.domain.usecase.GetNavigationButtonScreensUseCase
 import com.ataglance.walletglance.navigation.domain.usecase.GetNavigationButtonScreensUseCaseImpl

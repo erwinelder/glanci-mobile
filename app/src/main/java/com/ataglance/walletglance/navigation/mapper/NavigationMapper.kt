@@ -15,7 +15,7 @@ fun List<NavigationButtonDataModel>.toDomainModelsSorted(): List<AppScreenEnum> 
 }
 
 fun List<AppScreenEnum>.toDataModels(): List<NavigationButtonDataModel> {
-    return this.mapIndexed { index, screen ->
+    return mapIndexed { index, screen ->
         NavigationButtonDataModel(screenName = screen.name, orderNum = index)
     }
 }

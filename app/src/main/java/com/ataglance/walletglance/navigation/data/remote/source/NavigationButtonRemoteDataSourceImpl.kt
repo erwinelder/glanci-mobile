@@ -1,8 +1,11 @@
 package com.ataglance.walletglance.navigation.data.remote.source
 
-import android.util.Log
 import com.glanci.navigation.shared.dto.NavigationButtonDto
 import com.glanci.navigation.shared.service.NavigationButtonService
+import com.glanci.request.shared.ResultData
+import com.glanci.request.shared.SimpleResult
+import com.glanci.request.shared.error.DataError
+import com.glanci.request.shared.error.NavigationButtonDataError
 import kotlinx.rpc.krpc.ktor.client.KtorRpcClient
 import kotlinx.rpc.withService
 
@@ -15,50 +18,35 @@ class NavigationButtonRemoteDataSourceImpl(
     )
 
 
-    override suspend fun getUpdateTime(token: String): Long? {
+    override suspend fun getUpdateTime(token: String): ResultData<Long, DataError> {
         return runCatching {
             service.getUpdateTime(token = token)
-        }.getOrNull().also { timestamp ->
-            if (timestamp != null) {
-                Log.d("NavigationButtonRemoteDataSourceImpl", "getUpdateTime:" +
-                        "received update time $timestamp")
-            } else {
-                Log.w("NavigationButtonRemoteDataSourceImpl", "getUpdateTime:" +
-                        "no update time received")
-            }
-        }
+        }.getOrDefault(
+            defaultValue = ResultData.Error(error = NavigationButtonDataError.NavigationButtonsError)
+        )
     }
 
     override suspend fun synchronizeNavigationButtons(
         buttons: List<NavigationButtonDto>,
         timestamp: Long,
         token: String
-    ): Boolean {
+    ): SimpleResult<DataError> {
         return runCatching {
             service.saveNavigationButtons(buttons = buttons, timestamp = timestamp, token = token)
-        }.isSuccess.also { success ->
-            if (success) {
-                Log.d("NavigationButtonRemoteDataSourceImpl", "synchronizeNavigationButtons: " +
-                        "synchronized ${buttons.size} buttons at timestamp $timestamp")
-            } else {
-                Log.e("NavigationButtonRemoteDataSourceImpl", "synchronizeNavigationButtons: " +
-                        "failed to synchronize ${buttons.size} buttons at timestamp $timestamp")
-            }
-        }
+        }.getOrDefault(
+            defaultValue = SimpleResult.Error(error = NavigationButtonDataError.NavigationButtonsError)
+        )
     }
 
     override suspend fun getNavigationButtonsAfterTimestamp(
         timestamp: Long,
         token: String
-    ): List<NavigationButtonDto>? {
+    ): ResultData<List<NavigationButtonDto>, DataError> {
         return runCatching {
             service.getNavigationButtonsAfterTimestamp(timestamp = timestamp, token = token)
-        }.getOrNull().also { buttons ->
-            buttons?.forEach {
-                Log.d("NavigationButtonRemoteDataSourceImpl", "getNavigationButtonsAfterTimestamp:" +
-                        "received navigation button: screenName = ${it.screenName}, orderNum = ${it.orderNum}")
-            }
-        }
+        }.getOrDefault(
+            defaultValue = ResultData.Error(error = NavigationButtonDataError.NavigationButtonsError)
+        )
     }
 
     override suspend fun synchronizeNavigationButtonsAndGetAfterTimestamp(
@@ -66,7 +54,7 @@ class NavigationButtonRemoteDataSourceImpl(
         timestamp: Long,
         localTimestamp: Long,
         token: String
-    ): List<NavigationButtonDto>? {
+    ): ResultData<List<NavigationButtonDto>, DataError> {
         return runCatching {
             service.saveNavigationButtonsAndGetAfterTimestamp(
                 buttons = buttons,
@@ -74,15 +62,9 @@ class NavigationButtonRemoteDataSourceImpl(
                 localTimestamp = localTimestamp,
                 token = token
             )
-        }.getOrNull().also { buttons ->
-            Log.d("NavigationButtonRemoteDataSourceImpl", "synchronizeNavigationButtonsAndGetAfterTimestamp:" +
-                    "synchronized ${buttons?.size ?: 0} buttons at timestamp $timestamp" +
-                    " with local timestamp $localTimestamp")
-            buttons?.forEach {
-                Log.d("NavigationButtonRemoteDataSourceImpl", "synchronizeNavigationButtonsAndGetAfterTimestamp:" +
-                        "received navigation button: screenName = ${it.screenName}, orderNum = ${it.orderNum}")
-            }
-        }
+        }.getOrDefault(
+            defaultValue = ResultData.Error(error = NavigationButtonDataError.NavigationButtonsError)
+        )
     }
 
 }

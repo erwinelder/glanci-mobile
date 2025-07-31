@@ -130,7 +130,7 @@ class PersonalizationViewModel(
 
     private fun fetchNavButtons() {
         viewModelScope.launch {
-            getNavigationButtonScreensUseCase.getFlow().collect { screens ->
+            getNavigationButtonScreensUseCase.getAsFlow().collect { screens ->
                 val buttons = screens.map { it.toBottomBarNavButtonState() }
                 _navButtons.update {
                     buttons.takeIf { it.size > 1 }?.subList(1, buttons.lastIndex) ?: buttons

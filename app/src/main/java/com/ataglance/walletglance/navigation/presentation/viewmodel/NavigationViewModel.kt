@@ -91,7 +91,7 @@ class NavigationViewModel(
 
     private fun fetchBottomBarNavigationButtons() {
         viewModelScope.launch {
-            getNavigationButtonScreensUseCase.getFlow().collect { screens ->
+            getNavigationButtonScreensUseCase.getAsFlow().collect { screens ->
                 val activeScreen = _navigationButtons.value
                     .find { it.isActive && it !is BottomNavBarButtonState.Other }
                     ?.toAppScreenEnum()

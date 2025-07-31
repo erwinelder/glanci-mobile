@@ -5,7 +5,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 
 class GetNavigationButtonScreensUseCaseMock : GetNavigationButtonScreensUseCase {
-    override fun getFlow(): Flow<List<AppScreenEnum>> {
+    override fun getAsFlow(): Flow<List<AppScreenEnum>> {
         return flow {
             val buttons = listOf(
                 AppScreenEnum.Home,

@@ -14,6 +14,7 @@ import com.ataglance.walletglance.personalization.domain.repository.WidgetReposi
 import com.ataglance.walletglance.personalization.mapper.toDataModels
 import com.ataglance.walletglance.personalization.mapper.toDomainModelsSorted
 import com.glanci.personalization.shared.dto.WidgetDto
+import com.glanci.request.shared.SimpleResult
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onStart
@@ -48,7 +49,12 @@ class WidgetRepositoryImpl(
             entityDeletedPredicate = { it.deleted },
             entityToCommandDtoMapper = WidgetEntity::toDto,
             queryDtoToEntityMapper = WidgetDto::toEntity
-        )
+        ). also { result ->
+            when (result) {
+                is SimpleResult.Success -> println("Widgets synchronized successfully.")
+                is SimpleResult.Error -> println("Error synchronizing widgets: ${result.error}")
+            }
+        }
     }
 
 
@@ -83,7 +89,12 @@ class WidgetRepositoryImpl(
             dataModelToEntityMapper = WidgetDataModel::toEntity,
             entityToCommandDtoMapper = WidgetEntity::toDto,
             queryDtoToEntityMapper = WidgetDto::toEntity
-        )
+        ). also { result ->
+            when (result) {
+                is SimpleResult.Success -> println("Widgets upserted successfully.")
+                is SimpleResult.Error -> println("Error upserting widgets: ${result.error}")
+            }
+        }
     }
 
     override suspend fun deleteAndUpsertWidgets(
@@ -131,7 +142,12 @@ class WidgetRepositoryImpl(
             dataModelToEntityMapper = WidgetDataModel::toEntity,
             entityToCommandDtoMapper = WidgetEntity::toDto,
             queryDtoToEntityMapper = WidgetDto::toEntity
-        )
+        ). also { result ->
+            when (result) {
+                is SimpleResult.Success -> println("Widgets deleted and upserted successfully.")
+                is SimpleResult.Error -> println("Error deleting and upserting widgets: ${result.error}")
+            }
+        }
     }
 
     override suspend fun deleteAllWidgetsLocally() {

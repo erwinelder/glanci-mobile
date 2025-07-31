@@ -9,7 +9,12 @@ import com.ataglance.walletglance.navigation.data.mapper.toDto
 import com.ataglance.walletglance.navigation.data.mapper.toEntity
 import com.ataglance.walletglance.navigation.data.model.NavigationButtonDataModel
 import com.ataglance.walletglance.navigation.data.remote.source.NavigationButtonRemoteDataSource
+import com.ataglance.walletglance.navigation.domain.model.AppScreenEnum
+import com.ataglance.walletglance.navigation.domain.repository.NavigationButtonRepository
+import com.ataglance.walletglance.navigation.mapper.toDataModels
+import com.ataglance.walletglance.navigation.mapper.toDomainModelsSorted
 import com.glanci.navigation.shared.dto.NavigationButtonDto
+import com.glanci.request.shared.SimpleResult
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onStart
@@ -21,7 +26,7 @@ class NavigationButtonRepositoryImpl(
 ) : NavigationButtonRepository {
 
     private suspend fun synchronizeNavigationButtons() {
-        syncHelper.synchronizeData(
+        syncHelper.synchronizeDataSafe(
             tableName = TableName.NavigationButton,
             localTimestampGetter = { localSource.getUpdateTime() },
             remoteTimestampGetter = { token -> remoteSource.getUpdateTime(token = token) },
@@ -44,12 +49,18 @@ class NavigationButtonRepositoryImpl(
             entityDeletedPredicate = { it.deleted },
             entityToCommandDtoMapper = NavigationButtonEntity::toDto,
             queryDtoToEntityMapper = NavigationButtonDto::toEntity
-        )
+        ).also { result ->
+            when (result) {
+                is SimpleResult.Success -> println("Navigation buttons synchronized successfully.")
+                is SimpleResult.Error -> println("Error synchronizing navigation buttons: ${result.error}")
+            }
+        }
     }
 
+    override suspend fun upsertNavigationButtons(screens: List<AppScreenEnum>) {
+        val buttons = screens.toDataModels()
 
-    override suspend fun upsertNavigationButtons(buttons: List<NavigationButtonDataModel>) {
-        syncHelper.upsertData(
+        syncHelper.upsertDataSafe(
             tableName = TableName.NavigationButton,
             data = buttons,
             localTimestampGetter = { localSource.getUpdateTime() },
@@ -77,19 +88,24 @@ class NavigationButtonRepositoryImpl(
             dataModelToEntityMapper = NavigationButtonDataModel::toEntity,
             entityToCommandDtoMapper = NavigationButtonEntity::toDto,
             queryDtoToEntityMapper = NavigationButtonDto::toEntity
-        )
+        ).also { result ->
+            when (result) {
+                is SimpleResult.Success -> println("Navigation buttons upserted successfully.")
+                is SimpleResult.Error -> println("Error upserting navigation buttons: ${result.error}")
+            }
+        }
     }
 
     override suspend fun deleteAllNavigationButtonsLocally() {
         localSource.deleteAllNavigationButtons()
     }
 
-    override fun getAllNavigationButtonsAsFlow(): Flow<List<NavigationButtonDataModel>> {
+    override fun getAllNavigationButtonsAsFlow(): Flow<List<AppScreenEnum>> {
         return localSource
             .getAllNavigationButtonsAsFlow()
             .onStart { synchronizeNavigationButtons() }
             .map { buttons ->
-                buttons.map { it.toDataModel() }
+                buttons.map { it.toDataModel() }.toDomainModelsSorted()
             }
     }
 

@@ -10,6 +10,7 @@ import com.ataglance.walletglance.budget.domain.repository.BudgetOnWidgetReposit
 import com.ataglance.walletglance.core.data.model.DataSyncHelper
 import com.ataglance.walletglance.core.data.model.TableName
 import com.glanci.budget.shared.dto.BudgetOnWidgetDto
+import com.glanci.request.shared.SimpleResult
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onStart
@@ -44,7 +45,12 @@ class BudgetOnWidgetRepositoryImpl(
             entityDeletedPredicate = { it.deleted },
             entityToCommandDtoMapper = BudgetOnWidgetEntity::toDto,
             queryDtoToEntityMapper = BudgetOnWidgetDto::toEntity
-        )
+        ). also { result ->
+            when (result) {
+                is SimpleResult.Success -> println("Budgets on widget synchronized successfully.")
+                is SimpleResult.Error -> println("Error synchronizing budgets on widget: ${result.error}")
+            }
+        }
     }
 
     override suspend fun deleteAndUpsertBudgetsOnWidget(
@@ -92,7 +98,12 @@ class BudgetOnWidgetRepositoryImpl(
             dataModelToEntityMapper = BudgetOnWidgetDataModel::toEntity,
             entityToCommandDtoMapper = BudgetOnWidgetEntity::toDto,
             queryDtoToEntityMapper = BudgetOnWidgetDto::toEntity
-        )
+        ). also { result ->
+            when (result) {
+                is SimpleResult.Success -> println("Budgets on widget deleted and upserted successfully.")
+                is SimpleResult.Error -> println("Error deleting and upserting budgets on widget: ${result.error}")
+            }
+        }
     }
 
     override fun getAllBudgetsOnWidgetAsFlow(): Flow<List<Int>> {
