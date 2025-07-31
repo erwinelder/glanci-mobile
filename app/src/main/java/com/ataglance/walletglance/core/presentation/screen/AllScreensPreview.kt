@@ -21,6 +21,7 @@ import com.ataglance.walletglance.auth.presentation.screen.PasswordResetScreenPr
 import com.ataglance.walletglance.auth.presentation.screen.PasswordUpdateScreenPreview
 import com.ataglance.walletglance.auth.presentation.screen.ProfileScreenPreview
 import com.ataglance.walletglance.auth.presentation.screen.SignInScreenPreview
+import com.ataglance.walletglance.auth.presentation.screen.SignOutScreenPreview
 import com.ataglance.walletglance.auth.presentation.screen.SignUpEmailVerificationScreenPreview
 import com.ataglance.walletglance.auth.presentation.screen.SignUpFinishScreenPreview
 import com.ataglance.walletglance.auth.presentation.screen.SignUpScreenPreview
@@ -1043,6 +1044,19 @@ private fun PasswordResetRequestScreenPreview_() {
 @Composable
 private fun PasswordResetScreenPreview_() {
     PasswordResetScreenPreview(
+        appTheme = appTheme
+    )
+}
+
+@Preview(
+    name = "SignOutScreen",
+    group = "AuthScreens",
+    locale = langCode,
+    device = device
+)
+@Composable
+private fun SignOutScreenPreview_() {
+    SignOutScreenPreview(
         appTheme = appTheme
     )
 }

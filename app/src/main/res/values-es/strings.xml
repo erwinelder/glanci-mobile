@@ -139,7 +139,6 @@
     <!-- Auth -->
     <string name="sign_in">Iniciar sesión</string>
     <string name="sign_up">Registrarse</string>
-    <string name="sign_out">Cerrar sesión</string>
     <string name="send_email">Enviar correo electrónico</string>
     <string name="update_name">Actualizar nombre</string>
     <string name="update_email">Actualizar correo electrónico</string>
@@ -160,7 +159,9 @@
     <string name="verify_email">Verifica tu correo</string>
     <string name="sign_up_verify_email_description">Verifica tu correo electrónico para completar el registro.</string>
     <string name="email_update_verify_email_description">Verifica tu correo para completar la actualización.</string>
-    <string name="sign_out_of_your_account">¿Cerrar sesión de tu cuenta? Tendrás que volver a iniciar sesión para acceder a tus datos.</string>
+    <string name="sign_out">Cerrar sesión</string>
+    <string name="sign_out_title">¿Cerrar sesión?</string>
+    <string name="sign_out_message">¿Cerrar sesión de tu cuenta? Tendrás que volver a iniciar sesión para acceder a tus datos.</string>
 
     <!-- Auth loaders -->
     <string name="verifying_your_credentials_loader">Verificando tus credenciales…</string>

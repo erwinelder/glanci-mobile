@@ -44,7 +44,7 @@ import com.ataglance.walletglance.auth.presentation.viewmodel.NameUpdateViewMode
 import com.ataglance.walletglance.auth.presentation.viewmodel.PasswordResetRequestViewModel
 import com.ataglance.walletglance.auth.presentation.viewmodel.PasswordResetViewModel
 import com.ataglance.walletglance.auth.presentation.viewmodel.PasswordUpdateViewModel
-import com.ataglance.walletglance.auth.presentation.viewmodel.ProfileViewModel
+import com.ataglance.walletglance.auth.presentation.viewmodel.SignOutViewModel
 import com.ataglance.walletglance.auth.presentation.viewmodel.SignInViewModel
 import com.ataglance.walletglance.auth.presentation.viewmodel.SignUpFinishViewModel
 import com.ataglance.walletglance.auth.presentation.viewmodel.SignUpViewModel
@@ -148,7 +148,10 @@ val authModule = module {
         )
     }
     single<SignOutUseCase> {
-        SignOutUseCaseImpl(userContext = get())
+        SignOutUseCaseImpl(
+            userContext = get(),
+            deleteAllDataLocallyUseCase = get()
+        )
     }
 
     single<GetAuthTokenFromSecureStorageUseCase> {
@@ -229,7 +232,7 @@ val authModule = module {
     }
 
     viewModel {
-        ProfileViewModel(signOutUseCase = get())
+        SignOutViewModel(signOutUseCase = get())
     }
 
 }

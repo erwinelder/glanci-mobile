@@ -15,6 +15,7 @@ import com.ataglance.walletglance.auth.presentation.screen.PasswordResetScreenWr
 import com.ataglance.walletglance.auth.presentation.screen.PasswordUpdateScreenWrapper
 import com.ataglance.walletglance.auth.presentation.screen.ProfileScreenWrapper
 import com.ataglance.walletglance.auth.presentation.screen.SignInScreenWrapper
+import com.ataglance.walletglance.auth.presentation.screen.SignOutScreenWrapper
 import com.ataglance.walletglance.auth.presentation.screen.SignUpEmailVerificationScreenWrapper
 import com.ataglance.walletglance.auth.presentation.screen.SignUpFinishScreenWrapper
 import com.ataglance.walletglance.auth.presentation.screen.SignUpScreenWrapper
@@ -127,6 +128,13 @@ fun NavGraphBuilder.authGraph(
         }
         composable<AuthScreens.DeleteAccount> { backStack ->
             DeleteAccountScreenWrapper(
+                screenPadding = screenPadding,
+                navController = navController,
+                navViewModel = navViewModel
+            )
+        }
+        composable<AuthScreens.SignOut> {
+            SignOutScreenWrapper(
                 screenPadding = screenPadding,
                 navController = navController,
                 navViewModel = navViewModel

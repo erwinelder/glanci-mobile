@@ -138,7 +138,6 @@
     <!-- Auth -->
     <string name="sign_in">Увійти</string>
     <string name="sign_up">Зареєструватися</string>
-    <string name="sign_out">Вийти з акаунту</string>
     <string name="send_email">Надіслати електронний лист</string>
     <string name="update_name">Оновити ім’я</string>
     <string name="update_email">Оновити електронну пошту</string>
@@ -159,7 +158,9 @@
     <string name="verify_email">Підтвердьте пошту</string>
     <string name="sign_up_verify_email_description">Підтвердьте свою електронну пошту, щоб завершити реєстрацію.</string>
     <string name="email_update_verify_email_description">Підтвердіть свою електронну пошту, щоб завершити оновлення.</string>
-    <string name="sign_out_of_your_account">Вийти зі свого акаунту? Вам потрібно буде знову увійти, щоб отримати доступ до своїх даних.</string>
+    <string name="sign_out">Вийти з акаунту</string>
+    <string name="sign_out_title">Вийти з акаунту?</string>
+    <string name="sign_out_message">Вийти з акаунту? Вам потрібно буде увійти знову, щоб отримати доступ до своїх даних.</string>
 
     <!-- Auth loaders -->
     <string name="verifying_your_credentials_loader">Перевірка ваших облікових даних…</string>

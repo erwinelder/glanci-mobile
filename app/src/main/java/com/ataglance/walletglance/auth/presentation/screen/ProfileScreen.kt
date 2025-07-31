@@ -4,19 +4,12 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavHostController
-import com.ataglance.walletglance.R
 import com.ataglance.walletglance.auth.domain.model.user.UserContext
-import com.ataglance.walletglance.auth.presentation.viewmodel.ProfileViewModel
 import com.ataglance.walletglance.core.domain.app.AppTheme
-import com.ataglance.walletglance.core.presentation.component.bottomSheet.BottomSheetDialogComponent
-import com.ataglance.walletglance.core.presentation.component.button.PrimaryButton
 import com.ataglance.walletglance.core.presentation.preview.PreviewWithMainScaffoldContainer
 import com.ataglance.walletglance.core.presentation.theme.CurrAppTheme
 import com.ataglance.walletglance.core.presentation.utils.getGreetingsWidgetTitleRes
@@ -25,7 +18,6 @@ import com.ataglance.walletglance.settings.presentation.component.NavigateToSett
 import com.ataglance.walletglance.settings.presentation.model.SettingsCategory
 import com.ataglance.walletglance.settings.presentation.screenContainer.SettingsCategoryScreenContainer
 import org.koin.compose.koinInject
-import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 fun ProfileScreenWrapper(
@@ -33,7 +25,6 @@ fun ProfileScreenWrapper(
     navController: NavHostController,
     navViewModel: NavigationViewModel
 ) {
-    val viewModel = koinViewModel<ProfileViewModel>()
     val greetingsTitleRes by getGreetingsWidgetTitleRes()
     val userContext = koinInject<UserContext>()
 
@@ -41,10 +32,6 @@ fun ProfileScreenWrapper(
         screenPadding = screenPadding,
         onNavigateBack = navController::popBackStack,
         greetingsTitle = stringResource(greetingsTitleRes, userContext.name ?: ""),
-        onSignOut = {
-            viewModel.signOut()
-            navController.popBackStack()
-        },
         onPopBackStackAndNavigateToScreen = { screen ->
             navViewModel.popBackStackAndNavigate(navController, screen)
         }
@@ -56,16 +43,15 @@ fun ProfileScreen(
     screenPadding: PaddingValues = PaddingValues(),
     onNavigateBack: () -> Unit,
     greetingsTitle: String,
-    onSignOut: () -> Unit,
     onPopBackStackAndNavigateToScreen: (Any) -> Unit
 ) {
     val appTheme = CurrAppTheme
-    var showSignOutSheet by remember { mutableStateOf(false) }
+    val settingsCategory = SettingsCategory.Profile(appTheme)
 
     Box {
         SettingsCategoryScreenContainer(
             screenPadding = screenPadding,
-            thisCategory = SettingsCategory.Profile(appTheme),
+            thisCategory = settingsCategory,
             onNavigateBack = onNavigateBack,
             title = greetingsTitle,
             mainScreenContent = {
@@ -74,26 +60,9 @@ fun ProfileScreen(
                 NavigateToSettingsCategoryButton(SettingsCategory.UpdatePassword(appTheme), onPopBackStackAndNavigateToScreen)
                 NavigateToSettingsCategoryButton(SettingsCategory.UpdateEmail(appTheme), onPopBackStackAndNavigateToScreen)
                 NavigateToSettingsCategoryButton(SettingsCategory.UpdateName(appTheme), onPopBackStackAndNavigateToScreen)
-//                NavigateToSettingsCategoryButton(SettingsCategory.ManageSubscriptions(appTheme), onNavigateToScreen)
+//                NavigateToSettingsCategoryButton(SettingsCategory.ManageSubscriptions(appTheme), onPopBackStackAndNavigateToScreen)
             }
         )
-        BottomSheetDialogComponent(
-            visible = showSignOutSheet,
-            iconRes = R.drawable.sign_out_large_icon,
-            iconDescription = "Sing out",
-            title = stringResource(R.string.sign_out),
-            message = stringResource(R.string.sign_out_of_your_account),
-            onDismissRequest = { showSignOutSheet = false }
-        ) { onSheetHide ->
-            PrimaryButton(
-                text = stringResource(R.string.sign_out),
-                onClick = {
-                    onSheetHide()
-                    showSignOutSheet = false
-                    onSignOut()
-                }
-            )
-        }
     }
 }
 
@@ -108,7 +77,6 @@ fun ProfileScreenPreview(
         ProfileScreen(
             onNavigateBack = {},
             greetingsTitle = "Good afternoon, username!",
-            onSignOut = {},
             onPopBackStackAndNavigateToScreen = {}
         )
     }

@@ -7,10 +7,10 @@ import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import com.ataglance.walletglance.R
 import com.ataglance.walletglance.core.domain.app.AppTheme
+import com.ataglance.walletglance.core.presentation.component.screenContainer.result.ResultScreenContainer
 import com.ataglance.walletglance.core.presentation.model.icon.IconPathsRes
 import com.ataglance.walletglance.core.presentation.preview.PreviewWithMainScaffoldContainer
 import com.ataglance.walletglance.core.presentation.theme.GlanciColors
-import com.ataglance.walletglance.core.presentation.component.screenContainer.result.ResultScreenContainer
 
 @Composable
 fun SetupFinishScreen(
@@ -20,8 +20,8 @@ fun SetupFinishScreen(
     ResultScreenContainer(
         screenPadding = screenPadding,
         iconPathsRes = IconPathsRes.Success,
-        title = stringResource(R.string.all_set),
         iconGradientColor = GlanciColors.iconPrimaryGlassGradientPair,
+        title = stringResource(R.string.all_set),
         buttonText = stringResource(R.string.continue_to_app),
         onPrimaryButtonClick = onFinishSetupButton
     )
