@@ -188,16 +188,15 @@ sealed class SettingsCategory(
     companion object {
 
         fun asList(appTheme: AppTheme, isSignedIn: Boolean): List<SettingsCategory> {
-            return listOf(
+            return listOfNotNull(
                 if (isSignedIn) Profile(appTheme) else SignIn(appTheme),
                 Accounts(appTheme),
                 Budgets(appTheme),
                 Categories(appTheme),
                 CategoryCollections(appTheme),
                 Appearance(appTheme),
-                Notifications(appTheme),
                 Language(appTheme),
-                ResetData(appTheme),
+                ResetData(appTheme).takeUnless { isSignedIn }
             )
         }
 
