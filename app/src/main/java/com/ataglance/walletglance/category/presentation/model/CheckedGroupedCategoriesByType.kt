@@ -63,18 +63,18 @@ data class CheckedGroupedCategoriesByType(
             if (item.category.id != category.parentCategoryId) {
                 item
             } else {
-                val newSubcategoryList = item.subcategoryList.map { checkedCategory ->
+                val newSubcategoryList = item.subcategories.map { checkedCategory ->
                     checkedCategory.takeIf { checkedCategory.category.id != category.id }
                         ?: checkedCategory.inverseCheckedState()
                 }
                 val checkedUncheckedSubcategories = newSubcategoryList.partition { it.checked }
 
                 if (checkedUncheckedSubcategories.first.isEmpty()) {
-                    item.copy(checked = false, subcategoryList = newSubcategoryList)
+                    item.copy(checked = false, subcategories = newSubcategoryList)
                 } else if (checkedUncheckedSubcategories.second.isEmpty()) {
-                    item.copy(checked = true, subcategoryList = newSubcategoryList)
+                    item.copy(checked = true, subcategories = newSubcategoryList)
                 } else {
-                    item.copy(checked = null, subcategoryList = newSubcategoryList)
+                    item.copy(checked = null, subcategories = newSubcategoryList)
                 }
             }
         }
@@ -97,12 +97,12 @@ data class CheckedGroupedCategoriesByType(
     fun getCheckedCategories(): List<Category> {
         (expense + income).let { list ->
             val (withoutSubcategories, withSubcategories) = list
-                .partition { it.subcategoryList.isEmpty() }
+                .partition { it.subcategories.isEmpty() }
             val parentCategories = withoutSubcategories
                 .filter { it.checked != false }
                 .map { it.category }
             val subcategories = withSubcategories.flatMap { item ->
-                item.subcategoryList.filter { it.checked }.map { it.category }
+                item.subcategories.filter { it.checked }.map { it.category }
             }
             return parentCategories + subcategories
         }

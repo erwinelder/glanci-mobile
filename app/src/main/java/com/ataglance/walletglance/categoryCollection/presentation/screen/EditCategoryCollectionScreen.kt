@@ -58,8 +58,8 @@ import com.ataglance.walletglance.core.presentation.component.container.glassSur
 import com.ataglance.walletglance.core.presentation.component.divider.BigDivider
 import com.ataglance.walletglance.core.presentation.component.divider.TextDivider
 import com.ataglance.walletglance.core.presentation.component.field.SmallTextFieldWithLabel
-import com.ataglance.walletglance.core.presentation.preview.PreviewWithMainScaffoldContainer
 import com.ataglance.walletglance.core.presentation.component.screenContainer.ScreenContainerWithTopBackNavButtonAndPrimaryButton
+import com.ataglance.walletglance.core.presentation.preview.PreviewWithMainScaffoldContainer
 import com.ataglance.walletglance.core.presentation.theme.CurrAppTheme
 import com.ataglance.walletglance.core.presentation.viewmodel.sharedKoinNavViewModel
 import com.ataglance.walletglance.core.utils.takeRowComposableIf
@@ -144,7 +144,9 @@ fun EditCategoryCollectionScreen(
         primaryButtonEnabled = allowSaving,
         onPrimaryButtonClick = onSaveButton
     ) {
-        GlassSurface {
+        GlassSurface(
+            modifier = Modifier.weight(1f)
+        ) {
             GlassSurfaceContent(
                 collection = collection,
                 checkedGroupedCategoriesByType = checkedGroupedCategoriesByType,
@@ -268,7 +270,7 @@ private fun SubcategoriesList(
                         Spacer(modifier = Modifier)
                     }
                     items(
-                        items = expandedCategory.subcategoryList,
+                        items = expandedCategory.subcategories,
                         key = { it.category.id }
                     ) { item ->
                         CollectionSubcategoryItem(
@@ -306,7 +308,7 @@ private fun LazyListScope.categoryListItems(
         CollectionCategoryItem(
             category = item.category,
             checked = item.checked,
-            expanded = item.expanded.takeIf { item.subcategoryList.isNotEmpty() },
+            expanded = item.expanded.takeIf { item.subcategories.isNotEmpty() },
             onCheckedChange = {
                 onCheckedChange(item.category)
             },
@@ -332,20 +334,23 @@ private fun CollectionCategoryItem(
             state = checked,
             onClick = { onCheckedChange() }
         )
-        Spacer(modifier = Modifier.size(10.dp, 48.dp))
+        Spacer(modifier = Modifier.size(12.dp, 48.dp))
         RecordCategory(
             category = category,
             iconSize = 30.dp,
             fontSize = 19.sp
         )
         if (expanded != null) {
-            Spacer(modifier = Modifier.width(8.dp))
+            Spacer(modifier = Modifier.width(12.dp))
             AnimatedContent(
                 targetState = if (expanded) R.drawable.collapse_icon else R.drawable.expand_icon
             ) { iconRes ->
                 SmallFilledIconButton(
                     iconRes = iconRes,
                     iconContendDescription = "expand or collapse subcategory list icon",
+                    size = 20.dp,
+                    contentPadding = PaddingValues(8.dp),
+                    cornerSize = 14.dp,
                     onClick = onExpandedChange
                 )
             }

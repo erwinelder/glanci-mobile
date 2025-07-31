@@ -19,6 +19,8 @@ fun SmallFilledIconButton(
     gradientColor: List<Color> = GlanciColors.glassGradientOnGlass,
     contentColor: Color = GlanciColors.onSurface,
     size: Dp = 24.dp,
+    contentPadding: PaddingValues = PaddingValues(12.dp),
+    cornerSize: Dp = 18.dp,
     borderSize: Dp = 1.dp,
     enabled: Boolean = true,
     onClick: () -> Unit = {}
@@ -27,9 +29,9 @@ fun SmallFilledIconButton(
         onClick = onClick,
         clickEnabled = enabled,
         shrinkScale = .96f,
-        cornerSize = 18.dp,
+        cornerSize = cornerSize,
         borderSize = borderSize,
-        contentPadding = PaddingValues(12.dp),
+        contentPadding = contentPadding,
         gradientColor = gradientColor
     ) {
         Icon(

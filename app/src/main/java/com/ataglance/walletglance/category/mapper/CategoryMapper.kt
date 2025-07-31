@@ -83,7 +83,7 @@ fun GroupedCategories.toEditingCategoryWithSubcategories(
     return CheckedGroupedCategories(
         category = category,
         checked = checked,
-        subcategoryList = subcategoryList
+        subcategories = subcategoryList
     )
 }
 

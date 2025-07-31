@@ -5,7 +5,7 @@ import com.ataglance.walletglance.category.domain.model.Category
 data class CheckedGroupedCategories(
     val category: Category,
     val checked: Boolean?,
-    val subcategoryList: List<CheckedCategory>,
+    val subcategories: List<CheckedCategory>,
     val expanded: Boolean = false
 ) {
 
@@ -14,7 +14,7 @@ data class CheckedGroupedCategories(
 
         return this.copy(
             checked = newChecked,
-            subcategoryList = subcategoryList.map { it.copy(checked = newChecked) }
+            subcategories = subcategories.map { it.copy(checked = newChecked) }
         )
     }
 

@@ -8,6 +8,8 @@ import androidx.compose.animation.fadeOut
 import androidx.compose.animation.scaleIn
 import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -18,8 +20,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.tooling.preview.Devices.PIXEL_7_PRO
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -34,8 +38,8 @@ import com.ataglance.walletglance.categoryCollection.domain.model.CategoryCollec
 import com.ataglance.walletglance.categoryCollection.domain.model.CategoryCollectionWithCategories
 import com.ataglance.walletglance.categoryCollection.presentation.screen.EditCategoryCollectionScreen
 import com.ataglance.walletglance.core.domain.app.AppTheme
-import com.ataglance.walletglance.core.presentation.theme.GlanciColors
 import com.ataglance.walletglance.core.presentation.preview.PreviewContainer
+import com.ataglance.walletglance.core.presentation.theme.GlanciColors
 
 @Composable
 fun ThreeStateCheckbox(
@@ -49,26 +53,25 @@ fun ThreeStateCheckbox(
         else -> R.drawable.partly_checked_icon
     }
     val checkboxBackground by animateColorAsState(
-        targetValue = GlanciColors.primary.copy(if (state == false) 0f else 1f),
-        label = "three state checkbox background color",
-        animationSpec = tween(150, 0)
+        targetValue = if (state == false) GlanciColors.glassGradientPair.first else
+            GlanciColors.primaryGlassGradientPair.first,
+        animationSpec = tween(150)
     )
     val checkboxBorderColor by animateColorAsState(
-        targetValue = GlanciColors.outline.copy(if (state == false) 1f else 0f),
-        label = "three state checkbox border color",
-        animationSpec = tween(150, 0)
+        targetValue = if (state == false) GlanciColors.outlineSemiTransparent else Color.Transparent,
+        animationSpec = tween(150)
     )
 
     FilledIconButton(
         onClick = {
             onClick(state?.let { !state } ?: true)
         },
-        shape = RoundedCornerShape(15),
+        shape = RoundedCornerShape(24),
         colors = IconButtonDefaults.iconButtonColors(
             containerColor = checkboxBackground
         ),
         modifier = Modifier
-            .border(1.5.dp, checkboxBorderColor, RoundedCornerShape(15))
+            .border(1.dp, checkboxBorderColor, RoundedCornerShape(24))
             .size(size)
     ) {
         AnimatedContent(
@@ -95,20 +98,26 @@ fun ThreeStateCheckbox(
 
 
 
-@Preview
+@Preview(device = PIXEL_7_PRO)
 @Composable
 private fun ThreeStateCheckboxPreview() {
-    PreviewContainer(appTheme = AppTheme.LightDefault) {  }
-    ThreeStateCheckbox(
-        state = true,
-        onClick = {}
-    )
+    PreviewContainer(appTheme = AppTheme.LightDefault) {
+        Column(
+            verticalArrangement = Arrangement.spacedBy(16.dp)
+        ) {
+            ThreeStateCheckbox(state = true, onClick = {})
+            ThreeStateCheckbox(state = null, onClick = {})
+            ThreeStateCheckbox(state = false, onClick = {})
+        }
+    }
 }
 
-@Preview
+@Preview(device = PIXEL_7_PRO)
 @Composable
-private fun EditCategoryCollectionScreenPreview() {
-    val categoryList = listOf(
+private fun EditCategoryCollectionScreenPreview(
+    appTheme: AppTheme = AppTheme.LightDefault
+) {
+    val categories = listOf(
         Category(
             id = 13,
             type = CategoryType.Expense,
@@ -151,10 +160,10 @@ private fun EditCategoryCollectionScreenPreview() {
         orderNum = 1,
         type = CategoryCollectionType.Expense,
         name = "Collection",
-        categories = categoryList
+        categories = categories
     )
 
-    PreviewContainer(appTheme = AppTheme.LightDefault) {
+    PreviewContainer(appTheme = appTheme) {
         EditCategoryCollectionScreen(
             onNavigateBack = {},
             collection = collection,
