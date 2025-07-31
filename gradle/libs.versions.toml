@@ -11,7 +11,7 @@ appcompat = "1.7.1"
 lifecycle = "2.9.2"
 # Compose & Navigation
 composeBom = "2025.07.00"
-navigationCommonKtx = "2.9.2"
+navigationCommonKtx = "2.9.3"
 # Google Play Services
 appUpdate = "2.1.0"
 assetDelivery = "2.3.0"
@@ -19,15 +19,15 @@ googleBilling = "8.0.0"
 featureDelivery = "2.1.0"
 review = "2.0.2"
 # WorkManager
-work = "2.10.2"
+work = "2.10.3"
 # Room
 room = "2.7.2"
 # Preferences
 datastore = "1.1.7"
 multiplatform-settings = "1.3.0"
-security-crypto = "1.1.0-beta01"
+security-crypto = "1.1.0"
 # Ktor
-ktor = "3.2.2"
+ktor = "3.2.3"
 # Firebase
 firebase = "34.0.0"
 # kRPC
@@ -39,14 +39,14 @@ kotlinxDateTime = "0.7.1"
 kotlinxSerialization = "1.9.0"
 gson = "2.13.1"
 # Test
-rules = "1.6.1"
-runner = "1.6.2"
-androidxTestCoreKtx = "1.6.1"
-espressoCore = "3.6.1"
+rules = "1.7.0"
+runner = "1.7.0"
+androidxTestCoreKtx = "1.7.0"
+espressoCore = "3.7.0"
 junit = "4.13.2"
-junitKtx = "1.2.1"
-junitJupiter = "5.13.3"
-junitVersion = "1.2.1"
+junitKtx = "1.3.0"
+junitJupiter = "5.13.4"
+junitVersion = "1.3.0"
 kotlinxCoroutinesTest = "1.10.2"
 uiTestManifest = "1.8.3"
 # Mockito
