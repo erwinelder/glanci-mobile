@@ -1,6 +1,6 @@
 package com.ataglance.walletglance.budget.domain.usecase
 
-import com.ataglance.walletglance.budget.data.repository.BudgetOnWidgetRepository
+import com.ataglance.walletglance.budget.domain.repository.BudgetOnWidgetRepository
 import com.ataglance.walletglance.core.utils.excludeItems
 
 class SaveBudgetsOnWidgetAndDeleteRestUseCaseImpl(

@@ -15,7 +15,7 @@ import com.ataglance.walletglance.personalization.domain.model.WidgetName
 import com.ataglance.walletglance.personalization.domain.usecase.theme.ChangeAppLookPreferencesUseCase
 import com.ataglance.walletglance.personalization.domain.usecase.theme.GetAppThemeConfigurationUseCase
 import com.ataglance.walletglance.personalization.domain.usecase.widgets.GetWidgetsUseCase
-import com.ataglance.walletglance.personalization.domain.usecase.widgets.SaveWidgetsUseCase
+import com.ataglance.walletglance.personalization.domain.usecase.widgets.SaveWidgetsAndDeleteRestUseCase
 import com.ataglance.walletglance.settings.domain.model.AppThemeConfiguration
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -25,7 +25,7 @@ import kotlinx.coroutines.launch
 class PersonalizationViewModel(
     private val getAppThemeConfigurationUseCase: GetAppThemeConfigurationUseCase,
     private val changeAppLookPreferencesUseCase: ChangeAppLookPreferencesUseCase,
-    private val saveWidgetsUseCase: SaveWidgetsUseCase,
+    private val saveWidgetsAndDeleteRestUseCase: SaveWidgetsAndDeleteRestUseCase,
     private val getWidgetsUseCase: GetWidgetsUseCase,
     private val saveNavigationButtonsUseCase: SaveNavigationButtonsUseCase,
     private val getNavigationButtonScreensUseCase: GetNavigationButtonScreensUseCase,
@@ -107,7 +107,7 @@ class PersonalizationViewModel(
 
     private suspend fun saveWidgets() {
         val widgets = widgets.value.filter { it.isChecked }.map { it.name }
-        saveWidgetsUseCase.saveAndDeleteRest(widgets = widgets)
+        saveWidgetsAndDeleteRestUseCase.execute(widgets = widgets)
     }
 
     fun saveWidgetsAndCloseSettings() {

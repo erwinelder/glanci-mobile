@@ -1,8 +1,11 @@
 package com.ataglance.walletglance.personalization.data.remote.source
 
-import android.util.Log
 import com.glanci.personalization.shared.dto.WidgetDto
 import com.glanci.personalization.shared.service.WidgetService
+import com.glanci.request.shared.ResultData
+import com.glanci.request.shared.SimpleResult
+import com.glanci.request.shared.error.DataError
+import com.glanci.request.shared.error.WidgetDataError
 import kotlinx.rpc.krpc.ktor.client.KtorRpcClient
 import kotlinx.rpc.withService
 
@@ -13,47 +16,32 @@ class WidgetRemoteDataSourceImpl(
     constructor(client: KtorRpcClient) : this(service = client.withService<WidgetService>())
 
 
-    override suspend fun getUpdateTime(token: String): Long? {
+    override suspend fun getUpdateTime(token: String): ResultData<Long, DataError> {
         return runCatching {
             service.getUpdateTime(token = token)
-        }.getOrNull().also { timestamp ->
-            if (timestamp != null) {
-                Log.d("WidgetRemoteDataSourceImpl", "getUpdateTime:" +
-                        "received update time $timestamp")
-            } else {
-                Log.w("WidgetRemoteDataSourceImpl", "getUpdateTime:" +
-                        "no update time received")
-            }
-        }
+        }.getOrDefault(
+            defaultValue = ResultData.Error(error = WidgetDataError.WidgetError)
+        )
     }
 
     override suspend fun synchronizeWidgets(
         widgets: List<WidgetDto>,
         timestamp: Long,
         token: String
-    ): Boolean {
+    ): SimpleResult<DataError> {
         return runCatching {
             service.saveWidgets(widgets = widgets, timestamp = timestamp, token = token)
-        }.isSuccess.also { success ->
-            if (success) {
-                Log.d("WidgetRemoteDataSourceImpl", "synchronizeWidgets: " +
-                        "synchronized ${widgets.size} widgets at timestamp $timestamp")
-            } else {
-                Log.e("WidgetRemoteDataSourceImpl", "synchronizeWidgets: " +
-                        "failed to synchronize ${widgets.size} widgets at timestamp $timestamp")
-            }
-        }
+        }.getOrDefault(
+            defaultValue = SimpleResult.Error(error = WidgetDataError.WidgetError)
+        )
     }
 
-    override suspend fun getWidgetsAfterTimestamp(timestamp: Long, token: String): List<WidgetDto>? {
+    override suspend fun getWidgetsAfterTimestamp(timestamp: Long, token: String): ResultData<List<WidgetDto>, DataError> {
         return runCatching {
             service.getWidgetsAfterTimestamp(timestamp = timestamp, token = token)
-        }.getOrNull().also { widgets ->
-            widgets?.forEach {
-                Log.d("WidgetRemoteDataSourceImpl", "getAccountsAfterTimestamp:" +
-                        "received widget: name = ${it.name}, orderNum = ${it.orderNum}")
-            }
-        }
+        }.getOrDefault(
+            defaultValue = ResultData.Error(error = WidgetDataError.WidgetError)
+        )
     }
 
     override suspend fun synchronizeWidgetsAndGetAfterTimestamp(
@@ -61,7 +49,7 @@ class WidgetRemoteDataSourceImpl(
         timestamp: Long,
         localTimestamp: Long,
         token: String
-    ): List<WidgetDto>? {
+    ): ResultData<List<WidgetDto>, DataError> {
         return runCatching {
             service.saveWidgetsAndGetAfterTimestamp(
                 widgets = widgets,
@@ -69,15 +57,9 @@ class WidgetRemoteDataSourceImpl(
                 localTimestamp = localTimestamp,
                 token = token
             )
-        }.getOrNull().also { widgets ->
-            Log.d("WidgetRemoteDataSourceImpl", "synchronizeWidgetsAndGetAfterTimestamp:" +
-                    "synchronized ${widgets?.size ?: 0} widgets at timestamp $timestamp" +
-                    " with local timestamp $localTimestamp")
-            widgets?.forEach {
-                Log.d("WidgetRemoteDataSourceImpl", "synchronizeWidgetsAndGetAfterTimestamp:" +
-                        "received widget: name = ${it.name}, orderNum = ${it.orderNum}")
-            }
-        }
+        }.getOrDefault(
+            defaultValue = ResultData.Error(error = WidgetDataError.WidgetError)
+        )
     }
 
 }

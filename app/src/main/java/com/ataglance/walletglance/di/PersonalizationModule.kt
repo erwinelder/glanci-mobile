@@ -4,12 +4,12 @@ import com.ataglance.walletglance.personalization.data.local.source.WidgetLocalD
 import com.ataglance.walletglance.personalization.data.local.source.getWidgetLocalDataSource
 import com.ataglance.walletglance.personalization.data.remote.source.WidgetRemoteDataSource
 import com.ataglance.walletglance.personalization.data.remote.source.WidgetRemoteDataSourceImpl
-import com.ataglance.walletglance.personalization.data.repository.WidgetRepository
+import com.ataglance.walletglance.personalization.domain.repository.WidgetRepository
 import com.ataglance.walletglance.personalization.data.repository.WidgetRepositoryImpl
 import com.ataglance.walletglance.personalization.domain.usecase.widgets.GetWidgetsUseCase
 import com.ataglance.walletglance.personalization.domain.usecase.widgets.GetWidgetsUseCaseImpl
-import com.ataglance.walletglance.personalization.domain.usecase.widgets.SaveWidgetsUseCase
-import com.ataglance.walletglance.personalization.domain.usecase.widgets.SaveWidgetsUseCaseImpl
+import com.ataglance.walletglance.personalization.domain.usecase.widgets.SaveWidgetsAndDeleteRestUseCase
+import com.ataglance.walletglance.personalization.domain.usecase.widgets.SaveWidgetsAndDeleteRestUseCaseImpl
 import com.ataglance.walletglance.personalization.presentation.viewmodel.PersonalizationViewModel
 import org.koin.core.module.dsl.viewModel
 import org.koin.core.parameter.parametersOf
@@ -39,8 +39,8 @@ val personalizationModule = module {
 
     /* ---------- Use Cases ---------- */
 
-    single<SaveWidgetsUseCase> {
-        SaveWidgetsUseCaseImpl(widgetRepository = get())
+    single<SaveWidgetsAndDeleteRestUseCase> {
+        SaveWidgetsAndDeleteRestUseCaseImpl(widgetRepository = get())
     }
 
     single<GetWidgetsUseCase> {
@@ -53,7 +53,7 @@ val personalizationModule = module {
         PersonalizationViewModel(
             getAppThemeConfigurationUseCase = get(),
             changeAppLookPreferencesUseCase = get(),
-            saveWidgetsUseCase = get(),
+            saveWidgetsAndDeleteRestUseCase = get(),
             getWidgetsUseCase = get(),
             saveNavigationButtonsUseCase = get(),
             getNavigationButtonScreensUseCase = get(),

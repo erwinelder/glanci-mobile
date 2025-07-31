@@ -1,6 +1,6 @@
 package com.ataglance.walletglance.budget.domain.usecase
 
-import com.ataglance.walletglance.budget.data.repository.BudgetRepository
+import com.ataglance.walletglance.budget.domain.repository.BudgetRepository
 import com.ataglance.walletglance.budget.domain.model.FilledBudget
 import com.ataglance.walletglance.budget.domain.utils.getMaxDateRange
 import com.ataglance.walletglance.budget.domain.mapper.toFilledBudgetFiltered

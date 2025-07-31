@@ -5,7 +5,7 @@ import com.ataglance.walletglance.category.domain.repository.CategoryRepository
 import com.ataglance.walletglance.categoryCollection.domain.repository.CategoryCollectionRepository
 import com.ataglance.walletglance.settings.data.repository.SettingsRepository
 import com.ataglance.walletglance.navigation.data.repository.NavigationButtonRepository
-import com.ataglance.walletglance.personalization.data.repository.WidgetRepository
+import com.ataglance.walletglance.personalization.domain.repository.WidgetRepository
 
 class DeleteAllDataLocallyUseCaseImpl(
     private val settingsRepository: SettingsRepository,

@@ -10,6 +10,7 @@ import com.ataglance.walletglance.budget.data.model.BudgetWithAssociationsDataMo
 import com.ataglance.walletglance.budget.data.remote.source.BudgetRemoteDataSource
 import com.ataglance.walletglance.budget.domain.model.Budget
 import com.ataglance.walletglance.budget.domain.model.BudgetWithIds
+import com.ataglance.walletglance.budget.domain.repository.BudgetRepository
 import com.ataglance.walletglance.budget.mapper.toBudgetWithIds
 import com.ataglance.walletglance.budget.mapper.toDataModelWithAssociations
 import com.ataglance.walletglance.budget.mapper.toDomainModel

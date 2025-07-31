@@ -1,4 +1,4 @@
-package com.ataglance.walletglance.budget.data.repository
+package com.ataglance.walletglance.budget.domain.repository
 
 import com.ataglance.walletglance.budget.domain.model.Budget
 import com.ataglance.walletglance.budget.domain.model.BudgetWithIds

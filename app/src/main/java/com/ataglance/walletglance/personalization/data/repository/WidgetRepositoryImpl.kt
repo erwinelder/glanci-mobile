@@ -9,6 +9,10 @@ import com.ataglance.walletglance.personalization.data.mapper.toDto
 import com.ataglance.walletglance.personalization.data.mapper.toEntity
 import com.ataglance.walletglance.personalization.data.model.WidgetDataModel
 import com.ataglance.walletglance.personalization.data.remote.source.WidgetRemoteDataSource
+import com.ataglance.walletglance.personalization.domain.model.WidgetName
+import com.ataglance.walletglance.personalization.domain.repository.WidgetRepository
+import com.ataglance.walletglance.personalization.mapper.toDataModels
+import com.ataglance.walletglance.personalization.mapper.toDomainModelsSorted
 import com.glanci.personalization.shared.dto.WidgetDto
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
@@ -21,7 +25,7 @@ class WidgetRepositoryImpl(
 ) : WidgetRepository {
 
     private suspend fun synchronizeWidgets() {
-        syncHelper.synchronizeData(
+        syncHelper.synchronizeDataSafe(
             tableName = TableName.Widget,
             localTimestampGetter = { localSource.getUpdateTime() },
             remoteTimestampGetter = { token -> remoteSource.getUpdateTime(token = token) },
@@ -48,8 +52,10 @@ class WidgetRepositoryImpl(
     }
 
 
-    override suspend fun upsertWidgets(widgets: List<WidgetDataModel>) {
-        syncHelper.upsertData(
+    override suspend fun upsertWidgets(widgets: List<WidgetName>) {
+        val widgets = widgets.toDataModels()
+
+        syncHelper.upsertDataSafe(
             tableName = TableName.Widget,
             data = widgets,
             localTimestampGetter = { localSource.getUpdateTime() },
@@ -81,10 +87,13 @@ class WidgetRepositoryImpl(
     }
 
     override suspend fun deleteAndUpsertWidgets(
-        toDelete: List<WidgetDataModel>,
-        toUpsert: List<WidgetDataModel>
+        toDelete: List<WidgetName>,
+        toUpsert: List<WidgetName>
     ) {
-        syncHelper.deleteAndUpsertData(
+        val toDelete = toDelete.toDataModels()
+        val toUpsert = toUpsert.toDataModels()
+
+        syncHelper.deleteAndUpsertDataSafe(
             tableName = TableName.Widget,
             toDelete = toDelete,
             toUpsert = toUpsert,
@@ -129,18 +138,18 @@ class WidgetRepositoryImpl(
         localSource.deleteAllWidgets()
     }
 
-    override fun getAllWidgetsAsFlow(): Flow<List<WidgetDataModel>> {
+    override fun getAllWidgetsAsFlow(): Flow<List<WidgetName>> {
         return localSource
             .getAllWidgetsAsFlow()
             .onStart { synchronizeWidgets() }
             .map { widgets ->
-                widgets.map { it.toDataModel() }
+                widgets.map { it.toDataModel() }.toDomainModelsSorted()
             }
     }
 
-    override suspend fun getAllWidgets(): List<WidgetDataModel> {
+    override suspend fun getAllWidgets(): List<WidgetName> {
         synchronizeWidgets()
-        return localSource.getAllWidgets().map { it.toDataModel() }
+        return localSource.getAllWidgets().map { it.toDataModel() }.toDomainModelsSorted()
     }
 
 }

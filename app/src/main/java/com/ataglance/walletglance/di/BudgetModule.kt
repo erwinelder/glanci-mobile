@@ -8,9 +8,9 @@ import com.ataglance.walletglance.budget.data.remote.source.BudgetOnWidgetRemote
 import com.ataglance.walletglance.budget.data.remote.source.BudgetOnWidgetRemoteDataSourceImpl
 import com.ataglance.walletglance.budget.data.remote.source.BudgetRemoteDataSource
 import com.ataglance.walletglance.budget.data.remote.source.BudgetRemoteDataSourceImpl
-import com.ataglance.walletglance.budget.data.repository.BudgetOnWidgetRepository
+import com.ataglance.walletglance.budget.domain.repository.BudgetOnWidgetRepository
 import com.ataglance.walletglance.budget.data.repository.BudgetOnWidgetRepositoryImpl
-import com.ataglance.walletglance.budget.data.repository.BudgetRepository
+import com.ataglance.walletglance.budget.domain.repository.BudgetRepository
 import com.ataglance.walletglance.budget.data.repository.BudgetRepositoryImpl
 import com.ataglance.walletglance.budget.domain.usecase.GetBudgetIdsOnWidgetUseCase
 import com.ataglance.walletglance.budget.domain.usecase.GetBudgetIdsOnWidgetUseCaseImpl

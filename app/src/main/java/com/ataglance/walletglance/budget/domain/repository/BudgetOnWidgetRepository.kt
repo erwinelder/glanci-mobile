@@ -1,4 +1,4 @@
-package com.ataglance.walletglance.budget.data.repository
+package com.ataglance.walletglance.budget.domain.repository
 
 import kotlinx.coroutines.flow.Flow
 
