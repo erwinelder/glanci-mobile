@@ -144,6 +144,7 @@ fun AppNavHost(
             val coroutineScope = rememberCoroutineScope()
 
             SetupFinishScreen(
+                screenPadding = screenPadding,
                 onFinishSetupButton = {
                     coroutineScope.launch {
                         appViewModel.finishSetup()

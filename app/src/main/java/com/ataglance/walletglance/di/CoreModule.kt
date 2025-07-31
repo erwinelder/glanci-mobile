@@ -5,6 +5,8 @@ import com.ataglance.walletglance.core.data.local.preferences.SecureStorage
 import com.ataglance.walletglance.core.data.model.DataSyncHelper
 import com.ataglance.walletglance.core.data.remote.glanciBackendUrl
 import com.ataglance.walletglance.core.data.remote.glanciBackendWebSocketPort
+import com.ataglance.walletglance.core.data.repository.getLocalUpdateTimeRepository
+import com.ataglance.walletglance.core.domain.repository.LocalUpdateTimeRepository
 import com.ataglance.walletglance.core.domain.usecase.DeleteAllDataLocallyUseCase
 import com.ataglance.walletglance.core.domain.usecase.DeleteAllDataLocallyUseCaseImpl
 import com.ataglance.walletglance.core.presentation.viewmodel.AppViewModel
@@ -62,6 +64,12 @@ val coreModule = module {
         }
     }
 
+    /* ---------- Repositories ---------- */
+
+    single<LocalUpdateTimeRepository> {
+        getLocalUpdateTimeRepository(appDatabase = get())
+    }
+
     /* ---------- Use Cases ---------- */
 
     single<ApplyLanguageToSystemUseCase> {
@@ -75,7 +83,8 @@ val coreModule = module {
             categoryRepository = get(),
             categoryCollectionRepository = get(),
             widgetRepository = get(),
-            navigationButtonRepository = get()
+            navigationButtonRepository = get(),
+            localUpdateTimeRepository = get()
         )
     }
 

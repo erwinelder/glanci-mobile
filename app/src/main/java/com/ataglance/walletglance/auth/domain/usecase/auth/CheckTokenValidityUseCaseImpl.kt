@@ -22,8 +22,7 @@ class CheckTokenValidityUseCaseImpl(
 ) : CheckTokenValidityUseCase {
 
     override suspend fun execute(): SimpleResult<AuthError> {
-        val token = secureStorage.getAuthToken()
-            ?: return SimpleResult.Error(AuthError.SessionExpired)
+        val token = secureStorage.getAuthToken() ?: return SimpleResult.Success()
         val appVersion = CurrentAppVersion(5, 0, 0, alpha = 5)
 
         val result = authRepository.checkTokenValidity(appVersion = appVersion, token = token)

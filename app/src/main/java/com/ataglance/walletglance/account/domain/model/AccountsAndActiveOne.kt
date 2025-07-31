@@ -13,7 +13,9 @@ data class AccountsAndActiveOne(
         ): AccountsAndActiveOne {
             val accounts = if (currentActiveAccountId == null) {
                 accounts.toMutableList().apply {
-                    this[0] = this[0].copy(isActive = true)
+                    this.firstOrNull()?.let {
+                        this[0] = it.copy(isActive = true)
+                    }
                 }
             } else {
                 accounts.map { it.copy(isActive = it.id == currentActiveAccountId) }

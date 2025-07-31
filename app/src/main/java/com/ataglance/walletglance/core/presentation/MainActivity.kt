@@ -16,10 +16,10 @@ import com.ataglance.walletglance.auth.domain.usecase.auth.CheckTokenValidityUse
 import com.ataglance.walletglance.auth.presentation.navigation.AuthScreens
 import com.ataglance.walletglance.billing.domain.model.BillingSubscriptionManager
 import com.ataglance.walletglance.core.domain.navigation.MainScreens
-import com.ataglance.walletglance.core.presentation.component.GlanciAppComponent
-import com.ataglance.walletglance.core.utils.extractOobCode
 import com.ataglance.walletglance.core.domain.result.SimpleResult
 import com.ataglance.walletglance.core.domain.result.error.AuthError
+import com.ataglance.walletglance.core.presentation.component.GlanciAppComponent
+import com.ataglance.walletglance.core.utils.extractOobCode
 import kotlinx.coroutines.flow.first
 import org.koin.core.context.GlobalContext
 
