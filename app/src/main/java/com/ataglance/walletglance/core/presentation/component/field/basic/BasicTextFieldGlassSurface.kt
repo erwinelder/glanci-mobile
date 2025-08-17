@@ -1,5 +1,6 @@
-package com.ataglance.walletglance.core.presentation.component.field
+package com.ataglance.walletglance.core.presentation.component.field.basic
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -15,7 +16,7 @@ import com.ataglance.walletglance.core.domain.app.FilledWidthByScreenType
 import com.ataglance.walletglance.core.presentation.component.container.glassSurface.GlassSurfaceOnGlassSurfaceFilled
 
 @Composable
-fun CustomBasicTextFieldGlassSurface(
+fun BasicTextFieldGlassSurface(
     text: String,
     onValueChange: (String) -> Unit,
     placeholderText: String,
@@ -33,7 +34,7 @@ fun CustomBasicTextFieldGlassSurface(
     onDoneKeyboardAction: () -> Unit = {},
     onGoKeyboardAction: () -> Unit = {},
     maxLines: Int,
-    glassSurfaceModifier: Modifier = Modifier,
+    @SuppressLint("ModifierParameter") glassSurfaceModifier: Modifier = Modifier,
     filledWidths: FilledWidthByScreenType? = FilledWidthByScreenType(),
     textFieldModifier: Modifier = Modifier,
     placeholderModifier: Modifier = Modifier
@@ -44,7 +45,7 @@ fun CustomBasicTextFieldGlassSurface(
         contentPadding = PaddingValues(),
         modifier = glassSurfaceModifier
     ) {
-        CustomBasicTextField(
+        BasicTextField(
             text = text,
             onValueChange = onValueChange,
             placeholderText = placeholderText,

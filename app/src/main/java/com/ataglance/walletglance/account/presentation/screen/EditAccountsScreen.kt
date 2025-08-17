@@ -69,7 +69,7 @@ fun EditAccountsScreenWrapper(
             accountViewModel.applyAccount(
                 account = account ?: accountsViewModel.getNewAccount()
             )
-            navViewModel.navigateToScreen(
+            navViewModel.navigate(
                 navController = navController, screen = AccountsSettingsScreens.EditAccount
             )
         },
@@ -81,7 +81,7 @@ fun EditAccountsScreenWrapper(
                 if (appConfiguration.isSetUp) {
                     navController.popBackStack()
                 } else {
-                    navViewModel.navigateToScreen(navController, SettingsScreens.Categories)
+                    navViewModel.navigate(navController, SettingsScreens.Categories)
                 }
             }
         }

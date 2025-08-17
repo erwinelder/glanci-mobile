@@ -18,8 +18,8 @@ fun FieldLabel(
         text = text,
         color = GlanciColors.outline,
         fontSize = fontSize,
+        fontWeight = FontWeight.W400,
         fontFamily = Manrope,
-        fontWeight = FontWeight.Normal,
         textAlign = TextAlign.Center
     )
 }

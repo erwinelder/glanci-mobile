@@ -45,7 +45,7 @@ import com.ataglance.walletglance.category.domain.model.GroupedCategoriesByType
 import com.ataglance.walletglance.category.presentation.component.CategoryBigIconComponent
 import com.ataglance.walletglance.core.domain.app.AppConfiguration
 import com.ataglance.walletglance.core.domain.app.AppTheme
-import com.ataglance.walletglance.core.domain.app.DrawableResByTheme
+import com.ataglance.walletglance.core.presentation.model.DrawableResByTheme
 import com.ataglance.walletglance.core.domain.date.RepeatingPeriod
 import com.ataglance.walletglance.core.domain.date.getSpendingInRecentStringRes
 import com.ataglance.walletglance.core.domain.navigation.MainScreens

@@ -86,7 +86,7 @@ fun EditAccountScreenWrapper(
         onColorChange = accountViewModel::changeColor,
         onNameChange = accountViewModel::changeName,
         onNavigateToEditAccountCurrencyScreen = {
-            navViewModel.navigateToScreen(
+            navViewModel.navigate(
                 navController = navController,
                 screen = AccountsSettingsScreens.EditAccountCurrency(
                     currency = accountDraft.currency

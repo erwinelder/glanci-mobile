@@ -11,7 +11,7 @@ import com.ataglance.walletglance.core.presentation.component.field.SmallTextFie
 import com.ataglance.walletglance.core.presentation.model.validation.ValidatedFieldState
 
 @Composable
-fun SmallTextFieldWithLabelAndMessages(
+fun ValidatedSmallTextFieldWithLabel(
     state: ValidatedFieldState,
     onValueChange: (String) -> Unit,
     labelText: String? = null,
@@ -24,9 +24,9 @@ fun SmallTextFieldWithLabelAndMessages(
     onDoneKeyboardAction: () -> Unit = {},
     onGoKeyboardAction: () -> Unit = {}
 ) {
-    FieldWithLabelAndMessagesWrapper(state = state, labelText = labelText) {
+    ValidatedFieldWithLabelContainer(state = state, labelText = labelText) { fieldText ->
         SmallTextField(
-            text = state.fieldText,
+            text = fieldText,
             onValueChange = onValueChange,
             placeholderText = placeholderText,
             fontSize = fontSize,

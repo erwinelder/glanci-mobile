@@ -15,7 +15,7 @@ fun SmallPrimaryDangerousButton(
     SmallPrimaryButton(
         text = text,
         enabled = enabled,
-        enabledGradient = GlanciColors.errorGradientPair,
+        gradientColor = GlanciColors.errorGradientPair,
         fontSize = fontSize,
         onClick = onClick
     )

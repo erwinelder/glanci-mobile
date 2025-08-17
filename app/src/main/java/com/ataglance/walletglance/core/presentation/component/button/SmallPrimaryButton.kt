@@ -29,8 +29,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.ataglance.walletglance.R
 import com.ataglance.walletglance.core.domain.app.AppTheme
-import com.ataglance.walletglance.core.presentation.preview.PreviewContainer
 import com.ataglance.walletglance.core.presentation.modifier.bounceClickEffect
+import com.ataglance.walletglance.core.presentation.preview.PreviewContainer
 import com.ataglance.walletglance.core.presentation.theme.GlanciColors
 import com.ataglance.walletglance.core.presentation.theme.Manrope
 
@@ -39,18 +39,16 @@ fun SmallPrimaryButton(
     text: String,
     @DrawableRes iconRes: Int? = null,
     enabled: Boolean = true,
-    enabledGradient: Pair<Color, Color> = GlanciColors.primaryGlassGradientPair,
+    gradientColor: Pair<Color, Color> = GlanciColors.primaryGlassGradientPair,
     fontSize: TextUnit = 17.sp,
     onClick: () -> Unit
 ) {
     val cornerSize = 20.dp
     val lighterGradientColor by animateColorAsState(
-        targetValue = if (enabled) enabledGradient.first else
-            GlanciColors.disabledGlassGradientPair.first
+        targetValue = (if (enabled) gradientColor else GlanciColors.disabledGlassGradientPair).first
     )
     val darkerGradientColor by animateColorAsState(
-        targetValue = if (enabled) enabledGradient.second else
-            GlanciColors.disabledGlassGradientPair.second
+        targetValue = (if (enabled) gradientColor else GlanciColors.disabledGlassGradientPair).second
     )
 
     Button(

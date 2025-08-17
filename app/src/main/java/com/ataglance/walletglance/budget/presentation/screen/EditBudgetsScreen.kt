@@ -60,7 +60,7 @@ fun EditBudgetsScreenWrapper(
         groupedBudgetsItems = groupedBudgetsItems,
         onNavigateToEditBudgetScreen = { budget: BudgetUiState? ->
             budgetViewModel.applyBudget(budget)
-            navViewModel.navigateToScreen(navController, BudgetsSettingsScreens.EditBudget)
+            navViewModel.navigate(navController, BudgetsSettingsScreens.EditBudget)
         },
         onSaveBudgetsButton = {
             coroutineScope.launch {

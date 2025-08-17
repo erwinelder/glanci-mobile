@@ -18,19 +18,19 @@ import androidx.compose.ui.unit.dp
 import com.ataglance.walletglance.core.domain.app.FilledWidthByScreenType
 import com.ataglance.walletglance.core.presentation.component.container.LoadingStateComponent
 import com.ataglance.walletglance.core.presentation.component.container.keyboardManagement.KeyboardTypingAnimatedVisibilityContainer
+import com.ataglance.walletglance.core.presentation.component.container.result.ResultStateButtonComponent
 import com.ataglance.walletglance.core.presentation.component.icon.AnimatedIconWithTitle
 import com.ataglance.walletglance.core.presentation.component.screenContainer.ScreenContainer
-import com.ataglance.walletglance.core.presentation.model.icon.IconPathsRes
 import com.ataglance.walletglance.core.presentation.model.RotatingGradientAnimState
+import com.ataglance.walletglance.core.presentation.model.icon.IconPathsRes
+import com.ataglance.walletglance.core.presentation.model.request.RequestErrorState
+import com.ataglance.walletglance.core.presentation.model.request.RequestState
+import com.ataglance.walletglance.core.presentation.model.result.ResultState.ButtonState
 import com.ataglance.walletglance.core.presentation.navigation.SetBackHandler
 import com.ataglance.walletglance.core.presentation.theme.CurrWindowType
 import com.ataglance.walletglance.core.presentation.theme.GlanciColors
 import com.ataglance.walletglance.core.presentation.utils.getKeyboardBottomPaddingAnimated
 import com.ataglance.walletglance.core.presentation.utils.isKeyboardVisible
-import com.ataglance.walletglance.core.presentation.component.container.result.ResultStateButtonComponent
-import com.ataglance.walletglance.core.presentation.model.request.RequestErrorState
-import com.ataglance.walletglance.core.presentation.model.request.RequestState
-import com.ataglance.walletglance.core.presentation.model.result.ResultState.ButtonState
 
 @Composable
 fun AnimatedRequestScreenContainer(
@@ -97,26 +97,21 @@ fun AnimatedRequestScreenContainer(
 
             Spacer(modifier = Modifier.weight(1f))
 
-            if (title != null) {
-
-                KeyboardTypingAnimatedVisibilityContainer(
-                    isVisible = !isKeyboardVisible,
-                    modifier = Modifier
-                        .fillMaxWidth(FilledWidthByScreenType(.84f).get(CurrWindowType))
-                        .padding(vertical = 16.dp)
-                ) {
-                    AnimatedIconWithTitle(
-                        iconPathsRes = iconPathsRes,
-                        title = title,
-                        animState = animState,
-                        isTitleVisible = requestStateButton == null,
-                        iconGradientColor = iconGradientColor
-                    )
-                }
-
-                Spacer(modifier = Modifier.weight(weight))
-
+            KeyboardTypingAnimatedVisibilityContainer(
+                isVisible = !isKeyboardVisible,
+                modifier = Modifier
+                    .fillMaxWidth(FilledWidthByScreenType(.84f).get(CurrWindowType))
+                    .padding(vertical = 16.dp)
+            ) {
+                AnimatedIconWithTitle(
+                    iconPathsRes = iconPathsRes,
+                    title = title.takeIf { requestStateButton == null },
+                    animState = animState,
+                    iconGradientColor = iconGradientColor
+                )
             }
+
+            Spacer(modifier = Modifier.weight(weight))
 
             AnimatedContent(
                 targetState = requestStateButton,
@@ -236,26 +231,21 @@ fun AnimatedRequestScreenContainer(
 
             Spacer(modifier = Modifier.weight(1f))
 
-            if (title != null) {
-
-                KeyboardTypingAnimatedVisibilityContainer(
-                    isVisible = !isKeyboardVisible,
-                    modifier = Modifier
-                        .fillMaxWidth(FilledWidthByScreenType(.84f).get(CurrWindowType))
-                        .padding(vertical = 16.dp)
-                ) {
-                    AnimatedIconWithTitle(
-                        iconPathsRes = iconPathsRes,
-                        title = title,
-                        animState = animState,
-                        isTitleVisible = requestErrorStateButton == null,
-                        iconGradientColor = iconGradientColor
-                    )
-                }
-
-                Spacer(modifier = Modifier.weight(weight))
-
+            KeyboardTypingAnimatedVisibilityContainer(
+                isVisible = !isKeyboardVisible,
+                modifier = Modifier
+                    .fillMaxWidth(FilledWidthByScreenType(.84f).get(CurrWindowType))
+                    .padding(vertical = 16.dp)
+            ) {
+                AnimatedIconWithTitle(
+                    iconPathsRes = iconPathsRes,
+                    title = title.takeIf { requestErrorStateButton == null },
+                    animState = animState,
+                    iconGradientColor = iconGradientColor
+                )
             }
+
+            Spacer(modifier = Modifier.weight(weight))
 
             AnimatedContent(
                 targetState = requestErrorStateButton,

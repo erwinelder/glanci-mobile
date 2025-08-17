@@ -1,4 +1,4 @@
-package com.ataglance.walletglance.core.presentation.component.field
+package com.ataglance.walletglance.core.presentation.component.icon
 
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Icon

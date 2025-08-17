@@ -11,8 +11,8 @@ import com.ataglance.walletglance.auth.mapper.toDto
 import com.ataglance.walletglance.core.domain.result.ResultData
 import com.ataglance.walletglance.core.domain.result.SimpleResult
 import com.ataglance.walletglance.core.domain.result.error.AuthError
-import com.ataglance.walletglance.core.domain.mapper.toDomainResultData
-import com.ataglance.walletglance.core.domain.mapper.toDomainSimpleResult
+import com.ataglance.walletglance.core.mapper.toDomainResultData
+import com.ataglance.walletglance.core.mapper.toDomainSimpleResult
 import com.glanci.auth.shared.service.AuthService
 import kotlinx.rpc.krpc.ktor.client.KtorRpcClient
 import kotlinx.rpc.withService

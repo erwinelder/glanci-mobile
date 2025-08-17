@@ -25,27 +25,27 @@ import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavHostController
 import androidx.navigation.toRoute
 import com.ataglance.walletglance.R
-import com.ataglance.walletglance.core.domain.result.success.AuthSuccess
 import com.ataglance.walletglance.auth.domain.model.validation.UserDataValidator
-import com.ataglance.walletglance.auth.presentation.navigation.AuthScreens
 import com.ataglance.walletglance.auth.mapper.toResultStateButton
 import com.ataglance.walletglance.auth.mapper.toUiStates
+import com.ataglance.walletglance.auth.presentation.navigation.AuthScreens
 import com.ataglance.walletglance.auth.presentation.viewmodel.SignUpViewModel
 import com.ataglance.walletglance.core.domain.app.AppTheme
 import com.ataglance.walletglance.core.domain.app.FilledWidthByScreenType
+import com.ataglance.walletglance.core.domain.result.success.AuthSuccess
 import com.ataglance.walletglance.core.presentation.component.button.PrimaryButton
 import com.ataglance.walletglance.core.presentation.component.button.SecondaryButton
 import com.ataglance.walletglance.core.presentation.component.container.glassSurface.GlassSurface
 import com.ataglance.walletglance.core.presentation.component.container.glassSurface.GlassSurfaceContentColumnWrapper
+import com.ataglance.walletglance.core.presentation.component.field.validation.ValidatedSmallTextFieldWithLabel
+import com.ataglance.walletglance.core.presentation.component.screenContainer.request.AnimatedRequestScreenContainerWithTopNavBackButton
 import com.ataglance.walletglance.core.presentation.model.icon.IconPathsRes
+import com.ataglance.walletglance.core.presentation.model.request.RequestState
+import com.ataglance.walletglance.core.presentation.model.result.ResultState.ButtonState
+import com.ataglance.walletglance.core.presentation.model.validation.ValidatedFieldState
 import com.ataglance.walletglance.core.presentation.preview.PreviewWithMainScaffoldContainer
 import com.ataglance.walletglance.core.presentation.viewmodel.sharedKoinNavViewModel
 import com.ataglance.walletglance.navigation.presentation.viewmodel.NavigationViewModel
-import com.ataglance.walletglance.core.presentation.component.field.validation.SmallTextFieldWithLabelAndMessages
-import com.ataglance.walletglance.core.presentation.component.screenContainer.request.AnimatedRequestScreenContainerWithTopNavBackButton
-import com.ataglance.walletglance.core.presentation.model.validation.ValidatedFieldState
-import com.ataglance.walletglance.core.presentation.model.request.RequestState
-import com.ataglance.walletglance.core.presentation.model.result.ResultState.ButtonState
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -89,7 +89,7 @@ fun SignUpScreenWrapper(
         onSignUp = {
             job = coroutineScope.launch {
                 if (!signUpViewModel.signUp()) return@launch
-                navViewModel.navigateToScreen(
+                navViewModel.navigate(
                     navController = navController, screen = AuthScreens.SignUpEmailVerification
                 )
             }
@@ -195,14 +195,14 @@ private fun GlassSurfaceContent(
     GlassSurfaceContentColumnWrapper(
         modifier = Modifier.verticalScroll(scrollState)
     ) {
-        SmallTextFieldWithLabelAndMessages(
+        ValidatedSmallTextFieldWithLabel(
             state = nameState,
             onValueChange = onNameChange,
             labelText = stringResource(R.string.name),
             placeholderText = stringResource(R.string.name),
             imeAction = ImeAction.Next
         )
-        SmallTextFieldWithLabelAndMessages(
+        ValidatedSmallTextFieldWithLabel(
             state = emailState,
             onValueChange = onEmailChange,
             labelText = stringResource(R.string.email),
@@ -210,7 +210,7 @@ private fun GlassSurfaceContent(
             keyboardType = KeyboardType.Email,
             imeAction = ImeAction.Next
         )
-        SmallTextFieldWithLabelAndMessages(
+        ValidatedSmallTextFieldWithLabel(
             state = passwordState,
             onValueChange = onPasswordChange,
             labelText = stringResource(R.string.password),
@@ -218,7 +218,7 @@ private fun GlassSurfaceContent(
             keyboardType = KeyboardType.Password,
             imeAction = ImeAction.Next
         )
-        SmallTextFieldWithLabelAndMessages(
+        ValidatedSmallTextFieldWithLabel(
             state = confirmPasswordState,
             onValueChange = onConfirmPasswordChange,
             labelText = stringResource(R.string.confirm_password),

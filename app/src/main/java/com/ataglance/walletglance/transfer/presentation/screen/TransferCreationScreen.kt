@@ -38,7 +38,7 @@ import com.ataglance.walletglance.account.presentation.component.AccountPicker
 import com.ataglance.walletglance.account.presentation.component.SmallAccountComponent
 import com.ataglance.walletglance.core.domain.app.AppTheme
 import com.ataglance.walletglance.core.domain.app.AppUiState
-import com.ataglance.walletglance.core.domain.app.DrawableResByTheme
+import com.ataglance.walletglance.core.presentation.model.DrawableResByTheme
 import com.ataglance.walletglance.core.domain.app.FilledWidthByScreenType
 import com.ataglance.walletglance.core.domain.navigation.MainScreens
 import com.ataglance.walletglance.core.presentation.component.container.glassSurface.GlassSurface

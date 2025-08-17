@@ -9,17 +9,17 @@ import com.ataglance.walletglance.core.presentation.component.field.FieldLabel
 import com.ataglance.walletglance.core.presentation.model.validation.ValidatedFieldState
 
 @Composable
-fun FieldWithLabelAndMessagesWrapper(
+fun ValidatedFieldWithLabelContainer(
     state: ValidatedFieldState,
     labelText: String? = null,
-    field: @Composable () -> Unit
+    field: @Composable (fieldText: String) -> Unit
 ) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(4.dp)
     ) {
         labelText?.let { FieldLabel(text = it) }
-        field()
+        field(state.fieldText)
         FieldValidationMessages(validationStates = state.validationStates)
     }
 }

@@ -2,20 +2,24 @@ package com.ataglance.walletglance.core.presentation.component.container
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Devices.PIXEL_7_PRO
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.ataglance.walletglance.R
 import com.ataglance.walletglance.core.domain.app.AppTheme
+import com.ataglance.walletglance.core.domain.app.FilledWidthByScreenType
 import com.ataglance.walletglance.core.presentation.component.button.SmallSecondaryButton
 import com.ataglance.walletglance.core.presentation.preview.PreviewContainer
+import com.ataglance.walletglance.core.presentation.theme.CurrWindowType
 import com.ataglance.walletglance.core.presentation.theme.GlanciColors
 import com.ataglance.walletglance.core.presentation.theme.Manrope
 
@@ -23,12 +27,16 @@ import com.ataglance.walletglance.core.presentation.theme.Manrope
 fun LoadingStateComponent(
     message: String,
     modifier: Modifier = Modifier,
+    filledWidth: FilledWidthByScreenType? = FilledWidthByScreenType(),
     onCancel: (() -> Unit)? = null
 ) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(24.dp),
         modifier = modifier
+            .run {
+                if (filledWidth != null) fillMaxWidth(filledWidth.get(CurrWindowType)) else this
+            }
     ) {
         Text(
             text = message,
@@ -45,6 +53,26 @@ fun LoadingStateComponent(
             )
         }
     }
+}
+
+@Composable
+fun LoadingStateComponent(
+    message: String,
+    modifier: Modifier = Modifier,
+    filledWidth: FilledWidthByScreenType? = FilledWidthByScreenType()
+) {
+    Text(
+        text = message,
+        color = GlanciColors.outline,
+        fontSize = 18.sp,
+        fontWeight = FontWeight.W300,
+        textAlign = TextAlign.Center,
+        fontFamily = Manrope,
+        modifier = modifier
+            .run {
+                if (filledWidth != null) fillMaxWidth(filledWidth.get(CurrWindowType)) else this
+            }
+    )
 }
 
 

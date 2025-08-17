@@ -1,5 +1,6 @@
 package com.ataglance.walletglance.core.presentation.component.field
 
+import android.annotation.SuppressLint
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.width
@@ -16,6 +17,7 @@ import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.ataglance.walletglance.core.domain.app.FilledWidthByScreenType
+import com.ataglance.walletglance.core.presentation.component.field.basic.BasicTextFieldGlassSurface
 import com.ataglance.walletglance.core.presentation.theme.GlanciColors
 
 @Composable
@@ -33,9 +35,9 @@ fun LargeTextField(
     imeAction: ImeAction = ImeAction.Done,
     onDoneKeyboardAction: () -> Unit = {},
     onGoKeyboardAction: () -> Unit = {},
-    glassSurfaceModifier: Modifier = Modifier
+    @SuppressLint("ModifierParameter") glassSurfaceModifier: Modifier = Modifier
 ) {
-    CustomBasicTextFieldGlassSurface(
+    BasicTextFieldGlassSurface(
         text = text,
         onValueChange = onValueChange,
         placeholderText = placeholderText,

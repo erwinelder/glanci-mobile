@@ -78,7 +78,7 @@ fun EditSubcategoriesScreenWrapper(
             categoryViewModel.applyCategory(
                 category = categoryOrNull ?: categoriesViewModel.getNewSubcategory()
             )
-            navViewModel.navigateToScreen(
+            navViewModel.navigate(
                 navController, CategoriesSettingsScreens.EditCategory
             )
         },

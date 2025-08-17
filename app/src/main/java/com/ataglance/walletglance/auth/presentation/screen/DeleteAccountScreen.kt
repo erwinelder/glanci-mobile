@@ -29,7 +29,7 @@ import com.ataglance.walletglance.core.presentation.model.icon.IconPathsRes
 import com.ataglance.walletglance.core.presentation.preview.PreviewWithMainScaffoldContainer
 import com.ataglance.walletglance.core.presentation.theme.GlanciColors
 import com.ataglance.walletglance.navigation.presentation.viewmodel.NavigationViewModel
-import com.ataglance.walletglance.core.presentation.component.field.validation.SmallTextFieldWithLabelAndMessages
+import com.ataglance.walletglance.core.presentation.component.field.validation.ValidatedSmallTextFieldWithLabel
 import com.ataglance.walletglance.core.presentation.component.screenContainer.request.AnimatedRequestScreenContainerWithTopNavBackButton
 import com.ataglance.walletglance.core.presentation.model.validation.ValidatedFieldState
 import com.ataglance.walletglance.core.presentation.model.request.RequestState
@@ -124,7 +124,7 @@ private fun GlassSurfaceContent(
     onDeleteAccount: () -> Unit
 ) {
     GlassSurfaceContentColumnWrapper {
-        SmallTextFieldWithLabelAndMessages(
+        ValidatedSmallTextFieldWithLabel(
             state = passwordState,
             onValueChange = onPasswordChange,
             labelText = stringResource(R.string.password),

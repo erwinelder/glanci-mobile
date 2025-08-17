@@ -31,7 +31,7 @@ import com.ataglance.walletglance.core.presentation.model.icon.IconPathsRes
 import com.ataglance.walletglance.core.presentation.preview.PreviewWithMainScaffoldContainer
 import com.ataglance.walletglance.core.presentation.viewmodel.sharedKoinNavViewModel
 import com.ataglance.walletglance.navigation.presentation.viewmodel.NavigationViewModel
-import com.ataglance.walletglance.core.presentation.component.field.validation.SmallTextFieldWithLabelAndMessages
+import com.ataglance.walletglance.core.presentation.component.field.validation.ValidatedSmallTextFieldWithLabel
 import com.ataglance.walletglance.core.presentation.component.screenContainer.request.AnimatedRequestScreenContainerWithTopNavBackButton
 import com.ataglance.walletglance.core.presentation.model.request.RequestState
 import com.ataglance.walletglance.core.presentation.model.result.ResultState.ButtonState
@@ -68,7 +68,7 @@ fun EmailUpdateRequestScreenWrapper(
         onRequestEmailUpdate = {
             job = coroutineScope.launch {
                 if (!viewModel.requestEmailUpdate()) return@launch
-                navViewModel.navigateToScreen(
+                navViewModel.navigate(
                     navController = navController, screen = AuthScreens.EmailUpdateEmailVerification
                 )
             }
@@ -139,7 +139,7 @@ private fun GlassSurfaceContent(
     onRequestUpdateEmail: () -> Unit
 ) {
     GlassSurfaceContentColumnWrapper {
-        SmallTextFieldWithLabelAndMessages(
+        ValidatedSmallTextFieldWithLabel(
             state = passwordState,
             onValueChange = onPasswordChange,
             labelText = stringResource(R.string.current_password),
@@ -147,7 +147,7 @@ private fun GlassSurfaceContent(
             keyboardType = KeyboardType.Password,
             imeAction = ImeAction.Next
         )
-        SmallTextFieldWithLabelAndMessages(
+        ValidatedSmallTextFieldWithLabel(
             state = newEmailState,
             onValueChange = onNewEmailChange,
             labelText = stringResource(R.string.new_email),

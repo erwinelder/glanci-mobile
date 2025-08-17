@@ -27,7 +27,7 @@ import com.ataglance.walletglance.settings.presentation.navigation.SettingsScree
 fun NavGraphBuilder.authGraph(
     screenPadding: PaddingValues = PaddingValues(),
     navController: NavHostController,
-    navViewModel: NavigationViewModel,
+    navigationViewModel: NavigationViewModel,
     appConfiguration: AppConfiguration
 ) {
     navigation<SettingsScreens.Auth>(
@@ -37,7 +37,7 @@ fun NavGraphBuilder.authGraph(
             SignInScreenWrapper(
                 screenPadding = screenPadding,
                 navController = navController,
-                navViewModel = navViewModel,
+                navViewModel = navigationViewModel,
                 appConfiguration = appConfiguration,
                 backStack = backStack
             )
@@ -46,7 +46,7 @@ fun NavGraphBuilder.authGraph(
             SignUpScreenWrapper(
                 screenPadding = screenPadding,
                 navController = navController,
-                navViewModel = navViewModel,
+                navViewModel = navigationViewModel,
                 backStack = backStack
             )
         }
@@ -54,7 +54,7 @@ fun NavGraphBuilder.authGraph(
             SignUpEmailVerificationScreenWrapper(
                 screenPadding = screenPadding,
                 navController = navController,
-                navViewModel = navViewModel,
+                navViewModel = navigationViewModel,
                 backStack = backStack
             )
         }
@@ -62,7 +62,7 @@ fun NavGraphBuilder.authGraph(
             SignUpFinishScreenWrapper(
                 screenPadding = screenPadding,
                 navController = navController,
-                navViewModel = navViewModel,
+                navViewModel = navigationViewModel,
                 backStack = backStack
             )
         }
@@ -70,7 +70,7 @@ fun NavGraphBuilder.authGraph(
             ProfileScreenWrapper(
                 screenPadding = screenPadding,
                 navController = navController,
-                navViewModel = navViewModel
+                navViewModel = navigationViewModel
             )
         }
         composable<AuthScreens.UpdateName> {
@@ -83,7 +83,7 @@ fun NavGraphBuilder.authGraph(
             EmailUpdateRequestScreenWrapper(
                 screenPadding = screenPadding,
                 navController = navController,
-                navViewModel = navViewModel,
+                navViewModel = navigationViewModel,
                 backStack = backStack
             )
         }
@@ -91,7 +91,7 @@ fun NavGraphBuilder.authGraph(
             EmailUpdateEmailVerificationScreenWrapper(
                 screenPadding = screenPadding,
                 navController = navController,
-                navViewModel = navViewModel,
+                navViewModel = navigationViewModel,
                 backStack = backStack
             )
         }
@@ -99,7 +99,7 @@ fun NavGraphBuilder.authGraph(
             EmailUpdateVerifyScreenWrapper(
                 screenPadding = screenPadding,
                 navController = navController,
-                navViewModel = navViewModel,
+                navViewModel = navigationViewModel,
                 backStack = backStack
             )
         }
@@ -107,7 +107,7 @@ fun NavGraphBuilder.authGraph(
             PasswordUpdateScreenWrapper(
                 screenPadding = screenPadding,
                 navController = navController,
-                navViewModel = navViewModel
+                navViewModel = navigationViewModel
             )
         }
         composable<AuthScreens.RequestPasswordReset> { backStack ->
@@ -121,7 +121,7 @@ fun NavGraphBuilder.authGraph(
             PasswordResetScreenWrapper(
                 screenPadding = screenPadding,
                 navController = navController,
-                navViewModel = navViewModel,
+                navViewModel = navigationViewModel,
                 appConfiguration = appConfiguration,
                 backStack = backStack
             )
@@ -130,14 +130,14 @@ fun NavGraphBuilder.authGraph(
             DeleteAccountScreenWrapper(
                 screenPadding = screenPadding,
                 navController = navController,
-                navViewModel = navViewModel
+                navViewModel = navigationViewModel
             )
         }
         composable<AuthScreens.SignOut> {
             SignOutScreenWrapper(
                 screenPadding = screenPadding,
                 navController = navController,
-                navViewModel = navViewModel
+                navViewModel = navigationViewModel
             )
         }
         composable<AuthScreens.ManageSubscriptions> { backStack ->

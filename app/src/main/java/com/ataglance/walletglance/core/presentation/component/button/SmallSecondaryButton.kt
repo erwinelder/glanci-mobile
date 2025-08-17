@@ -1,6 +1,7 @@
 package com.ataglance.walletglance.core.presentation.component.button
 
 import androidx.annotation.DrawableRes
+import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.PaddingValues
@@ -14,6 +15,7 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.geometry.Offset
@@ -42,6 +44,8 @@ fun SmallSecondaryButton(
     onClick: () -> Unit
 ) {
     val cornerSize = 21.dp
+    val buttonLighterColor by animateColorAsState(targetValue = gradientColor.first)
+    val buttonDarkerColor by animateColorAsState(targetValue = gradientColor.second)
     val borderGradient = if (enabled) GlanciColors.primarySemiTransparentGlassBorderGradient else
         listOf(GlanciColors.outline, GlanciColors.outline)
 
@@ -61,7 +65,7 @@ fun SmallSecondaryButton(
             .clip(RoundedCornerShape(cornerSize))
             .background(
                 brush = Brush.linearGradient(
-                    colors = listOf(gradientColor.second, gradientColor.first),
+                    colors = listOf(buttonLighterColor, buttonDarkerColor),
                     start = Offset(75f, 200f),
                     end = Offset(100f, 0f)
                 )

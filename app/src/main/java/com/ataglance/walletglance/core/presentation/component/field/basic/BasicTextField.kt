@@ -1,4 +1,4 @@
-package com.ataglance.walletglance.core.presentation.component.field
+package com.ataglance.walletglance.core.presentation.component.field.basic
 
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
@@ -35,6 +35,8 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
+import com.ataglance.walletglance.core.presentation.component.field.TextSelectionColorsProviderWrapper
+import com.ataglance.walletglance.core.presentation.component.icon.ShowHidePasswordIcon
 import com.ataglance.walletglance.core.presentation.theme.GlanciColors
 import com.ataglance.walletglance.core.presentation.theme.Manrope
 import com.ataglance.walletglance.core.presentation.utils.bottom
@@ -44,7 +46,7 @@ import com.ataglance.walletglance.core.presentation.utils.top
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CustomBasicTextField(
+fun BasicTextField(
     text: String,
     onValueChange: (String) -> Unit,
     placeholderText: String,
@@ -70,14 +72,13 @@ fun CustomBasicTextField(
 
     var isPasswordVisible by remember {
         mutableStateOf(false.takeIf {
-            keyboardType == KeyboardType.Companion.Password ||
-                    keyboardType == KeyboardType.Companion.NumberPassword
+            keyboardType == KeyboardType.Password || keyboardType == KeyboardType.NumberPassword
         })
     }
     val visualTransformation = if (isPasswordVisible == false) {
         PasswordVisualTransformation()
     } else {
-        VisualTransformation.Companion.None
+        VisualTransformation.None
     }
 
     Row(
@@ -96,7 +97,7 @@ fun CustomBasicTextField(
                     imeAction = imeAction
                 ),
                 keyboardActions = KeyboardActions(
-                    onNext = { focusManager.moveFocus(FocusDirection.Companion.Down) },
+                    onNext = { focusManager.moveFocus(FocusDirection.Down) },
                     onDone = {
                         focusManager.clearFocus()
                         onDoneKeyboardAction()
@@ -118,7 +119,7 @@ fun CustomBasicTextField(
                 ),
                 cursorBrush = Brush.linearGradient(GlanciColors.primaryGlassGradient),
                 modifier = textFieldModifier
-            ) {
+            ) { innerTextField ->
                 TextFieldDefaults.DecorationBox(
                     value = text,
                     singleLine = true,
@@ -145,7 +146,7 @@ fun CustomBasicTextField(
                     contentPadding = PaddingValues(top = padding.top, bottom = padding.bottom),
                     innerTextField = {
                         Box(contentAlignment = contentAlignment) {
-                            it()
+                            innerTextField()
                             if (text.isBlank()) {
                                 Placeholder(
                                     text = placeholderText,
@@ -161,7 +162,9 @@ fun CustomBasicTextField(
             }
         }
         isPasswordVisible?.let {
-            ShowHidePasswordIcon(isPasswordVisible = it) { isPasswordVisible = !it }
+            ShowHidePasswordIcon(
+                isPasswordVisible = it
+            ) { isPasswordVisible = !it }
         }
     }
 }

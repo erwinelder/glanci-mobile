@@ -1,7 +1,7 @@
 package com.ataglance.walletglance.auth.domain.model.validation
 
-import com.ataglance.walletglance.core.utils.asList
 import com.ataglance.walletglance.core.domain.validation.ValidationResult
+import com.ataglance.walletglance.core.utils.asList
 
 typealias UserDataValidationResult = ValidationResult<UserDataValidation>
 
@@ -62,13 +62,12 @@ object UserDataValidator {
     private fun String.requireNotBlank(): UserDataValidationResult {
         return ValidationResult.fromValidation(
             validation = UserDataValidation.RequiredField,
-            isValid = this.isNotBlank()
+            isValid = isNotBlank()
         )
     }
 
     private fun String.isValidEmail(): UserDataValidationResult {
-        val email = this.trim()
-        val isValid = Regex("^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$").matches(email)
+        val isValid = Regex("^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$").matches(trim())
 
         return ValidationResult.fromValidation(
             validation = if (isValid) UserDataValidation.IsValid else UserDataValidation.IsNotValid,
@@ -77,18 +76,16 @@ object UserDataValidator {
     }
 
     private fun String.atLeastNumberOfChars(number: Int): UserDataValidationResult {
-        val value = this.trim()
         return ValidationResult.fromValidation(
             validation = UserDataValidation.TooShort,
-            isValid = value.length >= number
+            isValid = trim().length >= number
         )
     }
 
     private fun String.atMostNumberOfChars(number: Int): UserDataValidationResult {
-        val value = this.trim()
         return ValidationResult.fromValidation(
             validation = UserDataValidation.TooLong,
-            isValid = value.length <= number
+            isValid = trim().length <= number
         )
     }
 

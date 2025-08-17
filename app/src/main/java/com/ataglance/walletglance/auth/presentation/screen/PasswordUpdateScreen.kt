@@ -38,7 +38,7 @@ import com.ataglance.walletglance.core.presentation.component.container.glassSur
 import com.ataglance.walletglance.core.presentation.model.icon.IconPathsRes
 import com.ataglance.walletglance.core.presentation.preview.PreviewWithMainScaffoldContainer
 import com.ataglance.walletglance.navigation.presentation.viewmodel.NavigationViewModel
-import com.ataglance.walletglance.core.presentation.component.field.validation.SmallTextFieldWithLabelAndMessages
+import com.ataglance.walletglance.core.presentation.component.field.validation.ValidatedSmallTextFieldWithLabel
 import com.ataglance.walletglance.core.presentation.component.screenContainer.request.AnimatedRequestScreenContainerWithTopNavBackButton
 import com.ataglance.walletglance.core.presentation.model.validation.ValidatedFieldState
 import com.ataglance.walletglance.core.presentation.model.request.RequestState
@@ -167,7 +167,7 @@ private fun GlassSurfaceContent(
     GlassSurfaceContentColumnWrapper(
         modifier = Modifier.verticalScroll(scrollState)
     ) {
-        SmallTextFieldWithLabelAndMessages(
+        ValidatedSmallTextFieldWithLabel(
             state = currentPasswordState,
             onValueChange = onCurrentPasswordChange,
             labelText = stringResource(R.string.current_password),
@@ -175,7 +175,7 @@ private fun GlassSurfaceContent(
             keyboardType = KeyboardType.Password,
             imeAction = ImeAction.Next
         )
-        SmallTextFieldWithLabelAndMessages(
+        ValidatedSmallTextFieldWithLabel(
             state = newPasswordState,
             onValueChange = onNewPasswordChange,
             labelText = stringResource(R.string.new_password),
@@ -183,7 +183,7 @@ private fun GlassSurfaceContent(
             keyboardType = KeyboardType.Password,
             imeAction = ImeAction.Next
         )
-        SmallTextFieldWithLabelAndMessages(
+        ValidatedSmallTextFieldWithLabel(
             state = newPasswordConfirmationState,
             onValueChange = onNewPasswordConfirmationChange,
             labelText = stringResource(R.string.new_password_confirmation),

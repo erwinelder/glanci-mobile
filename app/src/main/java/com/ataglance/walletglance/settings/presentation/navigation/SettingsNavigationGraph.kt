@@ -33,7 +33,7 @@ fun NavGraphBuilder.settingsGraph(
             StartSetupScreen(
                 screenPadding = screenPadding,
                 onManualSetupButton = {
-                    navViewModel.navigateToScreen(
+                    navViewModel.navigate(
                         navController = navController, screen = SettingsScreens.Language
                     )
                 }
@@ -49,7 +49,7 @@ fun NavGraphBuilder.settingsGraph(
         authGraph(
             screenPadding = screenPadding,
             navController = navController,
-            navViewModel = navViewModel,
+            navigationViewModel = navViewModel,
             appConfiguration = appConfiguration
         )
         accountsGraph(

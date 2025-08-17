@@ -27,7 +27,7 @@ import com.ataglance.walletglance.core.presentation.component.container.glassSur
 import com.ataglance.walletglance.core.presentation.model.icon.IconPathsRes
 import com.ataglance.walletglance.core.presentation.preview.PreviewWithMainScaffoldContainer
 import com.ataglance.walletglance.core.domain.result.success.AuthSuccess
-import com.ataglance.walletglance.core.presentation.component.field.validation.SmallTextFieldWithLabelAndMessages
+import com.ataglance.walletglance.core.presentation.component.field.validation.ValidatedSmallTextFieldWithLabel
 import com.ataglance.walletglance.core.presentation.component.screenContainer.request.AnimatedRequestScreenContainerWithTopNavBackButton
 import com.ataglance.walletglance.core.presentation.model.request.RequestState
 import com.ataglance.walletglance.core.presentation.model.result.ResultState.ButtonState
@@ -120,7 +120,7 @@ private fun GlassSurfaceContent(
     onUpdateName: () -> Unit
 ) {
     GlassSurfaceContentColumnWrapper {
-        SmallTextFieldWithLabelAndMessages(
+        ValidatedSmallTextFieldWithLabel(
             state = nameState,
             onValueChange = onNameChange,
             labelText = stringResource(R.string.new_name),

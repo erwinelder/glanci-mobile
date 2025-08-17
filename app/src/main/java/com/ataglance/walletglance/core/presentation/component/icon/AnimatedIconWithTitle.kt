@@ -12,16 +12,15 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.graphics.Color
 import com.ataglance.walletglance.core.presentation.component.text.Title
-import com.ataglance.walletglance.core.presentation.model.icon.IconPathsRes
 import com.ataglance.walletglance.core.presentation.model.RotatingGradientAnimState
+import com.ataglance.walletglance.core.presentation.model.icon.IconPathsRes
 import com.ataglance.walletglance.core.presentation.theme.GlanciColors
 
 @Composable
 fun AnimatedIconWithTitle(
     iconPathsRes: IconPathsRes,
-    title: String,
+    title: String?,
     animState: RotatingGradientAnimState,
-    isTitleVisible: Boolean = true,
     iconGradientColor: Pair<Color, Color> = GlanciColors.iconPrimaryGlassGradientPair,
     verticalArrangement: Arrangement.Vertical = Arrangement.Center
 ) {
@@ -35,7 +34,7 @@ fun AnimatedIconWithTitle(
             iconGradientColor = iconGradientColor
         )
         AnimatedContent(
-            targetState = isTitleVisible,
+            targetState = title,
             transitionSpec = {
                 (fadeIn(animationSpec = tween(220, delayMillis = 90)) +
                         scaleIn(
@@ -45,8 +44,8 @@ fun AnimatedIconWithTitle(
                     .togetherWith(fadeOut(animationSpec = tween(90)))
             },
             contentAlignment = Alignment.Center
-        ) { isTitleVisible ->
-            if (isTitleVisible) {
+        ) { title ->
+            if (title != null) {
                 Title(text = title)
             }
         }

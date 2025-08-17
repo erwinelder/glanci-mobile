@@ -15,6 +15,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.ataglance.walletglance.core.presentation.component.field.basic.BasicTextFieldGlassSurface
 import com.ataglance.walletglance.core.presentation.theme.GlanciColors
 
 @Composable
@@ -34,7 +35,7 @@ fun SmallTextField(
     onGoKeyboardAction: () -> Unit = {},
     glassSurfaceModifier: Modifier = Modifier
 ) {
-    CustomBasicTextFieldGlassSurface(
+    BasicTextFieldGlassSurface(
         text = text,
         onValueChange = onValueChange,
         placeholderText = placeholderText,

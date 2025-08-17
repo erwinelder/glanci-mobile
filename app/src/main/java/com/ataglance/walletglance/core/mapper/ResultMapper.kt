@@ -1,4 +1,4 @@
-package com.ataglance.walletglance.core.domain.mapper
+package com.ataglance.walletglance.core.mapper
 
 import com.ataglance.walletglance.core.domain.result.error.DomainError
 import com.glanci.request.shared.ResultData

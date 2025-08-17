@@ -88,7 +88,7 @@ fun EditCategoriesScreenWrapper(
         onShowCategoriesByType = categoriesViewModel::changeCategoryType,
         onNavigateToEditSubcategoriesScreen = { categoryWithSubcategories ->
             categoriesViewModel.applySubcategoryListToEdit(categoryWithSubcategories)
-            navViewModel.navigateToScreen(
+            navViewModel.navigate(
                 navController, CategoriesSettingsScreens.EditSubcategories
             )
         },
@@ -96,7 +96,7 @@ fun EditCategoriesScreenWrapper(
             categoryViewModel.applyCategory(
                 category = categoryOrNull ?: categoriesViewModel.getNewParentCategory()
             )
-            navViewModel.navigateToScreen(
+            navViewModel.navigate(
                 navController, CategoriesSettingsScreens.EditCategory
             )
         },
@@ -108,7 +108,7 @@ fun EditCategoriesScreenWrapper(
                 if (appConfiguration.isSetUp) {
                     navController.popBackStack()
                 } else {
-                    navViewModel.navigateToScreen(navController, SettingsScreens.Budgets)
+                    navViewModel.navigate(navController, SettingsScreens.Budgets)
                 }
             }
         }

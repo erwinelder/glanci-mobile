@@ -78,11 +78,11 @@ fun PersonalizationScreenWrapper(
 
         onContinueSetupButton = {
             if (personalizationViewModel.isUserSignedIn()) {
-                navViewModel.navigateToScreen(
+                navViewModel.navigate(
                     navController = navController, screen = SettingsScreens.Accounts
                 )
             } else {
-                navViewModel.navigateToScreen(
+                navViewModel.navigate(
                     navController = navController, screen = AuthScreens.SignIn()
                 )
             }

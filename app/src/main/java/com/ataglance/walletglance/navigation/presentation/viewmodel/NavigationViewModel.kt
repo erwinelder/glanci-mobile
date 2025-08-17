@@ -212,7 +212,7 @@ class NavigationViewModel(
         }
     }
 
-    fun navigateToScreen(
+    fun navigate(
         navController: NavController,
         screen: Any
     ) {
@@ -226,7 +226,7 @@ class NavigationViewModel(
         screen: Any
     ) {
         navController.popBackStack()
-        navigateToScreen(navController, screen)
+        navigate(navController, screen)
     }
 
     fun navigateToScreenMovingTowardsLeft(
@@ -234,7 +234,7 @@ class NavigationViewModel(
         screen: Any
     ) {
         setMoveScreensTowardsLeft(true)
-        navigateToScreen(navController, screen)
+        navigate(navController, screen)
     }
 
     fun navigateToScreenMovingTowardsRight(
@@ -242,7 +242,7 @@ class NavigationViewModel(
         screen: Any
     ) {
         setMoveScreensTowardsLeft(false)
-        navigateToScreen(navController, screen)
+        navigate(navController, screen)
     }
 
     fun <N : Any> navigateAndPopUpTo(

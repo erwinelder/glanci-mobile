@@ -56,7 +56,7 @@ fun SettingsHomeScreenWrapper(
         screenPadding = screenPadding,
         isSignedIn = isSignedIn,
         onNavigateToScreen = { screen ->
-            navViewModel.navigateToScreen(navController = navController, screen = screen)
+            navViewModel.navigate(navController = navController, screen = screen)
         }
     )
 }

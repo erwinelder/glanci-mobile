@@ -1,6 +1,7 @@
-package com.ataglance.walletglance.core.domain.app
+package com.ataglance.walletglance.core.presentation.model
 
 import androidx.annotation.DrawableRes
+import com.ataglance.walletglance.core.domain.app.AppTheme
 
 data class DrawableResByTheme(
     @DrawableRes val lightDefault: Int,

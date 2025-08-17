@@ -75,7 +75,7 @@ fun EditCategoryCollectionsScreenWrapper(
             collectionViewModel.applyCollection(
                 collection = collectionOrNull ?: collectionsViewModel.getNewCollection()
             )
-            navViewModel.navigateToScreen(
+            navViewModel.navigate(
                 navController = navController,
                 screen = CategoryCollectionsSettingsScreens.EditCategoryCollection
             )

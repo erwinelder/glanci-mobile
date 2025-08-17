@@ -64,7 +64,7 @@ fun LanguageScreenWrapper(
         onSelectLangCode = viewModel::selectLanguage,
         onApplyLanguage = viewModel::applyLanguage,
         onContinueButton = {
-            navViewModel.navigateToScreen(navController, SettingsScreens.Personalization)
+            navViewModel.navigate(navController, SettingsScreens.Personalization)
         },
         requestState = requestState,
         onErrorButton = viewModel::resetRequestState
